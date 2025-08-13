@@ -40,6 +40,8 @@
 % PACKAGE PER CODICE SORGENTE
 %-------------------------------------------------------------------------------
 \usepackage{minted}
+\usepackage{amssymb} % if not already loaded
+
 \setminted{
   style=friendly,
   linenos=true,
@@ -49,13 +51,12 @@
   fontsize=\small,
   autogobble=true,
   breaklines=true,
-  breakanywhere=false,
   breakanywhere=true,
   breakindent=15pt,
   breakautoindent=true,
-  breaksymbolleft=\mbox{\tiny\color{red}{$\Lsh$}\space},
+  breaksymbolleft=\mbox{\tiny\color{red}{\ensuremath{\Lsh}}\space},
 }
- 
+
 %-------------------------------------------------------------------------------
 % PACKAGE PER MATEMATICA E UNITÀ DI MISURA
 %-------------------------------------------------------------------------------
@@ -89,7 +90,7 @@
 %-------------------------------------------------------------------------------
 \linespread{1.25}
 
-\let\savedlisting\listing
+\let\savedlisting\listing% save original definition
 \AtBeginDocument{\let\listing\savedlisting}
 
 %-------------------------------------------------------------------------------
