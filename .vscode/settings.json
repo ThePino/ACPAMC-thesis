@@ -34,5 +34,23 @@
     "latex-workshop.view.pdf.ref.viewer": "tabOrBrowser",
     "latex-workshop.view.pdf.viewer": "tab",
     "latex-workshop.linting.chktex.enabled": true,
-    "latex-workshop.check.duplicatedLabels.enabled": true
+    "latex-workshop.check.duplicatedLabels.enabled": true,
+    "cSpell.language": "it,en",
+    "cSpell.enabledFileTypes": {
+        "latex": true
+    },
+    "cSpell.words": [
+        "APCMAM",
+        "citecolor",
+        "correlatoretit",
+        "filecolor",
+        "linkcolor",
+        "pdfpagemode",
+        "pdfstartview",
+        "relatoreit",
+        "relatoretit",
+        "toptesi",
+        "urlcolor",
+        "candidatetit"
+    ]
 }
