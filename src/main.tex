@@ -1,0 +1,196 @@
+\PassOptionsToPackage{table, dvipsnames}{xcolor}
+
+\documentclass[a4paper,twoside,12pt]{toptesi}
+
+%-------------------------------------------------------------------------------
+% CONFIGURAZIONE BASE DEL DOCUMENTO
+%-------------------------------------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+\usepackage{amssymb}
+
+%-------------------------------------------------------------------------------
+% PACKAGE PER GRAFICA E IMMAGINI
+%-------------------------------------------------------------------------------
+\usepackage{multirow}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usepackage{listings}
+\usepackage[font=small,skip=10pt]{caption}
+\usepackage{subcaption}
+\usepackage{booktabs} 
+\usepackage{longtable} 
+\usepackage{float} 
+\usepackage{caption} 
+\usepackage{siunitx} 
+\usepackage{makecell}
+
+%-------------------------------------------------------------------------------
+% PACKAGE PER COLORI E TABELLE
+%-------------------------------------------------------------------------------
+
+\usepackage[table]{xcolor}
+\usepackage{booktabs}
+
+%-------------------------------------------------------------------------------
+% PACKAGE PER CODICE SORGENTE
+%-------------------------------------------------------------------------------
+\usepackage{minted}
+\setminted{
+  style=friendly,
+  linenos=true,
+  frame=lines,
+  framesep=2mm,
+  bgcolor=gray!10,
+  fontsize=\small,
+  autogobble=true,
+  breaklines=true,
+  breakanywhere=false,
+  breakanywhere=true,
+  breakindent=15pt,
+  breakautoindent=true,
+  breaksymbolleft=\mbox{\tiny\color{red}{$\Lsh$}\space},
+}
+ 
+%-------------------------------------------------------------------------------
+% PACKAGE PER MATEMATICA E UNITÀ DI MISURA
+%-------------------------------------------------------------------------------
+\usepackage{siunitx}
+
+%-------------------------------------------------------------------------------
+% PACKAGE PER LISTE
+%-------------------------------------------------------------------------------
+\usepackage{enumitem}
+
+%-------------------------------------------------------------------------------
+% PACKAGE PER IPERTESTI E RIFERIMENTI
+%-------------------------------------------------------------------------------
+\usepackage{hyperref}
+\hypersetup{
+    pdfkeywords={Malware Detection, Fourier-BERT, Machine Learning, Cybersecurity, NLP},
+    colorlinks=true,
+    linkcolor=black,
+    citecolor=Green,
+    urlcolor=NavyBlue,
+    filecolor=magenta,
+    bookmarksnumbered=true,
+    breaklinks=true,
+    pdfpagemode=UseOutlines,
+    pdfstartview=FitH,
+    unicode=true
+}
+
+%-------------------------------------------------------------------------------
+% IMPOSTAZIONI DI FORMATTAZIONE
+%-------------------------------------------------------------------------------
+\linespread{1.25}
+
+\let\savedlisting\listing
+\AtBeginDocument{\let\listing\savedlisting}
+
+%-------------------------------------------------------------------------------
+% DEFINIZIONI PER IL FRONTESPIZIO (MACRO PERSONALIZZATE DALLA CLASSE toptesi)
+%-------------------------------------------------------------------------------
+\def\dept{DIPARTIMENTO DI INFORMATICA}
+\def\course{CORSO DI LAUREA IN INFORMATICA}
+
+\def\title{APCMAM:\\ Inserisci un titolo Giacomo}
+\def\author{Giacomo Gaudio}
+\def\relatoreone{Prof.ssa Annalisa Appice}
+\def\relatoretwo{}
+\def\correlatoreone{Dott.ssa Giuseppina Andresini}
+\def\correlatoretwo{}
+\def\subject{Vedi cosa fa Giacomo}
+\def\annoacc{2024 \- 2025}
+\def\beforecandidate{LAUREANDO:}
+\def\beforetitle{TESI DI LAUREA \\ IN \\ }
+\def\beforeprof{RELATORE:}
+\def\beforecorrelatore{CORRELATORI:}
+\def\beforeannoacc{ANNO ACCADEMICO}
+
+%-------------------------------------------------------------------------------
+% DEFINIZIONE MACRO PERSONALIZZATE
+%-------------------------------------------------------------------------------
+\makeatletter
+\def\cleardoublepage{\clearpage\if@twoside \ifodd\c@page\else
+    \hbox{}
+    \vspace*{\fill}
+    \vspace{\fill}
+    \thispagestyle{empty}
+    \newpage
+    \if@twocolumn\hbox{}\newpage\fi\fi\fi}
+\makeatother
+
+%-------------------------------------------------------------------------------
+% INIZIO DEL DOCUMENTO
+%-------------------------------------------------------------------------------
+\begin{document}
+
+%-------------------------------------------------------------------------------
+% FRONTESPIZIO
+%-------------------------------------------------------------------------------
+\begin{titlepage}
+    \begin{tikzpicture}[remember picture,overlay]
+        \centering
+        \node[yshift=-6 cm] (logo) at (current page.north) {\includegraphics[width=0.75\linewidth]{uniba.jpg}};
+        \node[text width=50em,yshift=0.25cm, align = center, below = of logo](dipartimento){\normalsize \dept};
+        \node[text width=40em, align = center, yshift=.55cm,below = of dipartimento](course){\normalsize \course};
+        \node[text width=35em,align = center,  yshift=1.2cm,below = of course](line){\par\noindent\rule{\textwidth}{0.4pt}};
+        \node[text width=40em, align = center, yshift=.55cm,below = of line](lia){\normalsize \beforetitle \xspace \subject };
+
+        \node[text width=40em, align = center, yshift=-0.5cm,below = of lia](title){\bfseries \parbox{12cm}{\fontsize{21pt}{20pt}\selectfont \centering \title\par}};
+
+        \node[text width=35em, align = left, yshift=-1cm,below = of title](relatoretit){\normalsize \textbf{\beforeprof} };
+        \node[text width=35em, align = left, yshift=1cm,below = of relatoretit](relatore){\large \relatoreone \\ \relatoretwo};
+
+        \node[text width=35em, align = left, yshift=0.5cm,below = of relatore](correlatoretit){\normalsize \textbf{\beforecorrelatore}  };
+        \node[text width=35em, align = left, yshift=1cm,below = of correlatoretit](correlatore){\large \correlatoretwo \\ \correlatoreone};
+
+
+        \node[text width=35em, align = right, yshift=-1cm,below = of title](candidatetit){\normalsize \textbf{\beforecandidate}};
+        \node[text width=35em, align = right, yshift=1cm,below = of candidatetit](candidate){\large \author};
+
+        \node[text width=35em,align = center,  yshift= -3cm,below = of candidate](line2){\par\noindent\rule{\textwidth}{0.4pt}};
+
+
+        \node[text width=50em, align = center, yshift=0.5cm,below = of line2](year){\large \beforeannoacc\xspace \annoacc};
+    \end{tikzpicture}
+\end{titlepage}
+
+%-------------------------------------------------------------------------------
+% PARTI PRELIMINARI DEL DOCUMENTO
+%-------------------------------------------------------------------------------
+\cleardoublepage
+
+\include{dedica}
+\cleardoublepage
+\pagenumbering{roman}
+
+\tableofcontents
+
+\cleardoublepage
+
+%-------------------------------------------------------------------------------
+% CORPO PRINCIPALE DEL DOCUMENTO
+%-------------------------------------------------------------------------------
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+\include{note}
+\cleardoublepage
+
+\include{abstract/abstract}
+\include{introduzione/introduzione}
+
+
+%-------------------------------------------------------------------------------
+% PARTI FINALI DEL DOCUMENTO
+%-------------------------------------------------------------------------------
+\cleardoublepage
+\include{ringraziamenti}
+
+\end{document}
