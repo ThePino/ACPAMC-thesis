@@ -4,7 +4,8 @@
     "customizations": {
         "vscode": {
             "extensions": [
-                "james-yu.latex-workshop"
+                "james-yu.latex-workshop",
+                "streetsidesoftware.code-spell-checker"
             ]
         }
     }
