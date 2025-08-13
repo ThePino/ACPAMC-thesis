@@ -1,0 +1,5 @@
+# Removing all latex sutffs 
+*.synctex*
+*.aux
+*.log
+*.fls
