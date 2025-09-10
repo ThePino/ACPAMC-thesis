@@ -62,6 +62,8 @@
         ".vscode",
         ".vscode-insiders",
         ".gitignore",
-        ".devcontainer/**"
+        ".devcontainer/**",
+        "*.tek",
+        "*.bib"
     ]
 }
