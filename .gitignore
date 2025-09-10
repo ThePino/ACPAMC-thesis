@@ -6,3 +6,6 @@
 *.fdb_latexmk
 *.out
 *.toc
+*.tek
+*.bbl
+*.blg
