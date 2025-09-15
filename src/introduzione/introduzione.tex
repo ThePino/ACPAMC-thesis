@@ -11,31 +11,31 @@
 
 Con l'avvento dell'era digitale, sempre più attività e servizi sono migrati verso il mondo online: \
 dall' e-commerce alla pubblica amministrazione, fino ai servizi finanziari e sanitari.\
-In italia, secondo i dati ISTAT\cite{istat.internet-usage},l'\percc{86,2} delle famiglie italiane dispone \
-di un accesso ad internet a testimonianza di un uso sempre più popolare.
+In italia, secondo i dati ISTAT,l'\percc{86,2} delle famiglie italiane dispone \
+di un accesso ad internet a testimonianza di un uso sempre più popolare \cite{istat.internet-usage}.
 
 Tuttavia, l'aumento della connettività comporta inevitabilmente anche una maggiore esposizione alle minacce \
 informatiche. Nel 2024, l'Italia ha registrato il \percc{10} degli attacchi informatici\
-globali\cite{clusit.italy-malware}; secondo il rapporto Clusit\cite{clusit.italy-malware}, circa un terzo di tali attacchi è stato veicolato tramite\
-l'utilizzo di malware.
+globali; secondo il rapporto Clusit, circa un terzo di tali attacchi è stato veicolato tramite\
+l'utilizzo di malware\cite{clusit.italy-malware}.
 
-Per malware si intende un istanza di un programma il cui intento sia malevole\cite{idika2007survey} \
-come carpire informazioni personali e/o arrecare danni ai dispositivi.
+Per malware si intende un istanza di un programma il cui intento sia malevole \
+come carpire informazioni personali e/o arrecare danni ai dispositivi\cite{idika2007survey}.
 
-Per poter identificare i malware esistono due tipi di analisi: statica e dinamica\cite{doi:10.1155/2015/659101}.
+Per poter identificare i malware esistono due tipi di analisi: statica e dinamica.
 L'analisi statica prevede l'analisi del codice binario, analizzando ogni ramo di esecuzione possibile alla ricerca\
 di codice malevolo.\
 L'analisi dinamica invece prevede l'esecuzione del programma cercando di identificare un insieme di comportamenti\
-noti tra i malware.\
-Per comportamenti si intendono le varie richieste effettuate dal programma \
-al sistema operativo per poter effettivamente funzionare: queste richieste prendono il nome di \textit{Api Call}.
-Una sequenza temporale di chiamate al sistema operativo prende il nome di \textit{Api Call Sequence}.
+noti tra i malware\cite{doi:10.1155/2015/659101}.\
 
+Per comportamenti intendiamo l'insieme (ordinato) delle chiamate Api al Kernel per permettere l'esecuzione dell'applicativo.\
+Un singolo \myquote{comportamento} è effettivamente la singola chiamata Api prendendo il nome di \myquote{Api Call}; mentre la lista (ordinata)\
+prende il nome \myquote{API call sequence}\cite{6680850}.
 
 L'obbiettivo di questo caso di studio è di poter classificare un programma in base ai suoi comportamenti.\
-Per raggiungere tale scopo sono stati raccolti diversi dataset di sequenza di chiamate api ed è stato\
+Per raggiungere tale scopo sono stati raccolti diversi dataset di sequenza di chiamate api sul sistema operativo Windows ed è stato\
 progettato e idealizzato un applicativo python (seguendo il paradigma \textit{OOP}) che attraverso \
-algoritmi di machine-learning riuscisse a classificare un programma in base alla sua sequenza di chiamate api.
+algoritmi di machine-learning riesca a classificare un programma in base alla sua sequenza di chiamate api.
 
 \section{Formato Windows PE malware}
 
