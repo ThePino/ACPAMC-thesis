@@ -39,7 +39,39 @@ algoritmi di machine-learning riesca a classificare un programma in base alla su
 
 \section{Formato Windows PE malware}
 
-%Descrivere il formato PE Di Windows.
+Per poter eseguire un programma in \texttt{Microsoft Windows}, la logica applicativa deve essere interpretabile dal sistema operativo.\
+Il formato che mette a disposizione il sistema operativo \texttt{Microsoft Windows} è \texttt{PE} (Portable Executable), denominato cosi poiche\
+si riferisce che il formato non è specifico dell'architettura\cite{Microsoft-PE}.
+
+Un file in formato \textbf{PE} ha nel seguente ordine le seguenti intestazioni:
+
+\begin{itemize}
+    \item \textbf{Stub MS-DOS}: area iniziale del file PE, compatibile con il sottosistema \texttt{MS-DOS}.
+          In assenza di istruzioni specifiche da parte dello sviluppatore, contiene un programma di default che
+          visualizza il messaggio: \myquote{Impossibile eseguire questo programma in modalità DOS}.
+    \item \textbf{Firma PE}: campo che identifica il file come appartenente al formato \textbf{Portable Executable (PE)}
+          e ne consente il corretto riconoscimento da parte del loader di Windows.
+    \item \textbf{Intestazione COFF}: fornisce informazioni fondamentali sul file, come il tipo di macchina su cui è
+          destinato a essere eseguito, il numero di sezioni e la data di compilazione.
+
+    \item \textbf{Intestazione facoltativa (solo immagine)}: sezione che specifica le informazioni necessarie al
+          caricamento ed esecuzione del programma. È composta da tre sottosezioni principali:
+          \begin{itemize}
+              \item \textbf{Campi standard intestazione facoltativi }: includono l'indirizzo di entry point del programma, la dimensione del codice
+                    e dei dati, e altri parametri di base.
+
+              \item \textbf{Campi specifici dell'intestazione facoltativa di Windows}: contengono informazioni più dettagliate, come la versione
+                    minima del sistema operativo richiesto, le dimensioni massime di heap e stack, e i valori di allineamento.
+
+              \item \textbf{Directory dati intestazione facoltative}: riferimenti alle tabelle e alla loro dimensione delle risorse esterne come le \textbf{ddl}.
+          \end{itemize}
+\end{itemize}
+
+Una \textbf{DDL} è una libreria che contiene codice e dati utilizzabili da più di un programma contemporaneamente.\
+Ogni programma può utilizzare le \texttt{DDL} del sistema operativo windows per ottenere memoria, accesso a risorse,\
+far apparire elementi a schermo ed accedere alla rete\cite{Microsoft-DLL}.
+
+I malware utilizzano queste librerie per poter eseguire comportamenti malevoli.
 
 \section{Categorie Malware}
 
