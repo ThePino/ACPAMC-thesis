@@ -46,25 +46,25 @@ si riferisce che il formato non è specifico dell'architettura\cite{Microsoft-PE
 Un file in formato \textbf{PE} ha nel seguente ordine le seguenti intestazioni:
 
 \begin{itemize}
-    \item \textbf{Stub MS-DOS}: area iniziale del file PE, compatibile con il sottosistema \texttt{MS-DOS}.
-          In assenza di istruzioni specifiche da parte dello sviluppatore, contiene un programma di default che
-          visualizza il messaggio: \myquote{Impossibile eseguire questo programma in modalità DOS}.
-    \item \textbf{Firma PE}: campo che identifica il file come appartenente al formato \textbf{Portable Executable (PE)}
-          e ne consente il corretto riconoscimento da parte del loader di Windows.
-    \item \textbf{Intestazione COFF}: fornisce informazioni fondamentali sul file, come il tipo di macchina su cui è
-          destinato a essere eseguito, il numero di sezioni e la data di compilazione.
+      \item \textbf{Stub MS-DOS}: area iniziale del file PE, compatibile con il sottosistema \texttt{MS-DOS}.
+            In assenza di istruzioni specifiche da parte dello sviluppatore, contiene un programma di default che
+            visualizza il messaggio: \myquote{Impossibile eseguire questo programma in modalità DOS}.
+      \item \textbf{Firma PE}: campo che identifica il file come appartenente al formato \textbf{Portable Executable (PE)}
+            e ne consente il corretto riconoscimento da parte del loader di Windows.
+      \item \textbf{Intestazione COFF}: fornisce informazioni fondamentali sul file, come il tipo di macchina su cui è
+            destinato a essere eseguito, il numero di sezioni e la data di compilazione.
 
-    \item \textbf{Intestazione facoltativa (solo immagine)}: sezione che specifica le informazioni necessarie al
-          caricamento ed esecuzione del programma. È composta da tre sottosezioni principali:
-          \begin{itemize}
-              \item \textbf{Campi standard intestazione facoltativi }: includono l'indirizzo di entry point del programma, la dimensione del codice
-                    e dei dati, e altri parametri di base.
+      \item \textbf{Intestazione facoltativa (solo immagine)}: sezione che specifica le informazioni necessarie al
+            caricamento ed esecuzione del programma. È composta da tre sottosezioni principali:
+            \begin{itemize}
+                  \item \textbf{Campi standard intestazione facoltativi }: includono l'indirizzo di entry point del programma, la dimensione del codice
+                        e dei dati, e altri parametri di base.
 
-              \item \textbf{Campi specifici dell'intestazione facoltativa di Windows}: contengono informazioni più dettagliate, come la versione
-                    minima del sistema operativo richiesto, le dimensioni massime di heap e stack, e i valori di allineamento.
+                  \item \textbf{Campi specifici dell'intestazione facoltativa di Windows}: contengono informazioni più dettagliate, come la versione
+                        minima del sistema operativo richiesto, le dimensioni massime di heap e stack, e i valori di allineamento.
 
-              \item \textbf{Directory dati intestazione facoltative}: riferimenti alle tabelle e alla loro dimensione delle risorse esterne come le \textbf{ddl}.
-          \end{itemize}
+                  \item \textbf{Directory dati intestazione facoltative}: riferimenti alle tabelle e alla loro dimensione delle risorse esterne come le \textbf{ddl}.
+            \end{itemize}
 \end{itemize}
 
 Una \textbf{DDL} è una libreria che contiene codice e dati utilizzabili da più di un programma contemporaneamente.\
@@ -75,21 +75,21 @@ I malware utilizzano queste librerie per poter eseguire comportamenti malevoli.
 
 \section{Categorie Malware}
 
-%Indicare le varie classificazioni di malware.
-
-%\begin{itemize}
-%  \item Unknown
-%  \item Goodware
-%  \item Malware
-%  \item Backdoor
-%  \item Trojan
-%  \item Virus
-%  \item Worm
-%  \item Dropper
-%  \item SPYWARE
-%  \item ADWARE
-%  \item PACKED
-%\end{itemize}
+I malware, in base al risultato delle loro azioni, assumono un nome più specifico. Nel nostro caso di studio sono state ritrovate le seguenti specializzazioni:
+\begin{itemize}
+      \item \textbf{Unknown}: Applicazione di cui non si conosce se il suo intento sia malevolo o no.
+      \item \textbf{Goodware}: Applicazione benevola; non ha nessun obbiettivo di danneggiare l'utente.
+      \item \textbf{Malware}: Appellativo generico per malware in caso in cui non si riesca effettivamente a discriminare l'esito delle sue azioni.
+      \item \textbf{Backdoor}: Applicazione che ha come scopo quello di fornire accesso alla macchina attacatta all'attaccante\cite{Kaspersky-malware_backdoor}.
+      \item \textbf{Trojan}: Software il cui scopo è quello di modificare, bloccare o cancellare dati esistenti\cite{Cisco-Malware_Taxonomy}.
+      \item \textbf{Virus}: Applicazione disegnata per diffondersi su più host; ha come scopo quello di interrompere il normale funzionamento della macchina host\cite{Cisco-Malware_Taxonomy}.
+      \item \textbf{Worm}: Si comportano come i virus ma non hanno bisogno di essere eseguiti manualmente sulla macchina obbiettivo\cite{Cisco-Malware_Taxonomy}.
+      \item \textbf{Dropper}: Applicazione che ha come sccopo quella di far scaricare altri software malevoli\cite{Kaspersky-malware_dropper}.
+      \item \textbf{Spyware}: Applicazione che ha come compito di carpire dati sensibili sulla macchina host e riportare tali dati sulla macchina disegnata\cite{Cisco-Malware_Taxonomy}.
+      \item \textbf{Adware}: Applicazione che ha come scopo capire le abitudini dell'utente per propinare pubblicità mirata; possono anche deviare la navigazione\
+            web su determinati siti esca\cite{Cisco-Malware_Taxonomy}.
+      \item \textbf{Packed}: Malware che è stato compresso almeno una volta per eludere i controlli antivirus\cite{Kaspersky-malware_MultiPacked}.
+\end{itemize}
 
 \section{Chiamata Api Windows}
 
