@@ -1,0 +1,29 @@
+Sommario
+
+Introduzione
+    Formato Windows PE malware
+    Categorie Malware
+    Chiamata Api Windows
+    Contributi
+
+Stato Dell’Arte
+    Analisi Statica E Dinamica
+    Machine Learning
+        Classificazione
+        Algoritmi di classificazione
+            RandomForest
+            XGBoost
+    Metriche Di Valutazione
+    Approcci di Machine Learning per Windws PE Malware Detection
+    
+Approccio Proposto
+    Descrizione
+    OOP & UML
+    Validazione Empirica
+    Dataset 
+    Metriche
+    Risultati 
+    Sviluppi Futuri
+
+Appendice
+    Ambiente Di Sviluppo
