@@ -39,13 +39,12 @@ algoritmi di machine-learning riesca a classificare un programma in base alla su
 
 \section{Formato Windows PE malware}
 
-Per poter eseguire un programma in \texttt{Microsoft Windows}, la logica applicativa deve essere interpretabile dal sistema operativo.\
-Il formato che mette a disposizione il sistema operativo \texttt{Microsoft Windows} è \texttt{PE} (Portable Executable), denominato cosi poiche\
-si riferisce che il formato non è specifico dell'architettura\cite{Microsoft-PE}.
+Per poter essere eseguito in \textit{Microsoft Windows}, un programma deve presentare una logica applicativa interpretabile dal sistema operativo.\
+A tale scopo, Windows utilizza il formato \texttt{PE} (Portable Executable),\
+così denominato in quanto progettato per non essere vincolato a una specifica architettura\cite{Microsoft-PE}.
 
 Un file in formato \textbf{PE} ha nel seguente ordine le seguenti intestazioni:
-
-\begin{itemize}
+\begin{enumerate}
       \item \textbf{Stub MS-DOS}: area iniziale del file PE, compatibile con il sottosistema \texttt{MS-DOS}.
             In assenza di istruzioni specifiche da parte dello sviluppatore, contiene un programma di default che
             visualizza il messaggio: \myquote{Impossibile eseguire questo programma in modalità DOS}.
@@ -65,9 +64,9 @@ Un file in formato \textbf{PE} ha nel seguente ordine le seguenti intestazioni:
 
                   \item \textbf{Directory dati intestazione facoltative}: riferimenti alle tabelle e alla loro dimensione delle risorse esterne come le \textbf{ddl}.
             \end{itemize}
-\end{itemize}
+\end{enumerate}
 
-Una \textbf{DDL} è una libreria che contiene codice e dati utilizzabili da più di un programma contemporaneamente.\
+Una \textbf{ddl} è una libreria che contiene codice e dati utilizzabili da più di un programma contemporaneamente.\
 Ogni programma può utilizzare le \texttt{DDL} del sistema operativo windows per ottenere memoria, accesso a risorse,\
 far apparire elementi a schermo ed accedere alla rete\cite{Microsoft-DLL}.
 
@@ -142,4 +141,20 @@ le quali costituiscono la base per la classificazione del comportamento software
 
 \section{Contributi}
 
-%Descrivere l'organizzazione della tesi in capitoli e riassumere il contenuto di ogni capitolo.
+La presente tesi è articolata in quattro capitoli principali: \textit{Introduzione}, \textit{Stato dell'Arte},
+\textit{Approccio Proposto} e \textit{Appendice}.
+
+Nel capitolo di \textit{Introduzione} vengono presentati il contesto di riferimento, le motivazioni,\
+l'obiettivo del lavoro e il contributo originale fornito.
+
+Il capitolo dedicato allo \textit{Stato dell’Arte} offre un inquadramento teorico e metodologico, approfondendo i principali approcci di analisi del software\
+(statica e dinamica), i fondamenti di \textit{machine learning} con particolare attenzione al task di classificazione, gli algoritmi utilizzati\
+(Random Forest e XGBoost) e le metriche di valutazione.\
+La sezione si conclude con una panoramica dei lavori correlati nel campo della rilevazione di malware in ambiente Windows.
+
+Nel capitolo \textit{Approccio Proposto} viene descritta in dettaglio la soluzione implementata.
+Si illustra la modellazione mediante diagrammi UML, l'architettura software sviluppata in Python secondo i principi della programmazione a oggetti\
+la raccolta e standardizzazione dei dataset utilizzati, nonché i risultati sperimentali ottenuti e le possibili linee di sviluppo futuro.
+
+Infine, l'\textit{Appendice} contiene note tecniche relative all'ambiente di sviluppo e ulteriori dettagli implementativi, utili a
+comprendere lo sviluppo effettivo.
