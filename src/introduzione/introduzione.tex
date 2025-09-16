@@ -99,6 +99,47 @@ Nel contesto di questo lavoro di tesi, sono state individuate e considerate le s
 
 %Dettagliare una chiamata api di windows.
 
+Le chiamate API (Application Programming Interface) di sistema consentono agli sviluppatori di accedere alle risorse della macchina necessarie per l'esecuzione di un applicativo.\
+Attraverso tali interfacce è possibile interagire con componenti fondamentali come la rete, la memoria, i dispositivi di input/output e l'interfaccia grafica.\
+Le API risultano fortemente dipendenti dal sistema operativo su cui vengono eseguite.
+
+
+In ambiente Windows, le API garantiscono che un'applicazione possa funzionare correttamente su diverse versioni del sistema operativo, sfruttando al tempo stesso le specifiche funzionalità\
+introdotte nelle specifiche versioni\cite{Microsoft-api}.\
+Le API di Windows coprono un ampio spettro di funzionalità, tra cui: interfaccia utente e shell, gestione dell'input e della messaggistica, accesso ai dati e archiviazione,
+diagnostica, grafica e multimedialità, dispositivi, servizi di sistema, sicurezza e identità, installazione e manutenzione di applicazioni, amministrazione e gestione del sistema, rete e connettività Internet.
+
+Un esempio applicativo è costituito dal malware di tipo \textbf{Spyware}, che può invocare ripetutamente la funzione \texttt{GetKeyboardState}\cite{Microsoft-GetKeyboardState}\
+per recuperare lo stato degli ultimi 256 tasti premuti dall'utente, potenzialmente contenenti credenziali sensibili.
+
+Nella documentazione ufficiale, i requisiti della funzione sono riassunti in Tabella \ref{tab:GetKeyboardState-Requisiti}.
+
+\begin{table}[ht]
+      \centering
+      \caption{Requisiti}
+      \label{tab:GetKeyboardState-Requisiti}
+      \begin{tabular}{ll}
+            \toprule
+            \textbf{Voce}               & \textbf{Valore}                                                              \\
+            \midrule
+            Client minimo supportato    & Windows 2000 Professional (solo app desktop)                                 \\
+            Server minimo supportato    & Windows 2000 Server (solo app desktop)                                       \\
+            Piattaforma di destinazione & Windows                                                                      \\
+            Intestazione                & \texttt{winuser.h} (include \texttt{Windows.h})                              \\
+            Libreria                    & \texttt{User32.lib}                                                          \\
+            DLL                         & \texttt{User32.dll}                                                          \\
+            Set di API                  & \texttt{ext-ms-win-ntuser-rawinput-l1-1-0} (Windows 10, versione 10.0.14393) \\
+            \bottomrule
+      \end{tabular}
+\end{table}
+
+Come si nota, alla voce \textbf{DLL} è indicata la libreria \texttt{User32.dll}.\
+Questa verrà referenziata nella sezione \textit{Directory dati dell’intestazione facoltativa} dell’eseguibile corrispondente, permettendo al sistema operativo di risolvere la chiamata\
+in fase di esecuzione.
+
+Nel contesto di questo lavoro di tesi, non ci interessa la singola chiamata API in sé, quanto piuttosto il modo in cui tali chiamate si organizzano in sequenze,
+le quali costituiscono la base per la classificazione del comportamento software.
+
 \section{Contributi}
 
 %Descrivere l'organizzazione della tesi in capitoli e riassumere il contenuto di ogni capitolo.
