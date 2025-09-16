@@ -14,7 +14,7 @@ Stato Dell’Arte
             RandomForest
             XGBoost
     Metriche Di Valutazione
-    Approcci di Machine Learning per Windws PE Malware Detection
+    Approcci di Machine Learning per Windows PE Malware Detection
     
 Approccio Proposto
     Descrizione
