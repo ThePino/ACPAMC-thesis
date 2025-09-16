@@ -75,20 +75,24 @@ I malware utilizzano queste librerie per poter eseguire comportamenti malevoli.
 
 \section{Categorie Malware}
 
-I malware, in base al risultato delle loro azioni, assumono un nome più specifico. Nel nostro caso di studio sono state ritrovate le seguenti specializzazioni:
+La definizione di \textit{malware} è generica e include tutte le tipologie di software malevolo; per agevolare le attività di rilevamento e classificazione,\
+è utile suddividerli in categorie più specifiche sulla base delle loro finalità e modalità di azione.
+
+Nel contesto di questo lavoro di tesi, sono state individuate e considerate le seguenti specializzazioni di software:
+
 \begin{itemize}
-      \item \textbf{Unknown}: Applicazione di cui non si conosce se il suo intento sia malevolo o no.
-      \item \textbf{Goodware}: Applicazione benevola; non ha nessun obbiettivo di danneggiare l'utente.
-      \item \textbf{Malware}: Appellativo generico per malware in caso in cui non si riesca effettivamente a discriminare l'esito delle sue azioni.
-      \item \textbf{Backdoor}: Applicazione che ha come scopo quello di fornire accesso alla macchina attaccata all'attaccante\cite{Kaspersky-malware_backdoor}.
-      \item \textbf{Trojan}: Software il cui scopo è quello di modificare, bloccare o cancellare dati esistenti\cite{Cisco-Malware_Taxonomy}.
-      \item \textbf{Virus}: Applicazione disegnata per diffondersi su più host; ha come scopo quello di interrompere il normale funzionamento della macchina host\cite{Cisco-Malware_Taxonomy}.
-      \item \textbf{Worm}: Si comportano come i virus ma non hanno bisogno di essere eseguiti manualmente sulla macchina obbiettivo\cite{Cisco-Malware_Taxonomy}.
-      \item \textbf{Dropper}: Applicazione che ha come scopo quella di far scaricare altri software malevoli\cite{Kaspersky-malware_dropper}.
-      \item \textbf{Spyware}: Applicazione che ha come compito di carpire dati sensibili sulla macchina host e riportare tali dati sulla macchina disegnata\cite{Cisco-Malware_Taxonomy}.
-      \item \textbf{Adware}: Applicazione che ha come scopo capire le abitudini dell'utente per propinare pubblicità mirata; possono anche deviare la navigazione\
-            web su determinati siti esca\cite{Cisco-Malware_Taxonomy}.
-      \item \textbf{Packed}: Malware che è stato compresso almeno una volta per eludere i controlli antivirus\cite{Kaspersky-malware_MultiPacked}.
+      \item \textbf{Unknown}: applicazioni per le quali non è stato possibile determinate con certezza se sono benevoli o meno.
+      \item \textbf{Goodware}: software legittimo, privo di finalità malevoli.
+      \item \textbf{Malware}: denominazione generica per software malevolo, utilizzata nei casi in cui non sia possibile definire una categoria più specifica
+      \item \textbf{Backdoor}: programma che crea un accesso nascosto al sistema compromesso, permettendo all'attaccante di controllarlo da remoto\cite{Kaspersky-malware_backdoor}.
+      \item \textbf{Trojan}: software che si maschera da applicazione legittima ma che, una volta eseguito, consente operazioni malevole come la modifica\
+            o la cancellazione dei dati\cite{Cisco-Malware_Taxonomy}.
+      \item \textbf{Virus}: programma in grado di infettare altri file e diffondersi all'interno di un sistema, con lo scopo di danneggiare il corretto funzionamento dell'host\cite{Cisco-Malware_Taxonomy}.
+      \item \textbf{Worm}:  simili ai virus, ma in grado di diffondersi autonomamente attraverso la rete, senza richiedere l'intervento dell'utente\cite{Cisco-Malware_Taxonomy}.
+      \item \textbf{Dropper}: componente malevolo progettato per scaricare o installare altri malware sul sistema target\cite{Kaspersky-malware_dropper}.
+      \item \textbf{Spyware}: software che raccoglie informazioni sensibili dall'utente o dal sistema infetto e le trasmette a un'entità esterna\cite{Cisco-Malware_Taxonomy}.
+      \item \textbf{Adware}: programma che raccoglie informazioni sulle abitudini dell'utente al fine di proporre pubblicità mirata; in alcuni casi può deviare la navigazione verso siti malevoli\cite{Cisco-Malware_Taxonomy}.
+      \item \textbf{Packed}: malware compresso (almeno una volta) tramite tecniche di \textit{packing} per eludere i controlli degli antivirus\cite{Kaspersky-malware_MultiPacked}.
 \end{itemize}
 
 \section{Chiamata Api Windows}
