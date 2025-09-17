@@ -1,4 +1,4 @@
-\newcommand{\percc}[1]{$#1$\%}
+
 
 \chapter{Introduzione}
 
@@ -9,40 +9,40 @@
 %Verrà esplicitato il mio contributo: indicare la raccolta dei vari dataset, standardizzazione di essi per fornire un input comune
 %all'applicativo python per la classificazione delle sequenze di chiamate api progettato in OOP\@
 
-Con l'avvento dell'era digitale, sempre più attività e servizi sono migrati verso il mondo online: \
-dall' e-commerce alla pubblica amministrazione, fino ai servizi finanziari e sanitari.\
-In italia, secondo i dati ISTAT,l'\percc{86,2} delle famiglie italiane dispone \
-di un accesso ad internet a testimonianza di un uso sempre più popolare\cite{istat.internet-usage}.
-
+Con l'avvento dell'era digitale, attività e servizi, sia in ambito e-commerce, pubblica amministrazione, servizi finanziari e sanitari,\
+vengono sempre di più digitalizzati in Italia, secondo i dati ISTAT,l'\percc{86,2} delle famiglie italiane dispone \
+di un accesso ad internet a testimonianza di un uso sempre più popolare\mycite{istat.internet-usage}.
+\
 Tuttavia, l'aumento della connettività comporta inevitabilmente anche una maggiore esposizione alle minacce \
 informatiche. Nel 2024, l'Italia ha registrato il \percc{10} degli attacchi informatici\
 globali; secondo il rapporto Clusit, circa un terzo di tali attacchi è stato veicolato tramite\
-l'utilizzo di malware\cite{clusit.italy-malware}.
-
+l'utilizzo di malware\mycite{clusit.italy-malware}.
+\
 Per malware si intende un istanza di un programma il cui intento sia malevole \
-come carpire informazioni personali e/o arrecare danni ai dispositivi\cite{idika2007survey}.
-
+come carpire informazioni personali e/o arrecare danni ai dispositivi\mycite{idika2007survey}.
+\
 Per poter identificare i malware esistono due tipi di analisi: statica e dinamica.
 L'analisi statica prevede l'analisi del codice binario, analizzando ogni ramo di esecuzione possibile alla ricerca\
 di codice malevolo.\
-L'analisi dinamica invece prevede l'esecuzione del programma cercando di identificare un insieme di comportamenti\
-noti tra i malware\cite{doi:10.1155/2015/659101}.\
-
-Per comportamenti intendiamo l'insieme (ordinato) delle chiamate Api al Kernel per permettere l'esecuzione dell'applicativo.\
-Un singolo \myquote{comportamento} è effettivamente la singola chiamata Api prendendo il nome di \myquote{Api Call}; mentre la lista (ordinata)\
-prende il nome \myquote{API call sequence}\cite{6680850}.
-
-L'obbiettivo di questo caso di studio è di poter classificare un programma in base ai suoi comportamenti.\
-Per raggiungere tale scopo sono stati raccolti diversi dataset di sequenza di chiamate api sul sistema operativo Windows ed è stato\
-progettato e idealizzato un applicativo python (seguendo il paradigma \textit{OOP}) che attraverso \
-algoritmi di machine-learning riesca a classificare un programma in base alla sua sequenza di chiamate api.
+L'analisi dinamica invece prevede l'esecuzione del programma all'interno di una sandbox, ovvero un ambiente isolato e controllato che impedisce \
+al software di arrecare danni reali al sistema. In questo ambiente è possibile osservare i suoi comportamenti alla ricerca
+di quelli simili ai malware\mycite{doi:10.1155/2015/659101}.\
+\
+Con riferimento alle informazioni veicolate dalle API (Application Programming Interface), per comportamenti intendiamo l'insieme (ordinato) delle\
+chiamate API al Kernel per permettere l'esecuzione dell'applicativo; un API è un modo per interagire con un sistema senza l'ausilio di una interfaccia grafica \mycite{Microsoft-API-def}.
+Un singolo \myquote{comportamento} è effettivamente la singola chiamata API prendendo il nome di \myquote{API Call}; mentre la lista (ordinata)\
+prende il nome \myquote{API call sequence}\mycite{6680850}.
+\
+L'obbiettivo di questa tesi è classificare un programma in base ai suoi comportamenti.\
+Per raggiungere tale scopo è stato formalizzato e valutato un approccio che apprende un classificatore,\
+utilizzando sequenze di chiamate API come input e algoritmi di machine learning per distinguere le varie categorie.
 
 \section{Formato Windows PE malware}
 
 Per poter essere eseguito in \textit{Microsoft Windows}, un programma deve presentare una logica applicativa interpretabile dal sistema operativo.\
-A tale scopo, Windows utilizza il formato \texttt{PE} (Portable Executable),\
-così denominato in quanto progettato per non essere vincolato a una specifica architettura\cite{Microsoft-PE}.
-
+A tale scopo, il sistema operativo Windows utilizza il formato \texttt{PE} (Portable Executable),\
+così denominato in quanto progettato per non essere vincolato a una specifica architettura\mycite{Microsoft-PE}.
+\
 Un file in formato \textbf{PE} ha nel seguente ordine le seguenti intestazioni:
 \begin{enumerate}
       \item \textbf{Stub MS-DOS}: area iniziale del file PE, compatibile con il sottosistema \texttt{MS-DOS}.
@@ -62,36 +62,34 @@ Un file in formato \textbf{PE} ha nel seguente ordine le seguenti intestazioni:
                   \item \textbf{Campi specifici dell'intestazione facoltativa di Windows}: contengono informazioni più dettagliate, come la versione
                         minima del sistema operativo richiesto, le dimensioni massime di heap e stack, e i valori di allineamento della memoria.
 
-                  \item \textbf{Directory dati intestazione facoltative}: riferimenti alle tabelle e alla loro dimensione delle risorse esterne come le \textbf{ddl}.
+                  \item \textbf{Directory dati intestazione facoltative}: riferimenti alle tabelle e alla loro dimensione delle risorse esterne come le ddl.
             \end{itemize}
 \end{enumerate}
 
-Una \textbf{ddl} è una libreria che contiene codice e dati utilizzabili da più di un programma contemporaneamente.\
-Ogni programma può utilizzare le \texttt{DDL} del sistema operativo windows per ottenere memoria, accesso a risorse,\
-far apparire elementi a schermo ed accedere alla rete\cite{Microsoft-DLL}.
-
+Una ddl è una libreria che contiene codice e dati utilizzabili da più di un programma contemporaneamente.\
+Ogni programma può utilizzare le DDL del sistema operativo windows per ottenere memoria, accesso a risorse,\
+far apparire elementi a schermo ed accedere alla rete\mycite{Microsoft-DLL}.\
 I malware utilizzano queste librerie per poter eseguire comportamenti malevoli.
 
 \section{Categorie Malware}
 
 La definizione di \textit{malware} è generica e include tutte le tipologie di software malevolo; per agevolare le attività di rilevamento e classificazione,\
-è utile suddividerli in categorie più specifiche sulla base delle loro finalità e modalità di azione.
-
+è utile suddividerli in categorie più specifiche sulla base delle loro finalità e modalità di azione.\
 Nel contesto di questo lavoro di tesi, sono state individuate e considerate le seguenti specializzazioni di software:
 
 \begin{itemize}
       \item \textbf{Unknown}: applicazioni per le quali non è stato possibile determinate con certezza se sono benevoli o meno.
       \item \textbf{Goodware}: software legittimo, privo di finalità malevoli.
-      \item \textbf{Malware}: denominazione generica per software malevolo, utilizzata nei casi in cui non sia possibile definire una categoria più specifica
-      \item \textbf{Backdoor}: programma che crea un accesso nascosto al sistema compromesso, permettendo all'attaccante di controllarlo da remoto\cite{Kaspersky-malware_backdoor}.
+      \item \textbf{Malware}: denominazione generica per software malevolo, utilizzata nei casi in cui non sia possibile definire una categoria più specifica.
+      \item \textbf{Backdoor}: programma che crea un accesso nascosto al sistema compromesso, permettendo all'attaccante di controllarlo da remoto\mycite{Kaspersky-malware_backdoor}.
       \item \textbf{Trojan}: software che si maschera da applicazione legittima ma che, una volta eseguito, consente operazioni malevole come la modifica\
-            o la cancellazione dei dati\cite{Cisco-Malware_Taxonomy}.
-      \item \textbf{Virus}: programma in grado di infettare altri file e diffondersi all'interno di un sistema, con lo scopo di danneggiare il corretto funzionamento dell'host\cite{Cisco-Malware_Taxonomy}.
-      \item \textbf{Worm}:  simili ai virus, ma in grado di diffondersi autonomamente attraverso la rete, senza richiedere l'intervento dell'utente\cite{Cisco-Malware_Taxonomy}.
-      \item \textbf{Dropper}: componente malevolo progettato per scaricare o installare altri malware sul sistema target\cite{Kaspersky-malware_dropper}.
-      \item \textbf{Spyware}: software che raccoglie informazioni sensibili dall'utente o dal sistema infetto e le trasmette a un'entità esterna\cite{Cisco-Malware_Taxonomy}.
-      \item \textbf{Adware}: programma che raccoglie informazioni sulle abitudini dell'utente al fine di proporre pubblicità mirata; in alcuni casi può deviare la navigazione verso siti malevoli\cite{Cisco-Malware_Taxonomy}.
-      \item \textbf{Packed}: malware compresso (almeno una volta) tramite tecniche di \textit{packing} per eludere i controlli degli antivirus\cite{Kaspersky-malware_MultiPacked}.
+            o la cancellazione dei dati\mycite{Cisco-Malware_Taxonomy}.
+      \item \textbf{Virus}: programma in grado di infettare altri file e diffondersi all'interno di un sistema, con lo scopo di danneggiare il corretto funzionamento dell'host\mycite{Cisco-Malware_Taxonomy}.
+      \item \textbf{Worm}:  simili ai virus, ma in grado di diffondersi autonomamente attraverso la rete, senza richiedere l'intervento dell'utente\mycite{Cisco-Malware_Taxonomy}.
+      \item \textbf{Dropper}: componente malevolo progettato per scaricare o installare altri malware sul sistema target\mycite{Kaspersky-malware_dropper}.
+      \item \textbf{Spyware}: software che raccoglie informazioni sensibili dall'utente o dal sistema infetto e le trasmette a un'entità esterna\mycite{Cisco-Malware_Taxonomy}.
+      \item \textbf{Adware}: programma che raccoglie informazioni sulle abitudini dell'utente al fine di proporre pubblicità mirata; in alcuni casi può deviare la navigazione verso siti malevoli\mycite{Cisco-Malware_Taxonomy}.
+      \item \textbf{Packed}: malware compresso (almeno una volta) tramite tecniche di \textit{packing} per eludere i controlli degli antivirus\mycite{Kaspersky-malware_MultiPacked}.
 \end{itemize}
 
 \section{Chiamata Api Windows}
@@ -101,17 +99,15 @@ Nel contesto di questo lavoro di tesi, sono state individuate e considerate le s
 Le chiamate API (Application Programming Interface) di sistema consentono agli sviluppatori di accedere alle risorse della macchina necessarie per l'esecuzione di un applicativo.\
 Attraverso tali interfacce è possibile interagire con componenti fondamentali come la rete, la memoria, i dispositivi di input/output e l'interfaccia grafica.\
 Le API risultano fortemente dipendenti dal sistema operativo su cui vengono eseguite.
-
-
 In ambiente Windows, le API garantiscono che un'applicazione possa funzionare correttamente su diverse versioni del sistema operativo, sfruttando al tempo stesso le specifiche funzionalità\
-introdotte nelle specifiche versioni\cite{Microsoft-api}.\
+introdotte nelle specifiche versioni\mycite{Microsoft-api}.\
 Le API di Windows coprono un ampio spettro di funzionalità, tra cui: interfaccia utente e shell, gestione dell'input e della messaggistica, accesso ai dati e archiviazione,
 diagnostica, grafica e multimedialità, dispositivi, servizi di sistema, sicurezza e identità, installazione e manutenzione di applicazioni, amministrazione e gestione del sistema, rete e connettività Internet.
 
-Un esempio applicativo è costituito dal malware di tipo \textbf{Spyware}, che può invocare ripetutamente la funzione \texttt{GetKeyboardState}\cite{Microsoft-GetKeyboardState}\
+Un esempio rappresentato dal malware di tipo \textbf{Spyware}, che può invocare ripetutamente la funzione \texttt{GetKeyboardState}\mycite{Microsoft-GetKeyboardState}\
 per recuperare lo stato degli ultimi 256 tasti premuti dall'utente, potenzialmente contenenti credenziali sensibili.
 
-Nella documentazione ufficiale, i requisiti della funzione sono riassunti in Tabella \ref{tab:GetKeyboardState-Requisiti}.
+Nella documentazione ufficiale, i requisiti della funzione sono riassunti in Tabella~\ref{tab:GetKeyboardState-Requisiti}.
 
 \begin{table}[ht]
       \centering
@@ -132,7 +128,7 @@ Nella documentazione ufficiale, i requisiti della funzione sono riassunti in Tab
       \end{tabular}
 \end{table}
 
-Come si nota, alla voce \textbf{DLL} è indicata la libreria \texttt{User32.dll}.\
+Come si nota, alla voce \textbf{ddl} è indicata la libreria \texttt{User32.dll}.\
 Questa verrà referenziata nella sezione \textit{Directory dati dell’intestazione facoltativa} dell’eseguibile corrispondente, permettendo al sistema operativo di risolvere la chiamata\
 in fase di esecuzione.
 
@@ -142,19 +138,22 @@ le quali costituiscono la base per la classificazione del comportamento software
 \section{Contributi}
 
 La presente tesi è articolata in quattro capitoli principali: \textit{Introduzione}, \textit{Stato dell'Arte},
-\textit{Approccio Proposto} e \textit{Appendice}.
+\textit{Approccio Proposto}, \textit{Validazione Empirica} e \textit{Appendice}.
 
 Nel capitolo di \textit{Introduzione} vengono presentati il contesto di riferimento, le motivazioni,\
 l'obiettivo del lavoro e il contributo originale fornito.
 
 Il capitolo dedicato allo \textit{Stato dell’Arte} offre un inquadramento teorico e metodologico, approfondendo i principali approcci di analisi del software\
-(statica e dinamica), i fondamenti di \textit{machine learning} con particolare attenzione al task di classificazione, gli algoritmi utilizzati\
-(Random Forest e XGBoost) e le metriche di valutazione.\
+(statica e dinamica), i fondamenti di \textit{machine learning} con particolare attenzione al compito di classificazione, gli algoritmi utilizzati\
+(Random Forest\mycite{heath1993kdt} e XGBoost\mycite{xgboost_story}) e le metriche di valutazione.\
 La sezione si conclude con una panoramica dei lavori correlati nel campo della rilevazione di malware in ambiente Windows.
 
 Nel capitolo \textit{Approccio Proposto} viene descritta in dettaglio la soluzione implementata.
-Si illustra la modellazione mediante diagrammi UML, l'architettura software sviluppata in Python secondo i principi della programmazione a oggetti\
-la raccolta e standardizzazione dei dataset utilizzati, nonché i risultati sperimentali ottenuti e le possibili linee di sviluppo futuro.
+Si illustra la modellazione mediante diagrammi UML, l'architettura software sviluppata in Python secondo i principi della programmazione a oggetti.
+
+Successivamente, nel capitolo \textit{Validazione Empirica} verranno presentanti i dataset adottati,\
+la standardizzazione addotta, le metriche scelte per la valutazione, i risultati sperimentali ottenuti\
+e le direzioni di sviluppo future.
 
 Infine, l'\textit{Appendice} contiene note tecniche relative all'ambiente di sviluppo e ulteriori dettagli implementativi, utili a
 comprendere lo sviluppo effettivo.
