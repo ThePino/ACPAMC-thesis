@@ -19,7 +19,8 @@ Stato Dell’Arte
 Approccio Proposto
     Descrizione
     OOP & UML
-    Validazione Empirica
+    
+Validazione Empirica
     Dataset 
     Metriche
     Risultati 
