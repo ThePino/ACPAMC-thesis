@@ -9,8 +9,8 @@
 %Verrà esplicitato il mio contributo: indicare la raccolta dei vari dataset, standardizzazione di essi per fornire un input comune
 %all'applicativo python per la classificazione delle sequenze di chiamate api progettato in OOP\@
 
-Con l'avvento dell'era digitale, attività e servizi, sia in ambito e-commerce, pubblica amministrazione, servizi finanziari e sanitari,\
-vengono sempre di più digitalizzati in Italia, secondo i dati ISTAT,l'\percc{86,2} delle famiglie italiane dispone \
+Con l'avvento dell'era digitale, attività e servizi, in ambito e-commerce, pubblica amministrazione, servizi finanziari e sanitari,\
+vengono sempre di più digitalizzati in Italia. Secondo i dati ISTAT,l'\percc{86,2} delle famiglie italiane dispone \
 di un accesso ad internet a testimonianza di un uso sempre più popolare\mycite{istat.internet-usage}.
 \
 Tuttavia, l'aumento della connettività comporta inevitabilmente anche una maggiore esposizione alle minacce \
@@ -105,8 +105,7 @@ Le API di Windows coprono un ampio spettro di funzionalità, tra cui: interfacci
 diagnostica, grafica e multimedialità, dispositivi, servizi di sistema, sicurezza e identità, installazione e manutenzione di applicazioni, amministrazione e gestione del sistema, rete e connettività Internet.
 
 Un esempio rappresentato dal malware di tipo \textbf{Spyware}, che può invocare ripetutamente la funzione \texttt{GetKeyboardState}\mycite{Microsoft-GetKeyboardState}\
-per recuperare lo stato degli ultimi 256 tasti premuti dall'utente, potenzialmente contenenti credenziali sensibili.
-
+per recuperare lo stato degli ultimi 256 tasti premuti dall'utente, potenzialmente contenenti credenziali sensibili.\
 Nella documentazione ufficiale, i requisiti della funzione sono riassunti in Tabella~\ref{tab:GetKeyboardState-Requisiti}.
 
 \begin{table}[ht]
@@ -132,8 +131,9 @@ Come si nota, alla voce \textbf{ddl} è indicata la libreria \texttt{User32.dll}
 Questa verrà referenziata nella sezione \textit{Directory dati dell’intestazione facoltativa} dell’eseguibile corrispondente, permettendo al sistema operativo di risolvere la chiamata\
 in fase di esecuzione.
 
-Nel contesto di questo lavoro di tesi, non ci interessa la singola chiamata API in sé, quanto piuttosto il modo in cui tali chiamate si organizzano in sequenze,
-le quali costituiscono la base per la classificazione del comportamento software.
+Nel contesto di questo lavoro di tesi, non siamo interessati alla presenza di una singola chiamata API in sé, quanto piuttosto alla frequenza
+con cui tali chiamate compaiono all'interno delle sequenze.\
+È infatti la distribuzione delle invocazioni a costituire la base per la classificazione del comportamento del software.
 
 \section{Contributi}
 
@@ -152,8 +152,10 @@ Nel capitolo \textit{Approccio Proposto} viene descritta in dettaglio la soluzio
 Si illustra la modellazione mediante diagrammi UML, l'architettura software sviluppata in Python secondo i principi della programmazione a oggetti.
 
 Successivamente, nel capitolo \textit{Validazione Empirica} verranno presentanti i dataset adottati,\
-la standardizzazione addotta, le metriche scelte per la valutazione, i risultati sperimentali ottenuti\
-e le direzioni di sviluppo future.
+la standardizzazione addotta, le metriche scelte per la valutazione, i risultati sperimentali ottenuti.
+
+Nel penultimo capitolo, \textit{Conclusioni e Sviluppi Futuri}, verranno tratte le conclusioni del lavoro svolto\
+e saranno delineati alcuni possibili ampliamenti e direzioni di ricerca futura.
 
 Infine, l'\textit{Appendice} contiene note tecniche relative all'ambiente di sviluppo e ulteriori dettagli implementativi, utili a
 comprendere lo sviluppo effettivo.

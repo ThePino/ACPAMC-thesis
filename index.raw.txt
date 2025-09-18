@@ -24,7 +24,8 @@ Validazione Empirica
     Dataset 
     Metriche
     Risultati 
-    Sviluppi Futuri
+    
+Conclusioni e Sviluppi Futuri
 
 Appendice
     Ambiente Di Sviluppo
