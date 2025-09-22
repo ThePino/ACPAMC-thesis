@@ -97,7 +97,8 @@ Un \textbf{esempio} è un'istanza di input descritta da un insieme di variabili 
 (\textit{feature vector})\mycite{google_ml_glossary_esempio}.\
 Ogni variabile è detta \textbf{caratteristica} (\textit{feature}) e rappresenta un'informazione specifica del dominio del problema\mycite{google_ml_glossary_caratteristica}.\
 Le caratteristiche possono essere di tipo \textbf{numerico}, quando esprimono valori quantitativi,\
-oppure \textbf{categorico}, quando descrivono attributi qualitativi.
+oppure \textbf{categorico}, quando descrivono attributi qualitativi.\
+Una lista di esempi costituisce un \textit{dataset}.
 
 I modelli di \textit{machine learning}, in base al tipo di addestramento e ai dati disponibili,\
 possono essere suddivisi in quattro categorie principali:
@@ -116,13 +117,97 @@ In questa tesi ci concentreremo sull'\textbf{apprendimento supervisionato}, affr
 
 \section{Classificazione}
 
+Il compito di \textbf{classificazione} rientra tra quelli affrontabili tramite \textit{apprendimento supervisionato}.\
+In questo paradigma, gli esempi utilizzati durante l'addestramento sono accompagnati dall'output corretto, detto\
+\textbf{etichetta} (label)\mycite{google_ml_glossary_etichetta}. Nel caso specifico della classificazione, l'etichetta\
+corrisponde a una \textbf{classe}, ossia il valore discreto che identifica a quale categoria appartiene l'esempio.\
+Allenando quindi un modello su un dataset etichettato, l'obiettivo della classificazione è predire la classe corretta\
+di un nuovo esempio non etichettato.
+
+Esistono molteplici compiti di classificazione, distinti uno dall'altro dal numero delle classi da distinguere e da quanto sono\
+mutualmente esclusivi\mycite{Belcic_2025}.
+
+\begin{itemize}
+      \item \textbf{Classificazione binaria}: le classi tra cui predire sono due e mutualmente esclusive\mycite{Belcic_2025}.
+      \item \textbf{Classificazione multi classe}: le classi tra cui predire sono più di due e mutualmente esclusive\mycite{Belcic_2025}.
+      \item \textbf{Classificazione a multipla etichetta}: un esempio può appartenere a più classi\mycite{Belcic_2025}.
+      \item \textbf{Classificazione non bilanciata}: la distribuzione delle classi di esempio non è equa\mycite{Belcic_2025}.
+\end{itemize}
+
+In questo lavoro di tesi verrà affrontata la classificazione multi classe.
 
 \subsection{Algoritmi di Classificazione}
 
-\subsubsection{RandomForest}
+Esistono molteplici algoritmi per la classificazione, in questa tesi verranno affrontanti \textit{XGboost} e \textit{Random forest}.
+
+\subsubsection{Random forest}
+
+Prima di introdurre l'algoritmo di apprendimento \textit{random forest}, è utile esaminare due concetti
+fondamentali alla sua comprensione: \textit{bagging} e \textit{decision tree}.
+
+L'algoritmo di apprendimento \textit{bagging} appartiene alla categoria dei metodi di\
+\textbf{apprendimento d'insieme}, il cui obiettivo è ridurre la varianza\footnote{La varianza si riferisce\
+      alla sensibilità del modello rispetto alle fluttuazioni nei dati di addestramento\mycite{Mucci_2025}.}\
+all'interno di un dataset rumoroso\mycite{Bagging_2025}.\
+L'apprendimento d'insieme si basa sull'idea che un gruppo di modelli che collaborano possa raggiungere\
+prestazioni superiori rispetto a un singolo modello. Questo principio viene spesso associato al concetto\
+di ``saggezza delle folle'', secondo cui un insieme di persone fornisce mediamente decisioni migliori di\
+quelle di un singolo esperto\mycite{Bagging_2025}.\
+Nel \textit{bagging}, i singoli modelli dell'insieme vengono addestrati --- anche in parallelo --- su\
+sottoinsiemi del dataset originario, generati tramite campionamento con reinserimento (bootstrap)\mycite{Mucci_2025}.\
+Ciò implica che uno stesso esempio possa comparire più volte all'interno di uno o più sottoinsiemi.\
+Al termine dell'addestramento, la previsione finale del sistema viene ottenuta aggregando le risposte di\
+tutti i modelli. Nel caso della classificazione, la classe predetta corrisponde a quella che ha ricevuto\
+il maggior numero di voti.
+
+L'algoritmo \textit{decision tree} è costituito da una serie di domande organizzate gerarchicamente\
+a forma di albero. Le domande sono generalmente chiamate \textit{condizioni}, \textit{split} o \textit{test}.\
+Ogni nodo interno (non foglia) contiene una condizione, mentre ogni nodo foglia rappresenta una previsione.\
+Per effettuare una predizione, si parte dal nodo radice e si percorre l'albero fino a raggiungere un nodo\
+foglia, scegliendo il ramo da seguire in base all'esito della condizione presente in ciascun nodo.\
+Il percorso che va dalla radice fino alla foglia è chiamato \textit{percorso di inferenza}\mycite{Alberi_decisionali}.
+
+L'algoritmo \textit{Random Forest} è un'estensione dell'algoritmo di \textit{bagging}, in cui i modelli\
+interni sono costituiti da \textit{decision tree}. Oltre a essere addestrati su sottoinsiemi casuali degli\
+esempi del dataset (\textit{bagging}), ad ogni nodo viene selezionato un sottoinsieme casuale di\
+\textit{feature} candidate per effettuare lo \textit{split}. Questo introduce diversità tra gli alberi,\
+riducendo la correlazione tra di essi e aumentando la robustezza del modello complessivo\mycite{CheCosEForestaCasuale_2025}.
 
 \subsubsection{XGBoost}
 
+Per una corretta comprensione dell'algoritmo di apprendimento \textit{XGBoost}, è utile\
+introdurre preliminarmente l'algoritmo di apprendimento \textit{boosting} e il concetto\
+di \textit{ascesa del gradiente}.
+
+Il \textit{boosting} è una tecnica di apprendimento sequenziale in cui più modelli\
+vengono addestrati uno dopo l'altro, ciascuno dei quali cerca di correggere gli errori\
+commessi dal modello precedente, al fine di ottenere una previsione progressivamente più\
+accurata\mycite{CheCoseBoosting_2024}. Il \textit{boosting} appartiene alla categoria degli apprendimenti d'insieme.
+
+La \textit{discesa del gradiente}\mycite{GradientDescent_2025} è un algoritmo di ottimizzazione che permette di trovare i valori ottimali dei
+parametri di un modello minimizzando una funzione di costo.
+L'idea di base è semplice: si parte da valori iniziali arbitrari per i parametri, si calcola la pendenza (il\
+\textit{gradiente}) della funzione di costo in quel punto e si aggiornano i parametri muovendosi nella direzione\
+opposta al gradiente, cioè verso la discesa più ripida. Il processo si ripete finché non si raggiunge un minimo\
+(locale o globale).\
+Un ruolo cruciale è svolto dal \textit{tasso di apprendimento} (\textit{learning rate}), che stabilisce la grandezza\
+dei passi: se troppo grande vi è il rischio di superare il minimo, mentre se troppo piccolo l'addestramento\
+risulta molto lento. Esistono diverse varianti:\
+\begin{itemize}
+      \item \textbf{Batch Gradient Descent}: aggiorna i parametri dopo aver visto tutti i dati di addestramento\mycite{GradientDescent_2025}.
+      \item \textbf{Stochastic Gradient Descent (SGD)}: aggiorna i parametri dopo ogni esempio, introducendo rumore\
+            ma anche la possibilità di sfuggire ai minimi locali\mycite{GradientDescent_2025}.
+      \item \textbf{Mini-batch Gradient Descent}: compromesso tra i due, suddivide i dati in piccoli blocchi\mycite{GradientDescent_2025}.
+\end{itemize}
+
+L'obiettivo della discesa del gradiente è ridurre progressivamente l'errore, fino a convergere a un set di
+parametri che rende il modello il più accurato possibile.
+
+L'algoritmo di apprendimento \textit{XGBoost} si basa sulla tecnica del \textit{boosting}, in cui\
+un modello iniziale, l'albero decisionale, viene progressivamente migliorato\
+tramite l'uso della \textit{discesa del gradiente}\mycite{KavlakogluRussi_2025}.
+
 \section{Metriche di valutazione}
+
 
 \section{Approcci di Machine Learning per Windows PE Malware Detection}
