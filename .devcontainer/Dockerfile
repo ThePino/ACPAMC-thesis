@@ -29,3 +29,6 @@ RUN curl -L http://cpanmin.us | perl - App::cpanminus \
 RUN apt-get update && apt-get install -y texlive-publishers \
     texlive-science \
     texlive-lang-italian
+
+# Installing env
+RUN apt-get install -y python3.10-venv
