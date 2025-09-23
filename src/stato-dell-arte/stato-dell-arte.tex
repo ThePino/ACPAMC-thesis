@@ -303,3 +303,31 @@ comuni di aggregazione sono la media \textit{macro} e la media \textit{micro}:
 
 \section{Approcci di Machine Learning per Windows PE Malware Detection}
 
+Diversi studi hanno affrontato il problema della rilevazione dei malware in ambiente Windows
+basandosi sull'analisi delle chiamate API.
+
+Ad esempio, Zhang et al. (2015) propongono un approccio innovativo per la rilevazione di malware basato sull'analisi dinamica delle sequenze di chiamate API.\
+Gli autori applicano algoritmi di allineamento delle sequenze di DNA per identificare somiglianze tra le sequenze di chiamate API\
+di programmi legittimi e malware.\
+Questa metodologia consente di rilevare comportamenti malevoli anche in presenza di tecniche di offuscamento.\
+Il modello proposto ha mostrato buone prestazioni nella classificazione dei malware, evidenziando l'efficacia dell'approccio basato sull'allineamento\
+delle sequenze di chiamate API\mycite{KiKim_2015}.
+
+Amer e Zelinka (2020) propongono un approccio basato sulla modellazione semantica delle sequenze di API.\
+Le chiamate vengono rappresentate come vettori tramite \textit{Word2Vec}, raggruppate mediante \textit{clustering}\
+e poi modellate con catene di Markov, ottenendo matrici di transizione distinte per malware e software legittimo.\
+Il modello raggiunge un'accuratezza di rilevamento fino al 99\% e permette previsioni precoci già dalle prime chiamate API\mycite{Amer_Zelinka_2020}.
+
+Un contributo più recente è quello di Gond e Mohapatra (2025), che affrontano la classificazione dei
+malware dinamici considerando il fenomeno del \textit{concept drift}, ovvero la variazione dei comportamenti
+dei malware nel tempo. Gli autori combinano tecniche di deep learning con meccanismi di adattamento al drift:
+le sequenze di API raccolte tramite sandbox vengono trasformate in rappresentazioni linguistiche
+tramite n-grammi e filtrate per rilevanza. Successivamente, un algoritmo genetico genera varianti delle
+feature per simulare nuovi schemi comportamentali emergenti. La classificazione è affidata a reti neurali
+artificiali, ricorrenti e convoluzionali (CNN), raggiungendo accuratezze fino al 99,5\% anche in presenza
+di mutazioni nei dati. L'integrazione del genetic algorithm consente di ridurre la perdita di performance
+dovuta al concept drift\mycite{Gond_Mohapatra_2025}.
+
+Questi studi evidenziano come l'analisi delle sequenze di API, se combinata con tecniche di
+rappresentazione avanzata e modelli adattativi, possa migliorare sensibilmente l'efficacia della
+malware detection in ambienti Windows.
