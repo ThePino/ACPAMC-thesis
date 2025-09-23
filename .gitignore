@@ -13,3 +13,4 @@
 rev
 # Ignoring venv
 venv
+__pycache__
