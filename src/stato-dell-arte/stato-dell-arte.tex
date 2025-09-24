@@ -1,4 +1,4 @@
-\chapter{Stato dell'Arte}
+\chapter{Background e Stato dell'Arte}
 
 In questo capitolo vengono presentati i fondamenti concettuali per il riconoscimento dei malware\
 sulla base dei loro comportamenti.
@@ -30,9 +30,11 @@ Tra le principali tecniche ritroviamo:
 
 Il continuo sviluppo di tecniche di offuscamento e l'aggiornamento dei database di firme ha dato vita a un vero e proprio ciclo vizioso,\
 in cui l'evoluzione dei malware procede di pari passo con quella dei sistemi di rilevamento.\
-Tale approccio, tuttavia, tende ad allontanarsi da ciò che realmente caratterizza un malware: i suoi comportamenti.
+Ne consegue che l'analisi statica tende a concentrare gli sforzi non tanto sull'identificazione diretta del codice malevolo,\
+quanto piuttosto sulla gestione delle tecniche di offuscamento, finendo così per allontanarsi dal compito primario di rilevare il malware e,\
+soprattutto, di coglierne i reali comportamenti.
 
-L'analisi dinamica rompe il ciclo generato dai limiti dell'approccio statico, poiché osserva i comportamenti\
+L'analisi dinamica super i limiti dell'approccio statico, poiché osserva i comportamenti\
 effettivi del software durante l'esecuzione.\
 In questo modo non solo riduce l'impatto delle tecniche di offuscamento sul codice,\
 ma consente anche di evidenziare quei casi limite che l'analisi statica difficilmente riesce a cogliere,\
@@ -77,8 +79,8 @@ di un programma in esecuzione:\
 \end{figure}
 
 Tuttavia, il semplice elenco delle chiamate API non è sufficiente per mostrare la vera natura di un software.\
-É necessario definire una logica di analisi che trasformi queste sequenze in informazioni discriminanti. In questa tesi\
-tali logiche sono implementate tramite \textit{machine learning}.
+É necessario definire una logica in grado di estrarre pattern a partire da questi dati in grado di identificare in maniera automatica i comportamenti malevoli.\
+In questa tesi\ tali logiche sono implementate tramite \textit{machine learning}.
 
 \section{Machine Learning}
 
@@ -98,7 +100,7 @@ Un \textbf{esempio} è un'istanza di input descritta da un insieme di variabili 
 Ogni variabile è detta \textbf{caratteristica} (\textit{feature}) e rappresenta un'informazione specifica del dominio del problema\mycite{google_ml_glossary_caratteristica}.\
 Le caratteristiche possono essere di tipo \textbf{numerico}, quando esprimono valori quantitativi,\
 oppure \textbf{categorico}, quando descrivono attributi qualitativi.\
-Una lista di esempi costituisce un \textit{dataset}.
+Un insieme di esempi costituisce un \textit{dataset}.
 
 I modelli di \textit{machine learning}, in base al tipo di addestramento e ai dati disponibili,\
 possono essere suddivisi in quattro categorie principali:
@@ -131,7 +133,6 @@ mutualmente esclusivi\mycite{Belcic_2025}.
       \item \textbf{Classificazione binaria}: le classi tra cui predire sono due e mutualmente esclusive\mycite{Belcic_2025}.
       \item \textbf{Classificazione multi classe}: le classi tra cui predire sono più di due e mutualmente esclusive\mycite{Belcic_2025}.
       \item \textbf{Classificazione a multipla etichetta}: un esempio può appartenere a più classi\mycite{Belcic_2025}.
-      \item \textbf{Classificazione non bilanciata}: la distribuzione delle classi di esempio non è equa\mycite{Belcic_2025}.
 \end{itemize}
 
 In questo lavoro di tesi verrà affrontata la classificazione multi classe.
@@ -209,7 +210,8 @@ tramite l'uso della \textit{discesa del gradiente}\mycite{KavlakogluRussi_2025}.
 
 \section{Metriche di valutazione}
 
-Per valutare l'efficacia di un classificatore è necessario quantificare quanto esso sia capace di effettuare previsioni corrette.\
+Per valutare l'efficacia di un classificatore è necessario quantificare quanto esso sia capace di effettuare previsioni corrette\
+su dati diversi da quelli con cui è stato appreso.\
 Uno strumento utile a questo scopo è la \textbf{matrice di confusione}\mycite{MurelKavlakoglu_2025}.\
 \
 Nella matrice, le righe rappresentano i valori effettivi mentre le colonne indicano quelli predetti;\
@@ -235,7 +237,7 @@ sono state predette come classe $k$:
 I \textbf{false positive} di una classe $k$ rappresentano il numero di istanze appartenenti a
 classi diverse da $k$ che sono state erroneamente predette come $k$:
 \[
-      FN_{k} = \sum_{\substack{j=1 \\ j \neq k}}^{n} M_{k,j}
+      FP_{k} = \sum_{\substack{i=1 \\ i \neq k}}^{n} M_{i,k}
 \]
 
 I \textbf{false negative} di una classe $k$ rappresentano il numero di istanze appartenenti a
@@ -301,6 +303,13 @@ comuni di aggregazione sono la media \textit{macro} e la media \textit{micro}:
       \end{aligned}
 \]
 
+Una metrica che riassume la prestazione globale è la \textit{overall accuracy}:
+
+\[
+      \mathrm{OverallAccuracy} = \frac{\sum_{i}^{n} M_{i,i}}{ \sum_{\substack{i=1}}^{n}
+            \sum_{\substack{j=1 }}^{n} M_{i,j}}
+\]
+
 \section{Approcci di Machine Learning per Windows PE Malware Detection}
 
 Diversi studi hanno affrontato il problema della rilevazione dei malware in ambiente Windows
@@ -309,24 +318,88 @@ basandosi sull'analisi delle chiamate API.
 Ad esempio, Zhang et al. (2015) propongono un approccio innovativo per la rilevazione di malware basato sull'analisi dinamica delle sequenze di chiamate API.\
 Gli autori applicano algoritmi di allineamento delle sequenze di DNA per identificare somiglianze tra le sequenze di chiamate API\
 di programmi legittimi e malware.\
-Questa metodologia consente di rilevare comportamenti malevoli anche in presenza di tecniche di offuscamento.\
+Gli algoritmi di allineamento delle sequenze risolvono il compito di calcolare il costo minimo necessario per trasformare una stringa $a$\
+in una stringa $b$, consentendo operazioni di \textit{inserimento} (aggiunta di un carattere) e \textit{rimozione} (eliminazione di un carattere).\
+Una delle soluzioni più note a questo problema è l'algoritmo di Smith-Waterman\mycite{smith1981identification}.\
+Nello studio, ogni esempio del dataset è rappresentato da un vettore di feature costituito dai costi di allineamento\
+calcolati tra una sequenza sconosciuta e tutte le sequenze note del dataset.\
 Il modello proposto ha mostrato buone prestazioni nella classificazione dei malware, evidenziando l'efficacia dell'approccio basato sull'allineamento\
 delle sequenze di chiamate API\mycite{KiKim_2015}.
 
-Amer e Zelinka (2020) propongono un approccio basato sulla modellazione semantica delle sequenze di API.\
-Le chiamate vengono rappresentate come vettori tramite \textit{Word2Vec}, raggruppate mediante \textit{clustering}\
-e poi modellate con catene di Markov, ottenendo matrici di transizione distinte per malware e software legittimo.\
-Il modello raggiunge un'accuratezza di rilevamento fino al 99\% e permette previsioni precoci già dalle prime chiamate API\mycite{Amer_Zelinka_2020}.
+Amer e Zelinka (2020) introducono un approccio innovativo che combina tecniche di analisi semantica e modellazione probabilistica delle sequenze di API.\
+L'idea si ispira ai metodi utilizzati nell'elaborazione del linguaggio naturale\
+(NLP\footnote{\textit{Natural Language Processing} è un ramo dell'intelligenza artificiale che abilita\
+      i computer a comprendere e interpretare il linguaggio umano \mycite{Stryker_Holdsworth_2025}}),\
+trattando le sequenze di chiamate API come frasi e le singole API come parole.\
+Per rendere questa rappresentazione più significativa, gli autori applicano l'algoritmo \textit{Word2Vec}\mycite{Wikipedia_Word2vec},\
+che proietta ogni API in uno spazio vettoriale, in cui elementi che compaiono in contesti simili risultano vicini tra loro.\
+I vettori così ottenuti vengono successivamente organizzati in gruppi omogenei mediante \textit{k-means clustering}\mycite{Kavlakoglu_Winland_2025},\
+un algoritmo non supervisionato che assegna ciascun elemento a un cluster in base alla distanza dal centroide\footnote{Il centroide è il vettore medio di tutti gli elementi che appartengono a un cluster}.\
+In questo modo, ogni API originale viene sostituita dall'indice del cluster di appartenenza, riducendo la complessità senza perdere le relazioni semantiche.\
+A partire da questa rappresentazione, gli autori costruiscono due matrici di transizione distinte:\
+una per le sequenze di software benigno e una per quelle malevole.\
+In tali matrici, ciascuna cella rappresenta la probabilità di passare da uno stato $i$ a uno stato $j$.\
+Per classificare una nuova sequenza di API, questa viene mappata nella rappresentazione basata sui cluster e analizzata tramite un modello a catene di Markov,\
+in cui la transizione dipende unicamente dallo stato corrente.\
+Calcolando la probabilità complessiva della sequenza rispetto ai due modelli (goodware e malware),\
+la classificazione viene effettuata scegliendo l'ipotesi con la probabilità più elevata.\
+I risultati mostrano performance molto promettenti: l'approccio raggiunge un'accuratezza fino al \percc{99} e consente\
+di effettuare previsioni precoci già dalle prime chiamate API, dimostrando l'efficacia della combinazione tra rappresentazione semantica e modellazione probabilistica.
+
 
 Un contributo più recente è quello di Gond e Mohapatra (2025), che affrontano la classificazione dei
-malware dinamici considerando il fenomeno del \textit{concept drift}, ovvero la variazione dei comportamenti
-dei malware nel tempo. Gli autori combinano tecniche di deep learning con meccanismi di adattamento al drift:
+malware considerando il fenomeno del \textit{concept drift}, ovvero la capacità dei malware di adattare i propri comportamenti non solo nel tempo,\
+ma anche in funzione del contesto di esecuzione, ad esempio il sistema operativo o l'ambiente (virtualizzato o reale) in cui operano.\
+Gli autori combinano tecniche di deep learning con meccanismi di adattamento al drift:
 le sequenze di API raccolte tramite sandbox vengono trasformate in rappresentazioni linguistiche
-tramite n-grammi e filtrate per rilevanza. Successivamente, un algoritmo genetico genera varianti delle
-feature per simulare nuovi schemi comportamentali emergenti. La classificazione è affidata a reti neurali
-artificiali, ricorrenti e convoluzionali (CNN), raggiungendo accuratezze fino al 99,5\% anche in presenza
-di mutazioni nei dati. L'integrazione del genetic algorithm consente di ridurre la perdita di performance
-dovuta al concept drift\mycite{Gond_Mohapatra_2025}.
+tramite n-grammi\footnote{Un \textbf{n-gramma} è una sotto sequenza contigua di n elementi\mycite{Wikipedia_Ngramma}} e filtrate per rilevanza.\
+Successivamente, un algoritmo genetico genera varianti delle feature per simulare nuovi schemi comportamentali emergenti.\
+La classificazione è affidata a reti neurali artificiali, ricorrenti e convoluzionali CNN(Convolutional Neural Networks)\mycite{IBM_CNN_2025},\
+raggiungendo accuratezze fino al \percc{99,5} anche in presenza di mutazioni nei dati.\
+L'integrazione del genetic algorithm consente di ridurre la perdita di performance dovuta al concept drift\mycite{Gond_Mohapatra_2025}.
+
+%Nel lavoro ``Dynamic Signature-based Malware Detection Technique Based on API Call Tracing``\mycite{savenko2019dynamic}, gli autori propongono un metodo per\
+%l'identificazione di malware basato sulla generazione dinamica di firme.\
+%Questo approccio si fonda sul presupposto che i programmi dannosi e quelli benigni possano essere distinti analizzando le loro chiamate API.\
+%La firma del comportamento di un programma consiste in due componenti: la frequenza delle chiamate e la natura dell'interazione delle API critiche.\
+%Il processo di identificazione si svolge in due fasi principali.\
+%La prima fase riguarda la generazione della firma, che non è un singolo elemento, ma una combinazione di due componenti.
+%La valutazione quantitativa si basa sulla frequenza delle chiamate API critiche, mentre la valutazione dell'interazione \`e rappresentata \
+%da un grafo diretto. Nel grafo, ogni nodo è una classe di API critiche e ogni arco rappresenta il passaggio da una all'altra.\
+%Il secondo stadio è la classificazione del programma.
+%Inizialmente, la distinzione tra malware e applicazioni benigne \`e
+%determinata analizzando la frequenza delle chiamate API critiche
+%e usando il test del Chi-quadrato per stabilire il grado di appartenenza a una classe. Se un programma è classificato come malware, viene utilizzato un classificatore Naive Bayes per identificarne la specifica variante o modifica. Le feature per il classificatore sono derivate dal grafo
+%comportamentale, e includono il vettore dei gradi dei vertici, il diametro del grafo e il numero di archi.
+%Il classificatore determina l'ipotesi pi\`u probabile confrontando i risultati.
+%In conclusione, la firma dinamica, composta dalle frequenze delle
+%API e dalle caratteristiche del grafo, permette non solo di rilevare un
+%programma dannoso, ma anche di classificarlo con precisione
+%all'interno della sua famiglia di appartenenza.
+\
+Nello studio ``Malware Detection based on API Calls Frequency``\mycite{9036219} La metodologia si articola in diverse fasi:\
+in primo luogo, le chiamate API sono state estratte dai file e trasformate in un vettore di feature.\
+Per ottimizzare il processo di addestramento e rimuovere le funzionalità ridondanti, è stata applicata\
+la tecnica di \textit{feature selection} tramite un algoritmo \textit{Random Forest}.\
+Questo ha permesso di identificare le $45$ feature più significative.\
+Successivamente, questi vettori di feature ottimizzati sono stati utilizzati per addestrare vari algoritmi di machine learning.\
+Tra tutti i modelli testati, l'algoritmo\textit{Support Vector Machine} (SVM\mycite{What_is_support_vector_machine_2025}) ha dimostrato le prestazioni migliori,\
+raggiungendo un'accuratezza del \percc{93} nel distinguere il malware dai file benigni.
+
+Sono stati provati anche approcci a grafo, come nello studio ``A malware classification method based on directed API call relationships``\mycite{10.1371/journal.pone.0299706}.\
+A differenza degli approcci tradizionali che le considerano come una semplice lista, i ricercatori hanno sviluppato un modello che le tratta\
+come un \textbf{grafo diretto}. In questo grafo, ogni nodo è una singola API e gli archi direzionali rappresentano l'ordine e la sequenza con cui\
+le chiamate vengono eseguite.\
+La metodologia si concentra sul modello \textbf{FSGCN} (First-order and Second-order Graph Convolutional Networks),
+il quale analizza il grafo su due livelli per estrarre informazioni cruciali.\
+A un livello di \textit{primo ordine}, il modello esamina le connessioni dirette tra le API per comprendere la sequenza immediata.
+A un livello di \textit{secondo ordine}, analizza le relazioni indirette (percorsi a due passi), per comprendere il contesto più ampio\
+del comportamento del programma.\
+Questa combinazione di analisi consente di creare un \textbf{vettore di feature} unificato,\
+che racchiude sia i dettagli della sequenza che il contesto relazionale.\
+Il vettore di feature viene poi convertito in un'immagine, sfruttando l'efficacia delle \textbf{CNN} per la classificazione finale.\
+L'efficacia di questo approccio dimostra che l'analisi delle relazioni strutturali e dell'ordine delle chiamate API\
+è un metodo più robusto per la classificazione dei malware.
 
 Questi studi evidenziano come l'analisi delle sequenze di API, se combinata con tecniche di
 rappresentazione avanzata e modelli adattativi, possa migliorare sensibilmente l'efficacia della
