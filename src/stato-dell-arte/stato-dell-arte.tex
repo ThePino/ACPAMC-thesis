@@ -34,7 +34,7 @@ Ne consegue che l'analisi statica tende a concentrare gli sforzi non tanto sull'
 quanto piuttosto sulla gestione delle tecniche di offuscamento, finendo così per allontanarsi dal compito primario di rilevare il malware e,\
 soprattutto, di coglierne i reali comportamenti.
 
-L'analisi dinamica super i limiti dell'approccio statico, poiché osserva i comportamenti\
+L'analisi dinamica supera i limiti dell'approccio statico, poiché osserva i comportamenti\
 effettivi del software durante l'esecuzione.\
 In questo modo non solo riduce l'impatto delle tecniche di offuscamento sul codice,\
 ma consente anche di evidenziare quei casi limite che l'analisi statica difficilmente riesce a cogliere,\
@@ -207,108 +207,6 @@ parametri che rende il modello il più accurato possibile.
 L'algoritmo di apprendimento \textit{XGBoost} si basa sulla tecnica del \textit{boosting}, in cui\
 un modello iniziale, l'albero decisionale, viene progressivamente migliorato\
 tramite l'uso della \textit{discesa del gradiente}\mycite{KavlakogluRussi_2025}.
-
-\section{Metriche di valutazione}
-
-Per valutare l'efficacia di un classificatore è necessario quantificare quanto esso sia capace di effettuare previsioni corrette\
-su dati diversi da quelli con cui è stato appreso.\
-Uno strumento utile a questo scopo è la \textbf{matrice di confusione}\mycite{MurelKavlakoglu_2025}.\
-\
-Nella matrice, le righe rappresentano i valori effettivi mentre le colonne indicano quelli predetti;\
-in letteratura è possibile incontrare anche la rappresentazione inversa.\
-La matrice ha tante righe e colonne quante sono le classi presenti nel dataset.\
-L'intersezione tra la riga $i$ e la colonna $j$ fornisce il numero di istanze della classe\
-$i$ che sono state classificate come classe $j$. In particolare, gli elementi della diagonale\
-rappresentano le istanze correttamente predette.\
-\
-A partire dalla matrice di confusione è possibile calcolare diverse metriche di valutazione,\
-tra cui la \textbf{precision}, la \textbf{recall} e l'\textbf{F1-score} per ciascuna classe.\
-È inoltre possibile derivare le corrispondenti misure aggregate a livello \textit{macro} e\
-\textit{micro}, utili per valutazioni globali sul dataset.\
-Prima di entrare nel dettaglio delle metriche tornano utili i concetti di \textbf{true positive},\
-\textbf{true negative}, \textbf{false positive} e \textbf{false negative} considerando la matrice di confusione $M$ avente $n$ classi.
-
-I \textbf{true positive} di una classe $k$ equivalgono al numero di istanze di classe $k$ che
-sono state predette come classe $k$:
-\[
-      TP_{k} = M_{k,k}
-\]
-
-I \textbf{false positive} di una classe $k$ rappresentano il numero di istanze appartenenti a
-classi diverse da $k$ che sono state erroneamente predette come $k$:
-\[
-      FP_{k} = \sum_{\substack{i=1 \\ i \neq k}}^{n} M_{i,k}
-\]
-
-I \textbf{false negative} di una classe $k$ rappresentano il numero di istanze appartenenti a
-$k$ che sono state erroneamente classificate come un'altra classe:
-\[
-      FN_{k} = \sum_{\substack{j=1 \\ j \neq k}}^{n} M_{k,j}
-\]
-
-I \textbf{true negative} di una classe $k$ rappresentano il numero di istanze appartenenti a
-classi diverse da $k$ che sono state correttamente classificate come non $k$:
-\[
-      TN_{k} = \sum_{\substack{i=1 \\ i \neq k}}^{n}
-      \sum_{\substack{j=1 \\ j \neq k}}^{n} M_{i,j}
-\]
-
-La \textbf{precision} di una classe $k$ è il rapporto tra i veri positivi e la
-somma dei veri positivi e dei falsi positivi:
-\[
-      \mathrm{Precision}_k = \frac{TP_k}{TP_k + FP_k}
-\]
-
-La \textbf{recall} (o sensibilità) di una classe $k$ è il rapporto tra i veri
-positivi e la somma dei veri positivi e dei falsi negativi:
-\[
-      \mathrm{Recall}_k = \frac{TP_k}{TP_k + FN_k}
-\]
-
-L'\textbf{F1-score} di una classe $k$ è la media armonica tra precision e recall:
-\[
-      \mathrm{F1}_k = 2 \cdot \frac{\mathrm{Precision}_k \cdot \mathrm{Recall}_k}
-      {\mathrm{Precision}_k + \mathrm{Recall}_k}
-\]
-
-Le metriche \textbf{Precision}, \textbf{Recall} e \textbf{F1-Score} calcolate per ciascuna classe
-possono essere aggregate per ottenere valori complessivi sul modello intero. Due approcci
-comuni di aggregazione sono la media \textit{macro} e la media \textit{micro}:
-
-\[
-      \mathrm{Macro_{precision}} = \frac{\sum_{i}^{n} Precision_{i}}{n}
-\]
-
-\[
-      \mathrm{Macro_{recall}} = \frac{\sum_{i}^{n} Recall{i}}{n}
-\]
-
-\[
-      \mathrm{Macro_{F1}} = \frac{\sum_{i}^{n} F1{i}}{n}
-\]
-
-\[
-      \mathrm{Micro_{Precision}} = \frac{\sum_{i}^{n} TP_{i}}{\sum_{i}^{n} TP_{i} + \sum_{i}^{n} FP_{i}}
-\]
-
-\[
-      \mathrm{Micro_{Recall}} = \frac{\sum_{i}^{n} TP_{i}}{\sum_{i}^{n} TP_{i} + \sum_{i}^{n} FN_{i}}
-\]
-
-\[
-      \begin{aligned}
-            TP               & = \sum_{i=1}^{n} TP_i,                                                                  & FP            & = \sum_{i=1}^{n} FP_i, & FN & = \sum_{i=1}^{n} FN_i, \\[1mm]
-            \text{Precision} & = \frac{TP}{TP + FP},                                                                   & \text{Recall} & = \frac{TP}{TP + FN},                                \\[1mm]
-            \text{Micro-F1}  & = 2 \cdot \frac{\text{Precision} \cdot \text{Recall}}{\text{Precision} + \text{Recall}}
-      \end{aligned}
-\]
-
-Una metrica che riassume la prestazione globale è la \textit{overall accuracy}:
-
-\[
-      \mathrm{OverallAccuracy} = \frac{\sum_{i}^{n} M_{i,i}}{ \sum_{\substack{i=1}}^{n}
-            \sum_{\substack{j=1 }}^{n} M_{i,j}}
-\]
 
 \section{Approcci di Machine Learning per Windows PE Malware Detection}
 
