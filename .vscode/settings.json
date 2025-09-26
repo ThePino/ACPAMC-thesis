@@ -53,7 +53,8 @@
         "relatoreit",
         "relatoretit",
         "toptesi",
-        "urlcolor"
+        "urlcolor",
+        "Vettorizzazione"
     ],
     "cSpell.ignorePaths": [
         "vscode-extension",
