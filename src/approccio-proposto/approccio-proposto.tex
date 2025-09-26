@@ -61,7 +61,7 @@ In letteratura, questa tecnica, mutuata dal Natural Language Processing,\
 consente di rappresentare un documento testuale (nel nostro caso, la sequenza di API di un programma)
 come un vettore numerico che ne riflette il contenuto, \textbf{ignorando l'ordine temporale} con cui le ``parole''\
 (ovvero, le singole API) compaiono all'interno della sequenza\mycite{Wikipedia_contributors_2025}.\
-Per implementare il modello BoW e ottenere il *feature vector*, è stata eseguita la seguente procedura:
+Per implementare il modello BoW e ottenere il vettore delle caratteristiche, è stata eseguita la seguente procedura:
 
 \begin{enumerate}
     \item \textbf{Creazione del Vocabolario:} Tutte le chiamate API univoche presenti nel dataset\
@@ -81,9 +81,9 @@ in cui ogni componente quantifica il numero di occorrenze di una specifica API.
 
 \subsection{Addestramento e Valutazione}
 
-Ottenuti i \textbf{feature vector}, si è passati alla fase di addestramento.\
+Ottenuti i vettori delle caratteristiche, si è passati alla fase di addestramento.\
 L'implementazione è stata realizzata utilizzando la libreria \textit{Scikit-learn}\mycite{scikit-learn},\
-che offre l'implementazione degli algoritmi \textit{XGBoost} e \textit{RandomForest}.\
+che offre i modelli \textit{XGBoost} e \textit{RandomForest}.\
 Il processo ha previsto la suddivisione del dataset originario in due istanze:
 \begin{itemize}
     \item \textbf{Training Set (\percc{80})}: utilizzato per addestrare il modello tramite il metodo \textit{fit}.
@@ -96,4 +96,7 @@ di software in entrambi i sottoinsiemi (training e valutazione).\
 In questo modo si è prevenuta la distorsione del modello, garantendo che anche le classi minoritarie\
 fossero adeguatamente rappresentate nel processo di apprendimento e nella successiva fase di testing.
 
-Infine, nella fase di valutazione, le previsioni effettuate dal metodo \textit{predict} sono state utilizzate per calcolare le metriche di interesse, partendo dalla costruzione della \textbf{Matrice di Confusione}.
+Infine, nella fase di valutazione, le previsioni effettuate dal metodo \textit{predict} sono state utilizzate\
+per calcolare le metriche di interesse, partendo dalla costruzione della \textbf{Matrice di Confusione}.
+
+\section{OOP \& UML}
