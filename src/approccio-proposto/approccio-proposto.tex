@@ -1,5 +1,99 @@
 \chapter{Approccio Proposto}
 
+In questo capitolo viene illustrato il percorso seguito per la realizzazione del progetto.\
+Nella sezione \textit{Descrizione} vengono presentate le scelte metodologiche e le\
+attività svolte durante lo sviluppo, con l'obiettivo di fornire una panoramica chiara\
+dell'approccio adottato. La sezione \textit{OOP \& UML}, invece, entra nel merito dell'implementazione del codice,\
+analizzando l'organizzazione secondo i principi della programmazione orientata agli oggetti\
+e illustrandola mediante diagrammi UML a supporto della progettazione.
+
 \section{Descrizione}
 
-\section{OOP \& UML}
+La fase sperimentale di questa tesi si è concentrata sulla \textbf{classificazione di software} attraverso
+l'analisi dei pattern comportamentali espressi dalle sequenze di chiamate API.\
+Il percorso metodologico seguito può essere suddiviso nelle seguenti fasi principali:\
+la raccolta e la standardizzazione dei dati, l'ingegneria delle caratteristiche, l'addestramento dei classificatori
+e la valutazione finale.
+
+\subsection{Raccolta e Standardizzazione dei Dati}
+
+Per l'analisi sono stati raccolti \textbf{quattro diversi dataset} da fonti esterne.\
+In origine, questi dati erano disponibili in formati eterogenei\
+(ad esempio CSV\footnote{Il formato \textbf{CSV} (Comma Separated Value) è un formato di condivisione dati in cui ogni
+    riga rappresenta un dato di cui le caratteristiche sono separate da virgola \mycite{Shafranovich_2005}.},
+JSON\footnote{Il formato \textbf{JSON} (JavaScript Object Notation) è un formato per lo scambio di dati\
+    basato su una collezione di coppie nome/valore e di array\mycite{Bray_2017}.}, e formati personalizzati),\
+rendendo difficoltosa un'analisi congiunta e omogenea.\
+Per superare questa limitazione, si è resa necessaria una fase di \textbf{standardizzazione} in un unico formato:
+il \textbf{JSON}.\
+La struttura adottata per ogni file standardizzato è stata pensata per rappresentare in modo chiaro\
+e minimale le informazioni essenziali per l'addestramento.\
+Ogni record JSON contiene i seguenti campi, come illustrato nell'esempio in \autoref{fig:json-struct}:
+
+\begin{figure}[h!]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{p{0.25\textwidth} p{0.65\textwidth}}
+        \toprule
+        \textbf{Key}                  & \textbf{Descrizione}                                           \\
+        \midrule
+        \texttt{[].application\_type} & Classe del software (\emph{malware}, \emph{goodware}, $\dots$) \\
+        \texttt{[].apis}              & Sequenza di chiamate API (array di stringhe)                   \\
+        \bottomrule
+    \end{tabular}
+
+    \vspace{4mm} % spazio tra tabella e codice
+
+    \inputminted[fontsize=\small]{json}{approccio-proposto/example.json}
+    \caption{Descrizione dei campi e corrispondente esempio JSON.}
+    \label{fig:json-struct}
+\end{figure}
+
+\subsection{Ingegneria delle Caratteristiche: Il Modello Bag-of-Words}
+
+L'obiettivo della classificazione è distinguere le categorie di software basandosi sul loro comportamento,\
+espresso dalle sequenze di chiamate API.\
+Per tradurre queste sequenze in un formato numerico interpretabile dagli algoritmi di Machine Learning,\
+è stato costituito un \textbf{vettore delle caratteristiche} (feature vector) basato sulle\
+\textbf{frequenze} con cui ogni singola API compare nella sequenza.\
+A tal fine, è stato adottato l'approccio \textbf{Bag-of-Words} (BoW).\
+In letteratura, questa tecnica, mutuata dal Natural Language Processing,\
+consente di rappresentare un documento testuale (nel nostro caso, la sequenza di API di un programma)
+come un vettore numerico che ne riflette il contenuto, \textbf{ignorando l'ordine temporale} con cui le ``parole''\
+(ovvero, le singole API) compaiono all'interno della sequenza\mycite{Wikipedia_contributors_2025}.\
+Per implementare il modello BoW e ottenere il *feature vector*, è stata eseguita la seguente procedura:
+
+\begin{enumerate}
+    \item \textbf{Creazione del Vocabolario:} Tutte le chiamate API univoche presenti nel dataset\
+          sono state estratte per comporre il vocabolario.
+    \item \textbf{Indicizzazione:} Il vocabolario è stato \textbf{ordinato alfabeticamente}.\
+          Tale ordinamento stabilisce una corrispondenza univoca e fissa: la posizione $i$-esima nel vocabolario\
+          (data dall'ordine alfabetico) corrisponde alla posizione $i$-esima nel vettore delle caratteristiche.
+    \item \textbf{Vettorizzazione:} Per ogni esempio si crea un vettore di interi avente cardinalità pari alla\
+          dimensione del vocabolario, con tutti i valori inizialmente pari a zero.
+    \item \textbf{Popolamento:} Per ogni chiamata API presente nella sequenza del campione,\
+          si individua la sua posizione nel vocabolario (grazie all'Indicizzazione) e\
+          si \textbf{incrementa di $1$} il valore nella corrispondente posizione del vettore delle caratteristiche.
+\end{enumerate}
+
+Il risultato finale è un vettore di frequenze assolute a lunghezza fissa,\
+in cui ogni componente quantifica il numero di occorrenze di una specifica API.
+
+\subsection{Addestramento e Valutazione}
+
+Ottenuti i \textbf{feature vector}, si è passati alla fase di addestramento.\
+L'implementazione è stata realizzata utilizzando la libreria \textit{Scikit-learn}\mycite{scikit-learn},\
+che offre l'implementazione degli algoritmi \textit{XGBoost} e \textit{RandomForest}.\
+Il processo ha previsto la suddivisione del dataset originario in due istanze:
+\begin{itemize}
+    \item \textbf{Training Set (\percc{80})}: utilizzato per addestrare il modello tramite il metodo \textit{fit}.
+    \item \textbf{Evaluation Set (\percc{20})}: utilizzato per la valutazione delle prestazioni tramite il metodo \textit{predict}.
+\end{itemize}
+
+Per la divisione è stata applicata la tecnica di \textbf{Campionamento Stratificato} (Stratified Sampling)\mycite{Wikipedia_campionamento_stratificato}.\
+Tale scelta metodologica è stata essenziale per garantire la \textbf{proporzionalità} di presenza di tutte le classi\
+di software in entrambi i sottoinsiemi (training e valutazione).\
+In questo modo si è prevenuta la distorsione del modello, garantendo che anche le classi minoritarie\
+fossero adeguatamente rappresentate nel processo di apprendimento e nella successiva fase di testing.
+
+Infine, nella fase di valutazione, le previsioni effettuate dal metodo \textit{predict} sono state utilizzate per calcolare le metriche di interesse, partendo dalla costruzione della \textbf{Matrice di Confusione}.

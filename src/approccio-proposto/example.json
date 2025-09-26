@@ -1,0 +1,16 @@
+[
+    {
+        "application_type": "malware",
+        "apis": [
+            "getProcessId",
+            "deleteProcess"
+        ]
+    },
+    {
+        "application_type": "goodware",
+        "apis": [
+            "getMessageBox",
+            "openDialog"
+        ]
+    }
+]
