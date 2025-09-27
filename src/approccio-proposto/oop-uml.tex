@@ -35,7 +35,7 @@ Il diagramma delle classi completo che definisce l'architettura logica del proge
 
 Per la corretta interpretazione del Diagramma delle Classi presentato, definiamo le principali convenzioni di notazione UML adottate, relative alla struttura delle classi, alla visibilità e ai tipi di relazioni.
 
-\subsubsection{Struttura della Classe e Simboli di Visibilità}
+\subsubsection{Classe \& Visibilità}
 
 La classe è l'elemento fondamentale del Diagramma delle Classi.\
 Come mostrato in \autoref{fig:uml-classe-convenzioni}, è rappresentata da un rettangolo suddiviso in tre compartimenti che ne definiscono l'identità e il comportamento:
@@ -46,7 +46,7 @@ Come mostrato in \autoref{fig:uml-classe-convenzioni}, è rappresentata da un re
 \end{enumerate}
 
 Il costrutto tra parentesi angolari (\texttt{$\ll$nome$\gg$}) viene chiamato \textit{stereotipo} e serve ad estendere il vocabolario del UML,\
-aggiungendo ulteriori significati (es. \texttt{$\ll$abstract$\gg$} per indicare un elemento astratto o \texttt{$\ll$query$\gg$} per i metodi che non alterano lo stato).
+aggiungendo ulteriori significati (es. \texttt{$\ll$constructor$\gg$} per indicare che è il metodo dedicato alla costruzione dell'oggetto).
 
 \begin{figure}[h!]
     \centering
@@ -59,7 +59,7 @@ aggiungendo ulteriori significati (es. \texttt{$\ll$abstract$\gg$} per indicare 
 
 La dichiarazione di un metodo o attributo è preceduta da un simbolo che ne indica la \textbf{visibilità},\
 un concetto fondamentale per definire quali elementi possono interagire con l'oggetto.\
-In \autoref{tab:visibilita-uml} sono riepilogati i simboli e il loro significato:\
+In \autoref{tab:visibilita-uml} sono riepilogati i simboli e i loro significati.\
 
 \begin{table}[h!]
     \centering
@@ -112,9 +112,9 @@ Le classi nel diagramma UML sono collegate da \textbf{associazioni} che definisc
 Tre tipi di relazioni sono fondamentali in questo progetto:
 
 \paragraph{Composizione (Aggregazione Forte)}
-La Composizione (\autoref{fig:uml-composizione}) è una forma forte di associazione che modella la relazione ``parte-intero'' ed è rappresentata da un \textbf{rombo pieno}\\
+La Composizione (\autoref{fig:uml-composizione}) è una forma forte di associazione che modella la relazione ``parte-intero'' ed è rappresentata da un \textbf{rombo pieno}\
 attaccato alla classe ``intero'' (o contenitore).\
-Questa relazione implica che l'esistenza delle ``parti'' dipende strettamente dall'esistenza dell'oggetto ``intero'' e che le parti non possono essere condivise.\
+Questa relazione implica che l'esistenza delle ``parti'' dipende strettamente dall'esistenza dell'oggetto ``intero'' e che le parti non possono essere condivise da altre istanze del oggetto contenitore.\
 L'esempio mostra come la classe \textit{Sequence} sia composta dalle \textit{ApiCall}, indicando che una sequenza non esiste senza le sue chiamate.
 
 \begin{figure}[h!]
@@ -126,8 +126,8 @@ L'esempio mostra come la classe \textit{Sequence} sia composta dalle \textit{Api
     \label{fig:uml-composizione}
 \end{figure}
 
-\paragraph{Use (Dipendenza Implementativa)}
-La relazione \textit{use} è formalmente una **Dipendenza** (*Dependency*) ed è rappresentata da una linea tratteggiata con freccia.\
+\paragraph{Use}
+La relazione \textit{use} è formalmente una \textbf{dipendenza} ed è rappresentata da una linea tratteggiata con freccia.\
 Essa indica una \textbf{dipendenza implementativa} a breve termine: la classe Cliente ha bisogno della classe Fornitore per la sua realizzazione funzionale (e.g., come parametro di un metodo)\
 senza conservarne un riferimento strutturale permanente.
 
@@ -136,14 +136,14 @@ senza conservarne un riferimento strutturale permanente.
     \adjustbox{max width=0.8\textwidth, max height=0.8\textheight}{%
         \includesvg[inkscapelatex=false]{approccio-proposto/imgs/use.svg}
     }
-    \caption{UML - Use (Dipendenza)}
+    \caption{UML - Use}
     \label{fig:uml-use}
 \end{figure}
 
-\paragraph{Extends (Ereditarietà)}
+\paragraph{Extends}
 La relazione \textit{extends} (\autoref{fig:uml-extends}) è fondamentale per l'OOP.\
-Permette alla classe sottoclasse (quella che genera la freccia) di ereditare tutti gli attributi e i metodi della classe padre (quella puntata).\
-Questo facilita il riuso del codice e la specializzazione tramite *variazione funzionale* dei comportamenti ereditati.
+Permette alla sottoclasse (quella che genera la freccia) di ereditare tutti gli attributi e i metodi della classe padre (quella puntata).\
+Questo facilita il riuso del codice e la specializzazione tramite \textit{variazione funzionale} dei comportamenti ereditati.
 
 \begin{figure}[h]
     \centering
@@ -154,10 +154,9 @@ Questo facilita il riuso del codice e la specializzazione tramite *variazione fu
     \label{fig:uml-extends}
 \end{figure}
 
-\paragraph{Implements (Realizzazione)}
-La relazione \textit{Implements} (\autoref{fig:uml-implements}), rappresentata da una linea tratteggiata con freccia triangolare, descrive la \textbf{realizzazione di un'interfaccia} (o classe astratta).\
+\paragraph{Implements}
+La relazione \textit{Implements} (\autoref{fig:uml-implements}), rappresentata da una linea tratteggiata con freccia triangolare, descrive la \textbf{realizzazione di un'interfaccia}.\
 La classe che genera la freccia si impegna a implementare tutti i metodi astratti definiti nell'interfaccia puntata.\
-Nel nostro diagramma, i classificatori (\texttt{RandomForest} e \texttt{XGBoost}) realizzano un'interfaccia \texttt{$\ll$abstract$\gg$ Classifier} che definisce i metodi \texttt{fit} e \texttt{predict}.
 
 \begin{figure}[h]
     \centering

@@ -19,7 +19,7 @@ Per superare questa limitazione, si è resa necessaria una fase di \textbf{stand
 il \textbf{JSON}.\
 La struttura adottata per ogni file standardizzato è stata pensata per rappresentare in modo chiaro\
 e minimale le informazioni essenziali per l'addestramento.\
-Il JSON contiene i seguenti campi, come illustrato nell'esempio in \autoref{fig:json-struct}:
+Lo schema per il JSON scelto è illustrato in \autoref{fig:json-struct}:
 
 \begin{figure}[h!]
     \centering
@@ -48,7 +48,7 @@ Per tradurre queste sequenze in un formato numerico interpretabile dagli algorit
 è stato costituito un \textbf{vettore delle caratteristiche} (feature vector) basato sulle\
 \textbf{frequenze} con cui ogni singola API compare nella sequenza.\
 A tal fine, è stato adottato l'approccio \textbf{Bag-of-Words} (BoW).\
-In letteratura, questa tecnica, mutuata dal Natural Language Processing,\
+In letteratura, questa tecnica, presente nel Natural Language Processing,\
 consente di rappresentare un documento testuale (nel nostro caso, la sequenza di API di un programma)
 come un vettore numerico che ne riflette il contenuto, \textbf{ignorando l'ordine temporale} con cui le ``parole''\
 (ovvero, le singole API) compaiono all'interno della sequenza\mycite{Wikipedia_contributors_2025}.\
