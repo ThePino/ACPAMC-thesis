@@ -57,9 +57,21 @@ aggiungendo ulteriori significati (es. \texttt{$\ll$constructor$\gg$} per indica
     \label{fig:uml-classe-convenzioni}
 \end{figure}
 
-La dichiarazione di un metodo o attributo è preceduta da un simbolo che ne indica la \textbf{visibilità},\
-un concetto fondamentale per definire quali elementi possono interagire con l'oggetto.\
-In \autoref{tab:visibilita-uml} sono riepilogati i simboli e i loro significati.\
+
+\subsubsection{Definizione di Attributi e Metodi}
+
+La notazione UML stabilisce formati rigorosi per la dichiarazione di attributi e metodi, specificando dettagli come la molteplicità e le proprietà comportamentali.
+
+La definizione di un attributo segue il formato:
+\[
+    [\langle \textit{visibilità} \rangle] \;
+    \langle \textit{nome} \rangle [\langle \textit{molteplicità} \rangle]: \langle \textit{tipo} \rangle \;
+    [= \langle \textit{valore} \rangle][{\textit{proprietà}}]
+\]
+\textit{Nota: gli elementi tra parentesi quadre [ ] sono opzionali. La visibilità, se non specificata, va intesa come Protetta.}
+
+La dichiarazione di un metodo o di un attributo è preceduta da un simbolo che ne specifica la \textbf{visibilità}, ovvero il livello di accesso consentito ad altri elementi del sistema.\
+In \autoref{tab:visibilita-uml} sono riportati i simboli e il loro significato.
 
 \begin{table}[h!]
     \centering
@@ -77,23 +89,16 @@ In \autoref{tab:visibilita-uml} sono riepilogati i simboli e i loro significati.
     \end{tabular}
 \end{table}
 
-\subsubsection{Definizione di Attributi e Metodi}
-
-La notazione UML stabilisce formati rigorosi per la dichiarazione di attributi e metodi, specificando dettagli come la molteplicità e le proprietà comportamentali.\
-La definizione di un attributo segue il formato:
-\[
-    [\langle \textit{visibilità} \rangle] \;
-    \langle \textit{nome} \rangle [\langle \textit{molteplicità} \rangle]: \langle \textit{tipo} \rangle \;
-    [= \langle \textit{valore} \rangle][{\textit{proprietà}}]
-\]
-\textit{Nota: gli elementi tra parentesi quadre [ ] sono opzionali. La visibilità, se non specificata, va intesa come Protetta.}
-
 La \textbf{molteplicità} indica quante istanze\footnote{Un \textbf{istanza} è una instanzazione di una classe, ovvero un oggetto in esecuzione.} sono presenti di quell'attributo;\
 se non esplicitata si intende $1$.\
 Può essere un range nel formato \textit{min..max}, dove \textit{max} può assumere il valore \textit{*} per indicare l'assenza di un limite.
 
-I valori assumibili dal campo \textit{proprietà} per gli attributi includono: \textbf{changeable} (valore di default), \textbf{addOnly} (solo aggiunte in caso di molteplicità $>1$),\
-e \textbf{frozen} (valore immutabile una volta assegnato).
+I valori assumibili dal campo \textit{proprietà} per gli attributi includono:
+\begin{itemize}
+    \item \textbf{changeable}: non vi sono restrizione sulla modificabilità dell'attributo.
+    \item \textbf{addOnly}: valido per gli attributi con molteplicità maggiore di $1$, valori possono essere aggiunti ma non rimossi.
+    \item \textbf{frozen}: una volta assegnato un valore alla inizializzazione dell'oggetto, non è possibile modificarlo.
+\end{itemize}
 
 La definizione di un metodo segue invece questo formato:
 \[
@@ -103,8 +108,15 @@ La definizione di un metodo segue invece questo formato:
     : \langle \textit{valore di ritorno} \rangle
     [\langle \textit{proprietà} \rangle]
 \]
-I valori possibili per le proprietà di un metodo includono \textbf{isQuery} (non altera lo stato), \textbf{leaf} (non specializzabile),\
-e proprietà relative alla concorrenza come \textbf{sequential}, \textbf{guarded} e \textbf{concurrent}.
+I valori possibili per le proprietà di un metodo includono:
+
+\begin{itemize}
+    \item \textbf{isQuery}: il metodo non modifica lo stato del sistema.
+    \item \textbf{leaf}: il metodo non può essere ulteriormente specializzato.
+    \item \textbf{sequential}: i chiamati del metodo devono organizzarsi affinche le chiamate vengono esaudite in modo sequenziale.
+    \item \textbf{guarded}: come \textbf{sequential} ma l'oggetto chiamato si occupa della logica per essere eseguito in modo sequenziale.
+    \item \textbf{concurrent}: anche a chiamate multiple, il sistema risulta integro.
+\end{itemize}
 
 \subsubsection{Relazioni Tra Classi}
 
