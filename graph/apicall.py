@@ -94,11 +94,11 @@ def crea_grafo_sequenza_parole(lista_parole: list, nome_file: str = 'grafo_parol
     # 4. Salva il sorgente DOT e renderizza il grafo in un file
     # cleanup=True: elimina il file sorgente .gv dopo il rendering
     # view=True: apre l'immagine automaticamente dopo la creazione (può essere rimosso)
-    dot.render(nome_file, format='png', view=False, cleanup=True) 
+    dot.render(nome_file, format='svg', view=False, cleanup=True) 
     print(f"Generazione completata. Il file sorgente '{nome_file}.gv' è stato rimosso.")
 
 def main():
-    output_file = Path(__file__).resolve().parent / "api_sequence.png"
+    output_file = Path(__file__).resolve().parent / "api_sequence"
     tokens = data.replace('\n', '').split(',')
     size = 6
     apis = tokens[2: (size + 2)]
