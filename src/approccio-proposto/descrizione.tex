@@ -1,6 +1,6 @@
 \section{Descrizione}
 
-La fase sperimentale di questa tesi si è concentrata sulla \textbf{classificazione di software} attraverso
+L'approccio proposto, in questa tesi riguardante la \textbf{classificazione di software} è\
 l'analisi dei pattern comportamentali espressi dalle sequenze di chiamate API.\
 Il percorso metodologico seguito può essere suddiviso nelle seguenti fasi principali:\
 la raccolta e la standardizzazione dei dati, l'ingegneria delle caratteristiche, l'addestramento dei classificatori
@@ -8,12 +8,11 @@ e la valutazione finale.
 
 \subsection{Raccolta e Standardizzazione dei Dati}
 
-Per l'analisi sono stati raccolti \textbf{quattro diversi dataset} da fonti esterne.\
-In origine, questi dati erano disponibili in formati eterogenei\
-(ad esempio CSV\footnote{Il formato \textbf{CSV} (Comma Separated Value) è un formato di condivisione dati in cui ogni
-    riga rappresenta un dato di cui le caratteristiche sono separate da virgola \mycite{Shafranovich_2005}.},
+Sono stati raccolti dati rappresentanti le sequenze di chiamate API generate durante l'esecuzione dei file eseguibili PE.\
+Tali dati risultano distribuiti in formati eterogenei, come CSV\footnote{Il formato \textbf{CSV} (Comma Separated Value) è un formato di condivisione dati in cui ogni
+    riga rappresenta un dato di cui le caratteristiche sono separate da virgola \mycite{Shafranovich_2005}},\
 JSON\footnote{Il formato \textbf{JSON} (JavaScript Object Notation) è un formato per lo scambio di dati\
-    basato su una collezione di coppie nome/valore e di array\mycite{Bray_2017}.}, e formati personalizzati),\
+    basato su una collezione di coppie nome/valore e di array\mycite{Bray_2017}.}, e formati personalizzati,\
 rendendo difficoltosa un'analisi congiunta e omogenea.\
 Per superare questa limitazione, si è resa necessaria una fase di \textbf{standardizzazione} in un unico formato:
 il \textbf{JSON}.\
@@ -43,28 +42,38 @@ Lo schema per il JSON scelto è illustrato in \autoref{fig:json-struct}:
 \subsection{Ingegneria delle Caratteristiche: Il Modello Bag-of-Words}
 
 L'obiettivo della classificazione è distinguere le categorie di software basandosi sul loro comportamento,\
-espresso dalle sequenze di chiamate API.\
+espresso dalle sequenze di chiamate API (un esempio di sequenza di chiamate API in \autoref{fig:api-call-malware}).\
+
+\begin{figure}[h!]
+    \centering
+    \adjustbox{max width=\linewidth, max height=\textheight}{%
+        \includesvg{approccio-proposto/imgs/api_sequence.svg}%
+    }
+    \caption{Esempio delle prime 4 chiamate API di un malware di tipo Dropper.}
+    \label{fig:api-call-malware}
+\end{figure}
+
 Per tradurre queste sequenze in un formato numerico interpretabile dagli algoritmi di Machine Learning,\
 è stato costituito un \textbf{vettore delle caratteristiche} (feature vector) basato sulle\
 \textbf{frequenze} con cui ogni singola API compare nella sequenza.\
 A tal fine, è stato adottato l'approccio \textbf{Bag-of-Words} (BoW).\
-In letteratura, questa tecnica, presente nel Natural Language Processing,\
-consente di rappresentare un documento testuale (nel nostro caso, la sequenza di API di un programma)
-come un vettore numerico che ne riflette il contenuto, ignorando l'ordine temporale con cui le ``parole''\
-(ovvero, le singole API) compaiono all'interno della sequenza\mycite{Wikipedia_contributors_2025}.\
+In letteratura, questa tecnica, comunemente usata in applicazioni di Natural Language Processing,\
+consente di rappresentare un documento testuale (nel nostro caso, la sequenza di API di un programma) come un vettore di interi.\
+In questo vettore, ogni elemento indica il numero di occorrenze di una determinata parola (cioè di una chiamata API),\
+mentre l'indice corrisponde alla parola di riferimento,\
+ignorando l'ordine temporale con cui le API compaiono nella sequenza\mycite{Wikipedia_contributors_2025}.\
 Per implementare il modello BoW e ottenere il vettore delle caratteristiche, è stata eseguita la seguente procedura:
 
 \begin{enumerate}
-    \item \textbf{Creazione del Vocabolario:} Tutte le chiamate API univoche presenti nel dataset\
-          sono state estratte per comporre il vocabolario.
-    \item \textbf{Indicizzazione:} Il vocabolario è stato \textbf{ordinato alfabeticamente}.\
-          Tale ordinamento stabilisce una corrispondenza univoca e fissa: la posizione $i$-esima nel vocabolario\
-          (data dall'ordine alfabetico) corrisponde alla posizione $i$-esima nel vettore delle caratteristiche.
-    \item \textbf{Vettorizzazione:} Per ogni esempio si crea un vettore di interi avente cardinalità pari alla\
-          dimensione del vocabolario, con tutti i valori inizialmente pari a zero.
-    \item \textbf{Popolamento:} Per ogni chiamata API presente nella sequenza del esempio,\
-          si individua la sua posizione nel vocabolario (grazie all'indicizzazione) e\
-          si incrementa di $1$ il valore nella corrispondente posizione del vettore delle caratteristiche.
+    \item \textbf{Creazione del Vocabolario}: tutte le chiamate API univoche presenti nel dataset\
+          sono state estratte per comporre il vocabolario. Tale vocabolario è rappresentano da un vettore\
+          di stringhe ordinato.
+    \item \textbf{Inizializzazione vettore delle caratteristiche}: per ogni esempio del dataset, si crea un vettore di interi,
+          inizializzato a $0$, avente cardinalità pari al vettore del vocabolario.
+    \item \textbf{Popolamento}: per ogni chiamata API presente nella sequenza del esempio,\
+          si individua la sua posizione nel vettore del vocabolario, denominando questa posizione con il valore $i$,\
+          si incrementa di $1$ il valore nella posizione $i$ del vettore delle caratteristiche.
+
 \end{enumerate}
 
 Il risultato finale è un vettore di frequenze assolute a lunghezza fissa,\
@@ -78,7 +87,7 @@ che offre i modelli \textit{XGBoost} e \textit{RandomForest}.\
 Il processo ha previsto la suddivisione del dataset originario in due istanze:
 \begin{itemize}
     \item \textbf{Training Set (\percc{80})}: utilizzato per addestrare il modello tramite il metodo \textit{fit}.
-    \item \textbf{Evaluation Set (\percc{20})}: utilizzato per la valutazione delle prestazioni tramite il metodo \textit{predict}.
+    \item \textbf{Testing Set (\percc{20})}: utilizzato per la valutazione delle prestazioni tramite il metodo \textit{predict}.
 \end{itemize}
 
 Per la divisione è stata applicata la tecnica di \textbf{Campionamento Stratificato} (Stratified Sampling)\mycite{Wikipedia_campionamento_stratificato}.\

@@ -100,7 +100,7 @@ def crea_grafo_sequenza_parole(lista_parole: list, nome_file: str = 'grafo_parol
 def main():
     output_file = Path(__file__).resolve().parent / "api_sequence"
     tokens = data.replace('\n', '').split(',')
-    size = 6
+    size = 4
     apis = tokens[2: (size + 2)]
     # matplot(apis, output_file)
     crea_grafo_sequenza_parole(apis, str(output_file).removesuffix('.png'))
