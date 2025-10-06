@@ -35,3 +35,6 @@ RUN apt-get install -y python3.10-venv
 
 # From SVG to pdf
 RUN apt-get install -y inkscape
+
+# Graphviz 
+RUN apt-get install -y graphviz
