@@ -81,20 +81,42 @@ in cui ogni componente quantifica il numero di occorrenze di una specifica API.
 
 \subsection{Addestramento e Valutazione}
 
-Ottenuti i vettori delle caratteristiche, si è passati alla fase di addestramento.\
-L'implementazione è stata realizzata utilizzando la libreria \textit{Scikit-learn}\mycite{scikit-learn},\
-che offre i modelli \textit{XGBoost} e \textit{RandomForest}.\
-Il processo ha previsto la suddivisione del dataset originario in due istanze:
-\begin{itemize}
-    \item \textbf{Training Set (\percc{80})}: utilizzato per addestrare il modello tramite il metodo \textit{fit}.
-    \item \textbf{Testing Set (\percc{20})}: utilizzato per la valutazione delle prestazioni tramite il metodo \textit{predict}.
-\end{itemize}
+Per ogni dataset e algoritmo di classificazione utilizzato è stato addestrato un modello dedicato.\
+L'intero processo di addestramento è gestito tramite l'esecuzione del sistema realizzato.\
+L'avvio del sistema richiede la specifica dei seguenti parametri di configurazione presenti in \autoref{tab:parametri-config}.
 
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{lp{10cm}}
+        \hline
+        \textbf{Parametro}     & \textbf{Descrizione}                                                                                                                                        \\
+        \hline
+        \texttt{file\_name}    & Nome del file del dataset standardizzato da utilizzare per l’intera fase di addestramento e/o valutazione.                                                  \\[0.5em]
+        \texttt{random\_state} & Valore seme (\textit{seed}) per la gestione dei numeri casuali, utile a garantire la replicabilità delle divisioni del dataset.                             \\[0.5em]
+        \texttt{test\_size}    & Proporzione del dataset da dedicare al \textit{training set}; la parte complementare è destinata al \textit{testing set}.                                   \\[0.5em]
+        \texttt{classifier}    & Algoritmo di classificazione da istanziare e addestrare.                                                                                                    \\[0.5em]
+        \texttt{train}         & Flag booleano che forza l’addestramento del modello; se impostato a \texttt{False}, viene riutilizzato un modello precedentemente salvato (se disponibile). \\
+        \hline
+    \end{tabular}
+    \caption{Tabella di configurazione dei parametri del sistema.}
+    \label{tab:parametri-config}
+\end{table}
+
+\FloatBarrier
+
+Una volta impostati i parametri, il sistema provvede a caricare in memoria il dataset standardizzato corrispondente.\
+In questa fase, applica immediatamente la logica di \textbf{Ingegneria delle Caratteristiche} per la rappresentazione dei vettori delle caratteristiche.\
+Successivamente, il dataset vettorizzato viene suddiviso in \textit{training set} e \textit{testing set} in percentuale al parametro \textit{test\_size}.\
+Per tutte le esecuzioni condotte si è adottato un valore $0.8$ per il parametro $test\_size$, dedicando quindi
+l'\percc{80} del totale al \textit{training set}.\
 Per la divisione è stata applicata la tecnica di \textbf{Campionamento Stratificato} (Stratified Sampling)\mycite{Wikipedia_campionamento_stratificato}.\
-Tale scelta metodologica è stata essenziale per garantire la \textbf{proporzionalità} di presenza di tutte le classi\
-di software in entrambi i sottoinsiemi (training e valutazione).\
-In questo modo si è prevenuta la distorsione del modello, garantendo che anche le classi minoritarie\
-fossero adeguatamente rappresentate nel processo di apprendimento e nella successiva fase di testing.
-
-Infine, nella fase di valutazione, le previsioni effettuate dal metodo \textit{predict} sono state utilizzate\
-per calcolare le metriche di interesse, partendo dalla costruzione della \textbf{Matrice di Confusione}.
+Tale scelta metodologica è stata essenziale per garantire la \textbf{proporzionalità} della presenza di tutte le classi di software in entrambi i sottoinsiemi (training e valutazione).\
+In questo modo si è prevenuta la distorsione del modello, assicurando che anche le classi minoritarie fossero adeguatamente
+rappresentate nel processo di apprendimento e nella successiva fase di testing.\
+Il \textit{training set} così ottenuto è utilizzato per addestrare il classificatore interno,\
+la cui implementazione è realizzata tramite la libreria \textit{Scikit-learn}\mycite{scikit-learn}.
+La libreria offre, per tutti i suoi classificatori, il metodo universale \textit{fit} che, ricevendo l'insieme dei vettori delle caratteristiche, addestra il modello.\
+A fine allenamento, il modello viene salvato in modo persistente sul sistema per poter essere riutilizzato in esecuzioni successive.\
+Il \textit{testing set} è infine utilizzato per effettuare la valutazione del modello allenato.\
+Per ogni campione del \textit{testing set}, la classe predetta dal modello tramite il metodo \textit{predict}, è confrontata con quella effettiva, compilando la \textbf{matrice di confusione}.\
+Al completamento di questa fase, i dati raccolti permettono di estrarre le metriche relative alla sua prestazione.
