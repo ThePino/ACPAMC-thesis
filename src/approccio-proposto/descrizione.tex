@@ -8,8 +8,8 @@ e la valutazione finale.
 
 \subsection{Raccolta e Standardizzazione dei Dati}
 
-Sono stati raccolti dati rappresentanti le sequenze di chiamate API generate durante l'esecuzione dei file eseguibili PE.\
-Tali dati risultano distribuiti in formati eterogenei, come CSV\footnote{Il formato \textbf{CSV} (Comma Separated Value) è un formato di condivisione dati in cui ogni
+Sono stati raccolti dataset rappresentanti le sequenze di chiamate API generate durante l'esecuzione dei file eseguibili PE.\
+Tali dataset risultano distribuiti in formati eterogenei, come CSV\footnote{Il formato \textbf{CSV} (Comma Separated Value) è un formato di condivisione dati in cui ogni
     riga rappresenta un dato di cui le caratteristiche sono separate da virgola \mycite{Shafranovich_2005}},\
 JSON\footnote{Il formato \textbf{JSON} (JavaScript Object Notation) è un formato per lo scambio di dati\
     basato su una collezione di coppie nome/valore e di array\mycite{Bray_2017}.}, e formati personalizzati,\
@@ -40,7 +40,7 @@ Lo schema per il JSON scelto è illustrato in \autoref{fig:json-struct}:
 \end{figure}
 
 \subsection{Ingegneria delle Caratteristiche: Il Modello Bag-of-Words}
-
+\label{sec:ign-bofw}
 L'obiettivo della classificazione è distinguere le categorie di software basandosi sul loro comportamento,\
 espresso dalle sequenze di chiamate API (un esempio di sequenza di chiamate API in \autoref{fig:api-call-malware}).\
 
@@ -89,13 +89,13 @@ L'avvio del sistema richiede la specifica dei seguenti parametri di configurazio
     \centering
     \begin{tabular}{lp{10cm}}
         \hline
-        \textbf{Parametro}     & \textbf{Descrizione}                                                                                                                                        \\
+        \textbf{Parametro}      & \textbf{Descrizione}                                                                                                                                        \\
         \hline
-        \texttt{file\_name}    & Nome del file del dataset standardizzato da utilizzare per l’intera fase di addestramento e/o valutazione.                                                  \\[0.5em]
-        \texttt{random\_state} & Valore seme (\textit{seed}) per la gestione dei numeri casuali, utile a garantire la replicabilità delle divisioni del dataset.                             \\[0.5em]
-        \texttt{test\_size}    & Proporzione del dataset da dedicare al \textit{training set}; la parte complementare è destinata al \textit{testing set}.                                   \\[0.5em]
-        \texttt{classifier}    & Algoritmo di classificazione da istanziare e addestrare.                                                                                                    \\[0.5em]
-        \texttt{train}         & Flag booleano che forza l’addestramento del modello; se impostato a \texttt{False}, viene riutilizzato un modello precedentemente salvato (se disponibile). \\
+        \texttt{file\_name}     & Nome del file del dataset standardizzato da utilizzare per l’intera fase di addestramento e/o valutazione.                                                  \\[0.5em]
+        \texttt{random\_state}  & Valore seme (\textit{seed}) per la gestione dei numeri casuali, utile a garantire la replicabilità delle divisioni del dataset.                             \\[0.5em]
+        \texttt{training\_size} & Proporzione del dataset da dedicare al \textit{training set}; la parte complementare è destinata al \textit{testing set}.                                   \\[0.5em]
+        \texttt{classifier}     & Algoritmo di classificazione da istanziare e addestrare.                                                                                                    \\[0.5em]
+        \texttt{train}          & Flag booleano che forza l’addestramento del modello; se impostato a \texttt{False}, viene riutilizzato un modello precedentemente salvato (se disponibile). \\
         \hline
     \end{tabular}
     \caption{Tabella di configurazione dei parametri del sistema.}
@@ -105,17 +105,17 @@ L'avvio del sistema richiede la specifica dei seguenti parametri di configurazio
 \FloatBarrier
 
 Una volta impostati i parametri, il sistema provvede a caricare in memoria il dataset standardizzato corrispondente.\
-In questa fase, applica immediatamente la logica di \textbf{Ingegneria delle Caratteristiche} per la rappresentazione dei vettori delle caratteristiche.\
-Successivamente, il dataset vettorizzato viene suddiviso in \textit{training set} e \textit{testing set} in percentuale al parametro \textit{test\_size}.\
-Per tutte le esecuzioni condotte si è adottato un valore $0.8$ per il parametro $test\_size$, dedicando quindi
+In questa fase, viene applicata la logica riportata in \autoref{sec:ign-bofw} per la rappresentazione dei vettori delle caratteristiche.\
+Successivamente, il dataset vettorizzato viene suddiviso in \textit{training set} e \textit{testing set} in percentuale al parametro \textit{training\_size}.\
+Per tutte le esecuzioni condotte si è adottato un valore $0.8$ per il parametro $training\_size$, dedicando quindi
 l'\percc{80} del totale al \textit{training set}.\
 Per la divisione è stata applicata la tecnica di \textbf{Campionamento Stratificato} (Stratified Sampling)\mycite{Wikipedia_campionamento_stratificato}.\
 Tale scelta metodologica è stata essenziale per garantire la \textbf{proporzionalità} della presenza di tutte le classi di software in entrambi i sottoinsiemi (training e valutazione).\
 In questo modo si è prevenuta la distorsione del modello, assicurando che anche le classi minoritarie fossero adeguatamente
 rappresentate nel processo di apprendimento e nella successiva fase di testing.\
-Il \textit{training set} così ottenuto è utilizzato per addestrare il classificatore interno,\
+Il \textit{training set} così ottenuto è utilizzato per addestrare il classificatore interno, inizializzato dal parametro \textit{classifier} (\textit{RandomForest} o \textit{XGBoost})\
 la cui implementazione è realizzata tramite la libreria \textit{Scikit-learn}\mycite{scikit-learn}.
-La libreria offre, per tutti i suoi classificatori, il metodo universale \textit{fit} che, ricevendo l'insieme dei vettori delle caratteristiche, addestra il modello.\
+La libreria offre, per tutti i suoi classificatori, il metodo \textit{fit} che, ricevendo l'insieme dei vettori delle caratteristiche, addestra il modello.\
 A fine allenamento, il modello viene salvato in modo persistente sul sistema per poter essere riutilizzato in esecuzioni successive.\
 Il \textit{testing set} è infine utilizzato per effettuare la valutazione del modello allenato.\
 Per ogni campione del \textit{testing set}, la classe predetta dal modello tramite il metodo \textit{predict}, è confrontata con quella effettiva, compilando la \textbf{matrice di confusione}.\

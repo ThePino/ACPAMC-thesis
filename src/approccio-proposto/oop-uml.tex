@@ -15,9 +15,10 @@ L'efficacia dell'OOP si fonda su quattro pilastri concettuali:
           permettendo di implementare proprietà o metodi ereditati in forme distinte tra diverse astrazioni \mycite{oop}.
 \end{itemize}
 
-Per formalizzare e documentare questa architettura basata sui principi OOP, è stato utilizzato l'\textbf{Unified Modeling Language} (UML)\mycite{ibm_uml}.
-Nello specifico, il \textbf{Diagramma delle Classi} è stato scelto per illustrare la struttura del sistema e le relazioni tra i suoi componenti.
-Il diagramma delle classi completo che definisce l'architettura logica del progetto è presentato in \autoref{fig:pdfdoc}.
+Per formalizzare e documentare questa architettura basata sui principi OOP, è stato utilizzato l'\textbf{Unified Modeling Language} (UML)\mycite{ibm_uml}.\
+Nello specifico, il \textbf{Diagramma delle Classi} è stato scelto per illustrare la struttura del sistema e le relazioni tra i suoi componenti.\
+Il diagramma delle classi completo che definisce l'architettura logica del progetto è presentato in \autoref{fig:pdfdoc}.\
+Far riferimento alla \autoref{sec:convenzioni-uml} per una guida su come leggere il diagramma UML.
 
 \begin{figure}[htbp] % h=qui, t=top, b=bottom, p=pagina dedicata
     \centering
@@ -31,164 +32,52 @@ Il diagramma delle classi completo che definisce l'architettura logica del proge
 
 \FloatBarrier
 
-\subsection{Convenzioni e Notazione UML}
+L'intero sistema è basato su $3$ package: \textit{data}, \textit{classifier} e \textit{eval}.
 
-Per la corretta interpretazione del Diagramma delle Classi presentato, definiamo le principali convenzioni di notazione UML adottate, relative alla struttura delle classi, alla visibilità e ai tipi di relazioni.
+Il package \textit{data} gestisce tutte le entità del dominio, dal caricamento dei dati in memoria fino alla loro rappresentazione vettoriale per l'addestramento dei classificatori.\
+Le classi \textit{ApiCall} e \textit{Sequence} descrivono la traccia dinamica di un file PE: la prima incapsula una singola chiamata API,\
+mentre la seconda raccoglie una sequenza ordinata di chiamate.\
+Per aggiungere l'informazione relativa alla classe di appartenenza di una sequenza, il package introduce l'enumerazione \textit{ApplicationType},\
+che elenca le possibili categorie (classi) del dominio, e la classe \textit{LabeledSequence}, che associa ogni sequenza alla propria classe.\
+La gestione complessiva del dataset è affidata alla classe \textit{LabeledSequenceDataset}, che raccoglie e organizza un insieme di sequenze etichettate,\
+occupandosi anche del caricamento dei dati in formato JSON e della logica di suddivisione del dataset.\
+Infine, per rappresentare i dati in una forma adatta agli algoritmi di classificazione, sono state introdotte le classi \textit{FeatureVector}, \textit{LabeledFeatureVector} e \textit{LabeledFeatureVectorDataset},
+che modellano rispettivamente un singolo vettore di caratteristiche, un vettore con la relativa etichetta e l'intero insieme dei vettori etichettati.
 
-\subsubsection{Classe \& Visibilità}
-
-La classe è l'elemento fondamentale del Diagramma delle Classi.\
-Come mostrato in \autoref{fig:uml-classe-convenzioni}, è rappresentata da un rettangolo suddiviso in tre compartimenti che ne definiscono l'identità e il comportamento:
-\begin{enumerate}
-    \item \textbf{Nome} (Superiore): Contiene il nome della classe.
-    \item \textbf{Attributi} (Centrale): Elenca le proprietà della classe.
-    \item \textbf{Metodi} (Inferiore): Elenca le operazioni della classe.
-\end{enumerate}
-
-Il costrutto tra parentesi angolari (\texttt{$\ll$nome$\gg$}) viene chiamato \textit{stereotipo} e serve ad estendere il vocabolario del UML,\
-aggiungendo ulteriori significati (es. \texttt{$\ll$constructor$\gg$} per indicare che è il metodo dedicato alla costruzione dell'oggetto).
-
-\begin{figure}[h!]
+\begin{figure}[htbp] % h=qui, t=top, b=bottom, p=pagina dedicata
     \centering
-    \adjustbox{max width=0.5\textwidth, max height=0.5\textheight}{%
-        \includegraphics{approccio-proposto/imgs/classe.png}%
-    }
-    \caption{UML - Classe}
-    \label{fig:uml-classe-convenzioni}
-\end{figure}
-
-
-\subsubsection{Definizione di Attributi e Metodi}
-
-La notazione UML stabilisce formati rigorosi per la dichiarazione di attributi e metodi, specificando dettagli come la molteplicità e le proprietà comportamentali.
-
-La definizione di un attributo segue il formato:
-\[
-    [\langle \textit{visibilità} \rangle] \;
-    \langle \textit{nome} \rangle [\langle \textit{molteplicità} \rangle]: \langle \textit{tipo} \rangle \;
-    [= \langle \textit{valore} \rangle][{\textit{proprietà}}]
-\]
-\textit{Nota: gli elementi tra parentesi quadre [ ] sono opzionali. La visibilità, se non specificata, va intesa come Protetta.}
-
-La dichiarazione di un metodo o di un attributo è preceduta da un simbolo che ne specifica la \textbf{visibilità}, ovvero il livello di accesso consentito ad altri elementi del sistema.\
-In \autoref{tab:visibilita-uml} sono riportati i simboli e il loro significato.
-
-\begin{table}[h!]
-    \centering
-    \caption{Simboli di visibilità in UML}
-    \label{tab:visibilita-uml}
-    \begin{tabular}{c l p{8cm}}
-        \toprule
-        \textbf{Simbolo} & \textbf{Tipo di visibilità} & \textbf{Descrizione}                                    \\
-        \midrule
-        +                & Pubblica                    & Qualsiasi elemento può accedere                         \\
-        -                & Privata                     & Solo la classe stessa ne ha accesso                     \\
-        \#               & Protetto                    & Solo la classe e le sue sottoclassi ne hanno accesso    \\
-        \textasciitilde  & Package                     & Solo gli elementi dello stesso package ne hanno accesso \\
-        \bottomrule
-    \end{tabular}
-\end{table}
-
-La \textbf{molteplicità} indica quante istanze\footnote{Un \textbf{istanza} è una instanzazione di una classe, ovvero un oggetto in esecuzione.} sono presenti di quell'attributo;\
-se non esplicitata si intende $1$.\
-Può essere un range nel formato \textit{min..max}, dove \textit{max} può assumere il valore \textit{*} per indicare l'assenza di un limite.
-
-I valori assumibili dal campo \textit{proprietà} per gli attributi includono:
-\begin{itemize}
-    \item \textbf{changeable}: non vi sono restrizione sulla modificabilità dell'attributo.
-    \item \textbf{addOnly}: valido per gli attributi con molteplicità maggiore di $1$, valori possono essere aggiunti ma non rimossi.
-    \item \textbf{frozen}: una volta assegnato un valore alla inizializzazione dell'oggetto, non è possibile modificarlo.
-\end{itemize}
-
-La definizione di un metodo segue invece questo formato:
-\[
-    [\langle \textit{visibilità} \rangle] \;
-    \langle \textit{nome} \rangle
-    (\langle \textit{lista parametri} \rangle)
-    : \langle \textit{valore di ritorno} \rangle
-    [\langle \textit{proprietà} \rangle]
-\]
-I valori possibili per le proprietà di un metodo includono:
-
-\begin{itemize}
-    \item \textbf{isQuery}: il metodo non modifica lo stato del sistema.
-    \item \textbf{leaf}: il metodo non può essere ulteriormente specializzato.
-    \item \textbf{sequential}: i chiamati del metodo devono organizzarsi affinche le chiamate vengono esaudite in modo sequenziale.
-    \item \textbf{guarded}: come \textbf{sequential} ma l'oggetto chiamato si occupa della logica per essere eseguito in modo sequenziale.
-    \item \textbf{concurrent}: anche a chiamate multiple, il sistema risulta integro.
-\end{itemize}
-
-\subsubsection{Relazioni Tra Classi}
-
-Le classi nel diagramma UML sono collegate da \textbf{associazioni} che definiscono le loro interazioni.\
-Tre tipi di relazioni sono fondamentali in questo progetto:
-
-\paragraph{Composizione (Aggregazione Forte)}
-La Composizione (\autoref{fig:uml-composizione}) è una forma forte di associazione che modella la relazione ``parte-intero'' ed è rappresentata da un \textbf{rombo pieno}\
-attaccato alla classe ``intero'' (o contenitore).\
-Questa relazione implica che l'esistenza delle ``parti'' dipende strettamente dall'esistenza dell'oggetto ``intero'' e che le parti non possono essere condivise da altre istanze del oggetto contenitore.\
-L'esempio mostra come la classe \textit{Sequence} sia composta dalle \textit{ApiCall}, indicando che una sequenza non esiste senza le sue chiamate.
-
-\begin{figure}[h!]
-    \centering
-    \adjustbox{max width=0.8\textwidth, max height=0.8\textheight}{%
-        \includesvg[inkscapelatex=false]{approccio-proposto/imgs/aggregazione.svg}
-    }
-    \caption{UML - Composizione}
-    \label{fig:uml-composizione}
-\end{figure}
-
-\paragraph{Use}
-La relazione \textit{use} è formalmente una \textbf{dipendenza} ed è rappresentata da una linea tratteggiata con freccia.\
-Essa indica una \textbf{dipendenza implementativa} a breve termine: la classe Cliente ha bisogno della classe Fornitore per la sua realizzazione funzionale (e.g., come parametro di un metodo)\
-senza conservarne un riferimento strutturale permanente.
-
-\begin{figure}[h!]
-    \centering
-    \adjustbox{max width=0.8\textwidth, max height=0.8\textheight}{%
-        \includesvg[inkscapelatex=false]{approccio-proposto/imgs/use.svg}
-    }
-    \caption{UML - Use}
-    \label{fig:uml-use}
-\end{figure}
-
-\paragraph{Extends}
-La relazione \textit{extends} (\autoref{fig:uml-extends}) è fondamentale per l'OOP.\
-Permette alla sottoclasse (quella che genera la freccia) di ereditare tutti gli attributi e i metodi della classe padre (quella puntata).\
-Questo facilita il riuso del codice e la specializzazione tramite \textit{variazione funzionale} dei comportamenti ereditati.
-
-\begin{figure}[h]
-    \centering
+    % Inserisci la PRIMA pagina del PDF come immagine
     \adjustbox{max width=\linewidth, max height=\textheight}{%
-        \includesvg[inkscapelatex=false]{approccio-proposto/imgs/extends.svg}%
+        \includesvg[]{approccio-proposto/imgs/data.svg}%
     }
-    \caption{UML - Extends (Ereditarietà)}
-    \label{fig:uml-extends}
+    \caption{UML - Package data}
+    \label{fig:pacakge-data}
 \end{figure}
 
-\paragraph{Implements}
-La relazione \textit{Implements} (\autoref{fig:uml-implements}), rappresentata da una linea tratteggiata con freccia triangolare, descrive la \textbf{realizzazione di un'interfaccia}.\
-La classe che genera la freccia si impegna a implementare tutti i metodi astratti definiti nell'interfaccia puntata.\
+Il package \textit{classifier} rappresenta l'astrazione e le sue specializzazioni per un classificatore.\
+La classe astratta \textit{Classifier} ingloba i metodi \textit{predict} e \textit{fit}, responsabili rispettivamente della classificazione e dell'allenamento del modello.\
+Le classi \textit{RandomForest} e \textit{XGBoost} specializzano la classe \textit{Classifier}, implementando gli omonimi algoritmi di classificazione.
 
-\begin{figure}[h]
+\begin{figure}[htbp] % h=qui, t=top, b=bottom, p=pagina dedicata
     \centering
+    % Inserisci la PRIMA pagina del PDF come immagine
     \adjustbox{max width=\linewidth, max height=\textheight}{%
-        \includesvg[inkscapelatex=false]{approccio-proposto/imgs/implements.svg}%
+        \includesvg[]{approccio-proposto/imgs/classifier.svg}%
     }
-    \caption{UML - Implements (Realizzazione)}
-    \label{fig:uml-implements}
+    \caption{UML - Package classifier}
+    \label{fig:pacakge-classifier}
 \end{figure}
 
-\paragraph{Package}
-I \textbf{package} in UML (\autoref{fig:uml-pacakge}) sono utilizzati per raggruppare logicamente le classi correlate, migliorando l'organizzazione visiva e concettuale del diagramma delle classi.
+Il package \textit{eval} è responsabile delle metriche di valutazione del modello.\
+La classe \textit{Evaluator} implementa le principali metriche di valutazione, includendo al suo interno la matrice di confusione.\
+La classe \textit{Metric} è un'enumerazione utilizzata per parametrizzare i metodi di calcolo delle metriche nella classe \textit{Evaluator}.
 
-\begin{figure}[h]
+\begin{figure}[htbp] % h=qui, t=top, b=bottom, p=pagina dedicata
     \centering
+    % Inserisci la PRIMA pagina del PDF come immagine
     \adjustbox{max width=\linewidth, max height=\textheight}{%
-        \includesvg[inkscapelatex=false]{approccio-proposto/imgs/package.svg}%
+        \includesvg[]{approccio-proposto/imgs/eval.svg}%
     }
-    \caption{UML - Package}
-    \label{fig:uml-pacakge}
+    \caption{UML - Package eval}
+    \label{fig:pacakge-eval}
 \end{figure}
-
-\FloatBarrier

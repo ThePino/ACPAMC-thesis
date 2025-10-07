@@ -1,0 +1,162 @@
+\section{Convenzioni e Notazione UML}
+\label{sec:convenzioni-uml}
+
+Per la corretta interpretazione del Diagramma delle Classi presentato, definiamo le principali convenzioni di notazione UML adottate, relative alla struttura delle classi, alla visibilità e ai tipi di relazioni.
+
+\subsection{Classe \& Visibilità}
+
+La classe è l'elemento fondamentale del Diagramma delle Classi.\
+Come mostrato in \autoref{fig:uml-classe-convenzioni}, è rappresentata da un rettangolo suddiviso in tre compartimenti che ne definiscono l'identità e il comportamento:
+\begin{enumerate}
+    \item \textbf{Nome} (Superiore): Contiene il nome della classe.
+    \item \textbf{Attributi} (Centrale): Elenca le proprietà della classe.
+    \item \textbf{Metodi} (Inferiore): Elenca le operazioni della classe.
+\end{enumerate}
+
+Il costrutto tra parentesi angolari (\texttt{$\ll$nome$\gg$}) viene chiamato \textit{stereotipo} e serve ad estendere il vocabolario del UML,\
+aggiungendo ulteriori significati (es. \texttt{$\ll$constructor$\gg$} per indicare che è il metodo dedicato alla costruzione dell'oggetto).
+
+\begin{figure}[h!]
+    \centering
+    \adjustbox{max width=0.5\textwidth, max height=0.5\textheight}{%
+        \includegraphics{approccio-proposto/imgs/classe.png}%
+    }
+    \caption{UML - Classe}
+    \label{fig:uml-classe-convenzioni}
+\end{figure}
+
+
+\subsection{Definizione di Attributi e Metodi}
+
+La notazione UML stabilisce formati rigorosi per la dichiarazione di attributi e metodi, specificando dettagli come la molteplicità e le proprietà comportamentali.
+
+La definizione di un attributo segue il formato:
+\[
+    [\langle \textit{visibilità} \rangle] \;
+    \langle \textit{nome} \rangle [\langle \textit{molteplicità} \rangle]: \langle \textit{tipo} \rangle \;
+    [= \langle \textit{valore} \rangle][{\textit{proprietà}}]
+\]
+\textit{Nota: gli elementi tra parentesi quadre [ ] sono opzionali. La visibilità, se non specificata, va intesa come Protetta.}
+
+La dichiarazione di un metodo o di un attributo è preceduta da un simbolo che ne specifica la \textbf{visibilità}, ovvero il livello di accesso consentito ad altri elementi del sistema.\
+In \autoref{tab:visibilita-uml} sono riportati i simboli e il loro significato.
+
+\begin{table}[h!]
+    \centering
+    \caption{Simboli di visibilità in UML}
+    \label{tab:visibilita-uml}
+    \begin{tabular}{c l p{8cm}}
+        \toprule
+        \textbf{Simbolo} & \textbf{Tipo di visibilità} & \textbf{Descrizione}                                    \\
+        \midrule
+        +                & Pubblica                    & Qualsiasi elemento può accedere                         \\
+        -                & Privata                     & Solo la classe stessa ne ha accesso                     \\
+        \#               & Protetto                    & Solo la classe e le sue sottoclassi ne hanno accesso    \\
+        \textasciitilde  & Package                     & Solo gli elementi dello stesso package ne hanno accesso \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+La \textbf{molteplicità} indica quante istanze\footnote{Un \textbf{istanza} è una instanzazione di una classe, ovvero un oggetto in esecuzione.} sono presenti di quell'attributo;\
+se non esplicitata si intende $1$.\
+Può essere un range nel formato \textit{min..max}, dove \textit{max} può assumere il valore \textit{*} per indicare l'assenza di un limite.
+
+I valori assumibili dal campo \textit{proprietà} per gli attributi includono:
+\begin{itemize}
+    \item \textbf{changeable}: non vi sono restrizione sulla modificabilità dell'attributo.
+    \item \textbf{addOnly}: valido per gli attributi con molteplicità maggiore di $1$, valori possono essere aggiunti ma non rimossi.
+    \item \textbf{frozen}: una volta assegnato un valore alla inizializzazione dell'oggetto, non è possibile modificarlo.
+\end{itemize}
+
+La definizione di un metodo segue invece questo formato:
+\[
+    [\langle \textit{visibilità} \rangle] \;
+    \langle \textit{nome} \rangle
+    (\langle \textit{lista parametri} \rangle)
+    : \langle \textit{valore di ritorno} \rangle
+    [\langle \textit{proprietà} \rangle]
+\]
+I valori possibili per le proprietà di un metodo includono:
+
+\begin{itemize}
+    \item \textbf{isQuery}: il metodo non modifica lo stato del sistema.
+    \item \textbf{leaf}: il metodo non può essere ulteriormente specializzato.
+    \item \textbf{sequential}: i chiamati del metodo devono organizzarsi affinche le chiamate vengono esaudite in modo sequenziale.
+    \item \textbf{guarded}: come \textbf{sequential} ma l'oggetto chiamato si occupa della logica per essere eseguito in modo sequenziale.
+    \item \textbf{concurrent}: anche a chiamate multiple, il sistema risulta integro.
+\end{itemize}
+
+\subsection{Relazioni Tra Classi}
+
+Le classi nel diagramma UML sono collegate da \textbf{associazioni} che definiscono le loro interazioni.\
+Tre tipi di relazioni sono fondamentali in questo progetto:
+
+\paragraph{Composizione (Aggregazione Forte)}
+La Composizione (\autoref{fig:uml-composizione}) è una forma forte di associazione che modella la relazione ``parte-intero'' ed è rappresentata da un \textbf{rombo pieno}\
+attaccato alla classe ``intero'' (o contenitore).\
+Questa relazione implica che l'esistenza delle ``parti'' dipende strettamente dall'esistenza dell'oggetto ``intero'' e che le parti non possono essere condivise da altre istanze del oggetto contenitore.\
+L'esempio mostra come la classe \textit{Sequence} sia composta dalle \textit{ApiCall}, indicando che una sequenza non esiste senza le sue chiamate.
+
+\begin{figure}[h!]
+    \centering
+    \adjustbox{max width=0.8\textwidth, max height=0.8\textheight}{%
+        \includesvg[inkscapelatex=false]{approccio-proposto/imgs/aggregazione.svg}
+    }
+    \caption{UML - Composizione}
+    \label{fig:uml-composizione}
+\end{figure}
+
+\paragraph{Use}
+La relazione \textit{use} è formalmente una \textbf{dipendenza} ed è rappresentata da una linea tratteggiata con freccia.\
+Essa indica una \textbf{dipendenza implementativa} a breve termine: la classe Cliente ha bisogno della classe Fornitore per la sua realizzazione funzionale (e.g., come parametro di un metodo)\
+senza conservarne un riferimento strutturale permanente.
+
+\begin{figure}[h!]
+    \centering
+    \adjustbox{max width=0.8\textwidth, max height=0.8\textheight}{%
+        \includesvg[inkscapelatex=false]{approccio-proposto/imgs/use.svg}
+    }
+    \caption{UML - Use}
+    \label{fig:uml-use}
+\end{figure}
+
+\paragraph{Extends}
+La relazione \textit{extends} (\autoref{fig:uml-extends}) è fondamentale per l'OOP.\
+Permette alla sottoclasse (quella che genera la freccia) di ereditare tutti gli attributi e i metodi della classe padre (quella puntata).\
+Questo facilita il riuso del codice e la specializzazione tramite \textit{variazione funzionale} dei comportamenti ereditati.
+
+\begin{figure}[h]
+    \centering
+    \adjustbox{max width=\linewidth, max height=\textheight}{%
+        \includesvg[inkscapelatex=false]{approccio-proposto/imgs/extends.svg}%
+    }
+    \caption{UML - Extends (Ereditarietà)}
+    \label{fig:uml-extends}
+\end{figure}
+
+\paragraph{Implements}
+La relazione \textit{Implements} (\autoref{fig:uml-implements}), rappresentata da una linea tratteggiata con freccia triangolare, descrive la \textbf{realizzazione di un'interfaccia}.\
+La classe che genera la freccia si impegna a implementare tutti i metodi astratti definiti nell'interfaccia puntata.\
+
+\begin{figure}[h]
+    \centering
+    \adjustbox{max width=\linewidth, max height=\textheight}{%
+        \includesvg[inkscapelatex=false]{approccio-proposto/imgs/implements.svg}%
+    }
+    \caption{UML - Implements (Realizzazione)}
+    \label{fig:uml-implements}
+\end{figure}
+
+\paragraph{Package}
+I \textbf{package} in UML (\autoref{fig:uml-pacakge}) sono utilizzati per raggruppare logicamente le classi correlate, migliorando l'organizzazione visiva e concettuale del diagramma delle classi.
+
+\begin{figure}[h]
+    \centering
+    \adjustbox{max width=\linewidth, max height=\textheight}{%
+        \includesvg[inkscapelatex=false]{approccio-proposto/imgs/package.svg}%
+    }
+    \caption{UML - Package}
+    \label{fig:uml-pacakge}
+\end{figure}
+
+\FloatBarrier
