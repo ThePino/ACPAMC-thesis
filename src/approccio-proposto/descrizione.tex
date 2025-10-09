@@ -1,6 +1,6 @@
 \section{Descrizione}
 
-L'approccio proposto, in questa tesi riguardante la \textbf{classificazione di software} è\
+L'approccio proposto, in questa tesi riguardante la \textbf{classificazione di software} - nel formato PE - è\
 l'analisi dei pattern comportamentali espressi dalle sequenze di chiamate API.\
 Il percorso metodologico seguito può essere suddiviso nelle seguenti fasi principali:\
 la raccolta e la standardizzazione dei dati, l'ingegneria delle caratteristiche, l'addestramento dei classificatori
@@ -79,10 +79,21 @@ Per implementare il modello BoW e ottenere il vettore delle caratteristiche, è 
 Il risultato finale è un vettore di frequenze assolute a lunghezza fissa,\
 in cui ogni componente quantifica il numero di occorrenze di una specifica API.
 
+\begin{figure}[h!]
+    \centering
+    \adjustbox{max width=\linewidth, max height=\textheight}{%
+        \includegraphics{approccio-proposto/imgs/bow-example.png}%
+    }
+    \caption{Esempio di ingegnerizzazione delle caratteristiche}
+    \label{fig:ign-bow}
+\end{figure}
+
+\FloatBarrier
+
 \subsection{Addestramento e Valutazione}
 
 Per ogni dataset e algoritmo di classificazione utilizzato è stato addestrato un modello dedicato.\
-L'intero processo di addestramento è gestito tramite l'esecuzione del sistema realizzato.\
+L'addestramento dei modelli è stato realizzato tramite molteplici esecuzioni del sistema.\
 L'avvio del sistema richiede la specifica dei seguenti parametri di configurazione presenti in \autoref{tab:parametri-config}.
 
 \begin{table}[h!]
@@ -104,19 +115,18 @@ L'avvio del sistema richiede la specifica dei seguenti parametri di configurazio
 
 \FloatBarrier
 
-Una volta impostati i parametri, il sistema provvede a caricare in memoria il dataset standardizzato corrispondente.\
-In questa fase, viene applicata la logica riportata in \autoref{sec:ign-bofw} per la rappresentazione dei vettori delle caratteristiche.\
-Successivamente, il dataset vettorizzato viene suddiviso in \textit{training set} e \textit{testing set} in percentuale al parametro \textit{training\_size}.\
-Per tutte le esecuzioni condotte si è adottato un valore $0.8$ per il parametro $training\_size$, dedicando quindi
-l'\percc{80} del totale al \textit{training set}.\
-Per la divisione è stata applicata la tecnica di \textbf{Campionamento Stratificato} (Stratified Sampling)\mycite{Wikipedia_campionamento_stratificato}.\
-Tale scelta metodologica è stata essenziale per garantire la \textbf{proporzionalità} della presenza di tutte le classi di software in entrambi i sottoinsiemi (training e valutazione).\
-In questo modo si è prevenuta la distorsione del modello, assicurando che anche le classi minoritarie fossero adeguatamente
-rappresentate nel processo di apprendimento e nella successiva fase di testing.\
-Il \textit{training set} così ottenuto è utilizzato per addestrare il classificatore interno, inizializzato dal parametro \textit{classifier} (\textit{RandomForest} o \textit{XGBoost})\
-la cui implementazione è realizzata tramite la libreria \textit{Scikit-learn}\mycite{scikit-learn}.
-La libreria offre, per tutti i suoi classificatori, il metodo \textit{fit} che, ricevendo l'insieme dei vettori delle caratteristiche, addestra il modello.\
-A fine allenamento, il modello viene salvato in modo persistente sul sistema per poter essere riutilizzato in esecuzioni successive.\
-Il \textit{testing set} è infine utilizzato per effettuare la valutazione del modello allenato.\
-Per ogni campione del \textit{testing set}, la classe predetta dal modello tramite il metodo \textit{predict}, è confrontata con quella effettiva, compilando la \textbf{matrice di confusione}.\
-Al completamento di questa fase, i dati raccolti permettono di estrarre le metriche relative alla sua prestazione.
+Una volta impostati i parametri, il sistema provvede a caricare in memoria il dataset standardizzato corrispondente, applicando la logica descritta in \autoref{sec:ign-bofw} per la rappresentazione
+vettoriale delle caratteristiche.
+Il dataset così ottenuto viene suddiviso in \textit{training set} e \textit{testing set} secondo la percentuale definita dal parametro \textit{training\_size},
+fissato in questo lavoro a $0.8$, corrispondente all'\percc{80} dei dati destinati alla fase di addestramento.\
+La divisione è effettuata mediante \textbf{campionamento stratificato}(\textit{Stratified Sampling})\mycite{Wikipedia_campionamento_stratificato},\
+in modo da garantire la corretta proporzionalità delle diverse classi di software in entrambi i sottoinsiemi, prevenendo distorsioni\
+del modello e assicurando un'adeguata rappresentanza anche delle classi minoritarie.\
+Il classificatore sviluppato è di tipo \textbf{supervisionato}, ossia apprende a distinguere le classi a partire da esempi etichettati.
+In particolare, il sistema riceve in input il \textit{training set} composto da vettori di caratteristiche e dalle corrispondenti etichette (\textit{goodware}, \textit{dropper},
+\textit{trojan}, \dots), e produce in output un modello addestrato capace di associare una classe ai nuovi esempi.
+Nel lavoro proposto, il classificatore può essere implementato tramite uno dei due algoritmi considerati: \textit{Random Forest} o \textit{XGBoost},
+entrambi forniti dalla libreria \textit{Scikit-learn}\mycite{scikit-learn}.
+Una volta completata la \textbf{fase di addestramento}, il modello predice le classi degli esempi nel \textit{testing set} e le confronta con quelle effettive;\
+dalla comparazione viene compilata la \textbf{matrice di confusione}.
+La \textbf{matrice di confusione} verrà utilizzata per ricavare le metriche di valutazione del modello.
