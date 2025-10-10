@@ -92,8 +92,7 @@ in cui ogni componente quantifica il numero di occorrenze di una specifica API.
 
 \subsection{Addestramento e Valutazione}
 
-Per ogni dataset e algoritmo di classificazione utilizzato è stato addestrato un modello dedicato.\
-L'addestramento dei modelli è stato realizzato tramite molteplici esecuzioni del sistema.\
+Per ogni dataset e algoritmo di classificazione utilizzato è stato addestrato un modello dedicato attraverso l'impiego del sistema.
 L'avvio del sistema richiede la specifica dei seguenti parametri di configurazione presenti in \autoref{tab:parametri-config}.
 
 \begin{table}[h!]
@@ -122,11 +121,10 @@ fissato in questo lavoro a $0.8$, corrispondente all'\percc{80} dei dati destina
 La divisione è effettuata mediante \textbf{campionamento stratificato}(\textit{Stratified Sampling})\mycite{Wikipedia_campionamento_stratificato},\
 in modo da garantire la corretta proporzionalità delle diverse classi di software in entrambi i sottoinsiemi, prevenendo distorsioni\
 del modello e assicurando un'adeguata rappresentanza anche delle classi minoritarie.\
-Il classificatore sviluppato è di tipo \textbf{supervisionato}, ossia apprende a distinguere le classi a partire da esempi etichettati.
-In particolare, il sistema riceve in input il \textit{training set} composto da vettori di caratteristiche e dalle corrispondenti etichette (\textit{goodware}, \textit{dropper},
-\textit{trojan}, \dots), e produce in output un modello addestrato capace di associare una classe ai nuovi esempi.
+Il classificatore sviluppato è di tipo \textbf{supervisionato} e \textbf{multi classe}, ossia apprende a distinguere le classi a partire da esempi etichettati.\
+Il sistema è in grado di riconoscere tra applicazioni \textbf{benigne} e \textbf{malware}, e, se fornito dal dataset, è capace di distinguere i diversi \textbf{tipi di
+    malware} (\textit{dropper}, \textit{trojan}, ecc.).\
+In particolare, il sistema riceve in input il \textit{training set} composto da vettori di caratteristiche e dalle corrispondenti etichette,\
+e produce in output un modello addestrato che prende in input un esempio nuovo (che fa parte del  \textit{testing set}) e ne predice la classe.\
 Nel lavoro proposto, il classificatore può essere implementato tramite uno dei due algoritmi considerati: \textit{Random Forest} o \textit{XGBoost},
 entrambi forniti dalla libreria \textit{Scikit-learn}\mycite{scikit-learn}.
-Una volta completata la \textbf{fase di addestramento}, il modello predice le classi degli esempi nel \textit{testing set} e le confronta con quelle effettive;\
-dalla comparazione viene compilata la \textbf{matrice di confusione}.
-La \textbf{matrice di confusione} verrà utilizzata per ricavare le metriche di valutazione del modello.
