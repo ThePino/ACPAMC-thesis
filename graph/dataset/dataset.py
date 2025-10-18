@@ -1,10 +1,30 @@
 import json
 from pathlib import Path
-from model import Datasets, DatasetName
+from model import Datasets, DatasetName, DatasetEntry
 import matplotlib.pyplot as plt
+from enum import Enum
+import numpy as np
 
-def print_graph_on_size(dataset_name: DatasetName, data: Datasets):
-    dataset = data.root[dataset_name]
+class MediaOutput(str, Enum):
+    png = "png"
+    svg = 'svg'
+
+
+CLASS_COLORS = {
+    "goodware": "#1b9e77",    # Verde Smeraldo (Benigno)
+    "malware": "#d95f02",     # Arancione Bruciato (Categoria Generale)
+    "trojan": "#e7298a",      # Magenta Intenso (Priorità Alta)
+    "virus": "#7570b3",       # Blu-Viola
+    "backdoor": "#e6ab02",    # Giallo Ocra
+    "downloader": "#66a61e",  # Verde Oliva Scuro
+    "dropper": "#a6761d",     # Marrone Oro
+    "spyware": "#666666",     # Grigio Ardesia
+    "adware": "#a6cee3",      # Azzurro Chiaro
+    "packed": "#fb9a99",      # Rosa Salmone
+    "worm": "#cab2d6",        # Viola Lavanda
+}
+
+def print_graph_on_size(dataset: DatasetEntry, dataset_name: DatasetName, output_folder: Path, ext: MediaOutput):
     classes = list(dataset.classes.keys())
     test = [dataset.classes[c].test for c in classes]
     eval = [dataset.classes[c].eval for c in classes]
@@ -13,13 +33,13 @@ def print_graph_on_size(dataset_name: DatasetName, data: Datasets):
     width = 0.25
 
     plt.figure(figsize=(10,6))
-    plt.bar(x, total, width=width, label="Total", color="#1f77b4")
+    plt.bar(x, total, width=width, label="Totali", color="#1f77b4")
     plt.bar([i + width for i in x], test, width=width, label="Test", color="#ff7f0e")
-    plt.bar([i + width*2 for i in x], eval, width=width, label="Eval", color="#2ca02c")
+    plt.bar([i + width*2 for i in x], eval, width=width, label="Training", color="#2ca02c")
 
     plt.xticks([i + width for i in x], list( map(lambda x : x._value_,classes)), rotation=45)
     plt.ylabel("Numero di istanze")
-    plt.title("Distribuzione delle classi nel dataset Apimds")
+    plt.title("")
     plt.legend()
     plt.tight_layout()
 
@@ -28,14 +48,14 @@ def print_graph_on_size(dataset_name: DatasetName, data: Datasets):
             height = bar.get_height()
             plt.text(bar.get_x() + bar.get_width()/2, height + 5, str(height), ha='center', va='bottom', fontsize=9)
 
-    bars_total = plt.bar(x, total, width=width, label="Total", color="#1f77b4")
+    bars_total = plt.bar(x, total, width=width, label="Totali", color="#1f77b4")
     bars_test = plt.bar([i + width for i in x], test, width=width, label="Test", color="#ff7f0e")
-    bars_eval = plt.bar([i + width*2 for i in x], eval, width=width, label="Eval", color="#2ca02c")
+    bars_eval = plt.bar([i + width*2 for i in x], eval, width=width, label="Training", color="#2ca02c")
     add_labels(bars_total)
     add_labels(bars_test)
     add_labels(bars_eval)
 
-    output_path =  Path(__file__).resolve().parent / (dataset_name._value_ + '.png')
+    output_path =  output_folder / (dataset_name._value_ + f'-class-distribution.{ext._value_}')
     plt.savefig(output_path, dpi=300)  # Salva ad alta risoluzione
     plt.close() 
 
@@ -45,6 +65,7 @@ def plot_class_metrics(dataset_name: DatasetName, data: Datasets):
     # Itera sui classificatori
     for clf_name, clf_data in dataset.classifiers.items():
         classes = list(clf_data.classes.keys())
+        classes.sort()
         
         precision = [clf_data.classes[c].precision for c in classes]
         recall = [clf_data.classes[c].recall for c in classes]
@@ -61,7 +82,7 @@ def plot_class_metrics(dataset_name: DatasetName, data: Datasets):
         plt.xticks([i + width for i in x], [c.value for c in classes], rotation=45)
         plt.ylim(0, 1.05)
         plt.ylabel("Score")
-        plt.title(f"Metrics per classe - {clf_name.value}")
+        plt.title("")
         plt.legend()
         plt.tight_layout()
 
@@ -115,15 +136,40 @@ def plot_aggregates(dataset_name: DatasetName, data: Datasets):
             plt.close()
             print(f"Grafico salvato in: {output_file}")
 
+def print_cake(dataset: DatasetEntry, dataset_name: DatasetName, output_folder: Path, ext: MediaOutput):
+    classes = list(dataset.classes.keys())
+
+    train_vals = [dataset.classes[clx].test for clx in classes]
+    eval_vals = [dataset.classes[clx].test for clx in classes]
+    sizes = [train_vals[i] + eval_vals[i] for i in range(0, len(classes))]
+    fig, ax = plt.subplots(figsize=(5, 5))
+    colors = [CLASS_COLORS[clx] for clx in classes]
+    ax.pie(
+     sizes,
+     labels=list(map(lambda x : x.name, classes)),
+        autopct='%1.1f%%',
+        startangle=90,
+        colors=colors
+    ) 
+    ax.set_title("")
+    output = output_folder / f"{dataset_name.value}-class_distribution.{ext.value}"
+    # Salva il grafico su file (es. SVG con sfondo trasparente)
+    plt.savefig(output, format=ext.value, transparent=True, bbox_inches="tight")
+    # Chiudi la figura per evitare sovrapposizioni in loop multipli
+    plt.close(fig)
+    pass
+
+
 def main():
     with open(Path(__file__).resolve().parent / 'data.json') as f:
         raw = json.load(f)
 
-    datasets = Datasets.model_validate(raw)
-    
-    # print_graph_on_size(DatasetName.apimds, datasets)
-    # plot_class_metrics(DatasetName.apimds, datasets)
-    plot_aggregates(DatasetName.apimds, datasets)
+    output_dir = Path(__file__).parent / "output"
+    datasets = Datasets.model_validate(raw).root
+    for dataset in DatasetName:
+        print_graph_on_size(datasets[dataset.name], dataset, output_dir, MediaOutput.svg)
+        print_cake(datasets[dataset.name], dataset, output_dir, MediaOutput.svg)
+
     return
 
 

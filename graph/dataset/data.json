@@ -1,0 +1,433 @@
+{
+    "apimds": {
+        "classes": {
+            "malware": {
+                "test": 4889,
+                "eval": 1222
+            },
+            "backdoor": {
+                "test": 466,
+                "eval": 116
+            },
+            "downloader": {
+                "test": 734,
+                "eval": 183
+            },
+            "trojan": {
+                "test": 8360,
+                "eval": 2090
+            },
+            "virus": {
+                "test": 2609,
+                "eval": 652
+            },
+            "packed": {
+                "test": 772,
+                "eval": 192
+            }
+        },
+        "classifiers": {
+            "XGBoost": {
+                "global_accuracy": 0.807650746,
+                "classes": {
+                    "malware": {
+                        "precision": 0.84,
+                        "recall": 0.721767594,
+                        "f1_score": 0.776408451
+                    },
+                    "backdoor": {
+                        "precision": 0.732142857,
+                        "recall": 0.353448276,
+                        "f1_score": 0.476744186
+                    },
+                    "downloader": {
+                        "precision": 0.772727272727273,
+                        "recall": 0.557377049180328,
+                        "f1_score": 0.647619047619048
+                    },
+                    "trojan": {
+                        "precision": 0.791014841556358,
+                        "recall": 0.943540669856459,
+                        "f1_score": 0.860571677940214
+                    },
+                    "virus": {
+                        "precision": 0.832258064516129,
+                        "recall": 0.791411042944785,
+                        "f1_score": 0.811320754716981
+                    },
+                    "worm": {
+                        "precision": 0.7578125,
+                        "recall": 0.563953488372093,
+                        "f1_score": 0.646666666666667
+                    }
+                },
+                "aggregates": {
+                    "micro": {
+                        "precision": 0.807650745623514,
+                        "recall": 0.807650745623514,
+                        "f1_score": 0.807650745623514
+                    },
+                    "macro": {
+                        "precision": 0.797723377721532,
+                        "recall": 0.656136636236727,
+                        "f1_score": 0.709484229603294
+                    }
+                }
+            },
+            "RandomForest": {
+                "global_accuracy": 0.830559758,
+                "classes": {
+                    "malware": {
+                        "precision": 0.828596803,
+                        "recall": 0.763502455,
+                        "f1_score": 0.79471891
+                    },
+                    "backdoor": {
+                        "precision": 0.666666666666667,
+                        "recall": 0.396551724137931,
+                        "f1_score": 0.497297297297297
+                    },
+                    "downloader": {
+                        "precision": 0.807142857,
+                        "recall": 0.617486338797814,
+                        "f1_score": 0.69969040247678
+                    },
+                    "trojan": {
+                        "precision": 0.830004249893753,
+                        "recall": 0.93444976076555,
+                        "f1_score": 0.87913571910871
+                    },
+                    "virus": {
+                        "precision": 0.869496855345912,
+                        "recall": 0.848159509202454,
+                        "f1_score": 0.858695652173913
+                    },
+                    "worm": {
+                        "precision": 0.722972972972973,
+                        "recall": 0.622093023,
+                        "f1_score": 0.66875
+                    },
+                    "packed": {
+                        "precision": 0.890322580645161,
+                        "recall": 0.71875,
+                        "f1_score": 0.795389049
+                    }
+                },
+                "aggregates": {
+                    "micro": {
+                        "precision": 0.830559758,
+                        "recall": 0.830559758,
+                        "f1_score": 0.830559758
+                    },
+                    "macro": {
+                        "precision": 0.802171855,
+                        "recall": 0.70014183,
+                        "f1_score": 0.741953861
+                    }
+                }
+            }
+        }
+    },
+    "octak": {
+        "classes": {
+            "backdoor": {
+                "test": 801,
+                "eval": 200
+            },
+            "adware": {
+                "test": 304,
+                "eval": 75
+            },
+            "downloader": {
+                "test": 801,
+                "eval": 200
+            },
+            "dropper": {
+                "test": 713,
+                "eval": 178
+            },
+            "spyware": {
+                "test": 666,
+                "eval": 166
+            },
+            "trojan": {
+                "test": 801,
+                "eval": 200
+            },
+            "virus": {
+                "test": 801,
+                "eval": 200
+            },
+            "worm": {
+                "test": 772,
+                "eval": 200
+            }
+        },
+        "classifiers": {
+            "XGBoost": {
+                "global_accuracy": 0.610993658,
+                "classes": {
+                    "backdoor": {
+                        "precision": 0.637305699481865,
+                        "recall": 0.615,
+                        "f1_score": 0.625954198473282
+                    },
+                    "downloader": {
+                        "precision": 0.796610169491525,
+                        "recall": 0.705,
+                        "f1_score": 0.748010610079576
+                    },
+                    "trojan": {
+                        "precision": 0.479452054794521,
+                        "recall": 0.525,
+                        "f1_score": 0.501193317422434
+                    },
+                    "virus": {
+                        "precision": 0.738461538461539,
+                        "recall": 0.72,
+                        "f1_score": 0.729113924050633
+                    },
+                    "worm": {
+                        "precision": 0.518181818181818,
+                        "recall": 0.57,
+                        "f1_score": 0.542857142857143
+                    },
+                    "dropper": {
+                        "precision": 0.52,
+                        "recall": 0.657303370786517,
+                        "f1_score": 0.580645161290323
+                    },
+                    "spyware": {
+                        "precision": 0.525,
+                        "recall": 0.379518072289157,
+                        "f1_score": 0.440559440559441
+                    },
+                    "adware": {
+                        "precision": 0.857142857142857,
+                        "recall": 0.8,
+                        "f1_score": 0.827586206896552
+                    }
+                },
+                "aggregates": {
+                    "micro": {
+                        "precision": 0.610993657505285,
+                        "recall": 0.610993657505285,
+                        "f1_score": 0.671599718111346
+                    },
+                    "macro": {
+                        "precision": 0.634019267194266,
+                        "recall": 0.621477680384459,
+                        "f1_score": 0.610993657505285
+                    }
+                }
+            },
+            "RandomForest": {
+                "global_accuracy": 0.610993658,
+                "classes": {
+                    "backdoor": {
+                        "precision": 0.68,
+                        "recall": 0.68,
+                        "f1_score": 0.68
+                    },
+                    "downloader": {
+                        "precision": 0.748815165876777,
+                        "recall": 0.70,
+                        "f1_score": 0.768856447688565
+                    },
+                    "trojan": {
+                        "precision": 0.544943820224719,
+                        "recall": 0.485,
+                        "f1_score": 0.513227513227513
+                    },
+                    "virus": {
+                        "precision": 0.817708333333333,
+                        "recall": 0.785,
+                        "f1_score": 0.801020408163265
+                    },
+                    "worm": {
+                        "precision": 0.608490566037736,
+                        "recall": 0.645,
+                        "f1_score": 0.62621359223301
+                    },
+                    "dropper": {
+                        "precision": 0.607843137254902,
+                        "recall": 0.696629213483146,
+                        "f1_score": 0.649214659685864
+                    },
+                    "spyware": {
+                        "precision": 0.876712328767123,
+                        "recall": 0.853333333333333,
+                        "f1_score": 0.864864864864865
+                    },
+                    "adware": {
+                        "precision": 0.876712328767123,
+                        "recall": 0.876712328767123,
+                        "f1_score": 0.864864864864865
+                    }
+                },
+                "aggregates": {
+                    "micro": {
+                        "precision": 0.671599718111346,
+                        "recall": 0.671599718111346,
+                        "f1_score": 0.671599718111346
+                    },
+                    "macro": {
+                        "precision": 0.684389672292529,
+                        "recall": 0.683135378593024,
+                        "f1_score": 0.682765955574155
+                    }
+                }
+            }
+        }
+    },
+    "mpasco": {
+        "classes": {
+            "goodware": {
+                "test": 1799,
+                "eval": 257
+            },
+            "malware": {
+                "test": 1799,
+                "eval": 257
+            }
+        },
+        "classifiers": {
+            "XGBoost": {
+                "global_accuracy": 0.963035019,
+                "classes": {
+                    "goodware": {
+                        "precision": 0.944029850746269,
+                        "recall": 0.98443579766537,
+                        "f1_score": 0.963809523809524
+                    },
+                    "malware": {
+                        "precision": 0.983739837398374,
+                        "recall": 0.941634241245136,
+                        "f1_score": 0.941634241245136
+                    }
+                },
+                "aggregates": {
+                    "micro": {
+                        "precision": 0.963018081984285,
+                        "recall": 0.963035019455253,
+                        "f1_score": 0.963035019455253
+                    },
+                    "macro": {
+                        "precision": 0.963884844072321,
+                        "recall": 0.963035019455253,
+                        "f1_score": 0.963035019455253
+                    }
+                }
+            },
+            "RandomForest": {
+                "global_accuracy": 0.961089494,
+                "classes": {
+                    "goodware": {
+                        "precision": 0.940520446096654,
+                        "recall": 0.98443579766537,
+                        "f1_score": 0.961977186311787
+                    },
+                    "malware": {
+                        "precision": 0.983673469387755,
+                        "recall": 0.937743190661479,
+                        "f1_score": 0.960159362549801
+                    }
+                },
+                "aggregates": {
+                    "micro": {
+                        "precision": 0.961089494163424,
+                        "recall": 0.961089494163424,
+                        "f1_score": 0.961089494163424
+                    },
+                    "macro": {
+                        "precision": 0.962096957742205,
+                        "recall": 0.961089494163424,
+                        "f1_score": 0.961068274430794
+                    }
+                }
+            }
+        }
+    },
+    "quovadis": {
+        "classes": {
+            "goodware": {
+                "test": 20233,
+                "eval": 5058
+            },
+            "malware": {
+                "test": 22136,
+                "eval": 5534
+            },
+            "backdoor": {
+                "test": 8850,
+                "eval": 2212
+            }
+        },
+        "classifiers": {
+            "XGBoost": {
+                "global_accuracy": 0.891440175,
+                "classes": {
+                    "goodware": {
+                        "precision": 0.949988092402953,
+                        "recall": 0.788651640964808,
+                        "f1_score": 0.861834287566166
+                    },
+                    "malware": {
+                        "precision": 0.822720247295209,
+                        "recall": 0.961872063606794,
+                        "f1_score": 0.886871042985671
+                    },
+                    "backdoor": {
+                        "precision": 0.984543325526932,
+                        "recall": 0.950271247739602,
+                        "f1_score": 0.967103749712445
+                    }
+                },
+                "aggregates": {
+                    "micro": {
+                        "precision": 0.89144017494533,
+                        "recall": 0.89144017494533,
+                        "f1_score": 0.89144017494533
+                    },
+                    "macro": {
+                        "precision": 0.919083888408365,
+                        "recall": 0.900264984103735,
+                        "f1_score": 0.905269693421428
+                    }
+                }
+            },
+            "RandomForest": {
+                "global_accuracy": 0.967822555,
+                "classes": {
+                    "backdoor": {
+                        "precision": 0.988298829882988,
+                        "recall": 0.992766726943942,
+                        "f1_score": 0.990527740189445
+                    },
+                    "goodware": {
+                        "precision": 0.97455729696723,
+                        "recall": 0.94661921708185,
+                        "f1_score": 0.960385116838833
+                    },
+                    "malware": {
+                        "precision": 0.953960134062445,
+                        "recall": 0.977231658836285,
+                        "f1_score": 0.96545568151388
+                    }
+                },
+                "aggregates": {
+                    "micro": {
+                        "precision": 0.967822555451421,
+                        "recall": 0.967822555451421,
+                        "f1_score": 0.967822555451421
+                    },
+                    "macro": {
+                        "precision": 0.972272086970888,
+                        "recall": 0.972205867620692,
+                        "f1_score": 0.972122846180719
+                    }
+                }
+            }
+        }
+    }
+}

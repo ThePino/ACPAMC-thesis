@@ -11,9 +11,16 @@ class ClassName(str, Enum):
     virus = "virus"
     packed = "packed"
     worm = "worm"
-
+    goodware = "goodware"
+    adware = "adware"
+    spyware = "spyware"
+    dropper = "dropper"
+    
 class DatasetName(str, Enum):
     apimds = "apimds"
+    octak = "octak"
+    mpasco = "mpasco"
+    quovadis = "quovadis"
 
 class ClassifierName(str, Enum):
     XGBoost = "XGBoost"
@@ -39,6 +46,7 @@ class Aggregates(BaseModel):
 class Classifier(BaseModel):
     classes: Dict[ClassName, ClassMetrics]
     aggregates: Aggregates
+    global_accuracy: float
     model_config = ConfigDict(extra="forbid")
 
 class DatasetEntry(BaseModel):
