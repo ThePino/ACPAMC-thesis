@@ -1,6 +1,6 @@
 import json
 from pathlib import Path
-from model import Datasets, DatasetName, DatasetEntry
+from model import Datasets, DatasetName, DatasetEntry, ClassifierName
 import matplotlib.pyplot as plt
 from enum import Enum
 import numpy as np
@@ -159,6 +159,42 @@ def print_cake(dataset: DatasetEntry, dataset_name: DatasetName, output_folder: 
     plt.close(fig)
     pass
 
+def print_graph_metrics(dataset: DatasetEntry, dataset_name: DatasetName, output_folder: Path, ext: MediaOutput):
+    classes = list(dataset.classes.keys())
+    class_labels = [c.value for c in classes]
+    x = np.arange(len(classes))  # per gestire bene i bar offset
+
+    fig, axes = plt.subplots(1, 2, figsize=(10, 5), sharey=True)
+    width = 0.25
+
+    for index, classifier in enumerate(ClassifierName):
+        precision, recall, f1 = [], [], []
+        for clx in classes:
+            data = dataset.classifiers[classifier].classes[clx]
+            precision.append(data.precision)
+            recall.append(data.recall)
+            f1.append(data.f1_score)
+
+        ax = axes[index]
+        ax.bar(x - width, precision, width, label="Precision")
+        ax.bar(x, recall, width, label="Recall")
+        ax.bar(x + width, f1, width, label="F1-Score")
+
+        ax.set_title(f"{dataset_name.value} - {classifier.name}")
+        ax.set_xticks(x)
+        ax.set_xticklabels(class_labels, rotation=45)
+        ax.set_ylim(0, 1)
+
+        if index == 0:
+            ax.set_ylabel("Score")
+
+    fig.suptitle("Confronto per classe: Precision, Recall e F1-score", fontsize=14)
+    fig.legend(["Precision", "Recall", "F1-Score"], loc="lower center", ncol=3, bbox_to_anchor=(0.5, -0.03))
+    fig.tight_layout(rect=[0, 0.05, 1, 0.95])
+
+    output = output_folder / f"{dataset_name.value}-metrics-class.{ext.value}"
+    plt.savefig(output, format=ext.value, transparent=True, bbox_inches="tight")
+    plt.close(fig)
 
 def main():
     with open(Path(__file__).resolve().parent / 'data.json') as f:
@@ -166,10 +202,11 @@ def main():
 
     output_dir = Path(__file__).parent / "output"
     datasets = Datasets.model_validate(raw).root
-    for dataset in DatasetName:
-        print_graph_on_size(datasets[dataset.name], dataset, output_dir, MediaOutput.svg)
-        print_cake(datasets[dataset.name], dataset, output_dir, MediaOutput.svg)
 
+    for dataset in DatasetName:
+        #print_graph_on_size(datasets[dataset.name], dataset, output_dir, MediaOutput.svg)
+        #print_cake(datasets[dataset.name], dataset, output_dir, MediaOutput.svg)
+        print_graph_metrics(datasets[dataset.name], dataset, output_dir, MediaOutput.svg)
     return
 
 
