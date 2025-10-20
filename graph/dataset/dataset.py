@@ -196,6 +196,48 @@ def print_graph_metrics(dataset: DatasetEntry, dataset_name: DatasetName, output
     plt.savefig(output, format=ext.value, transparent=True, bbox_inches="tight")
     plt.close(fig)
 
+def print_graph_metrics(dataset: DatasetEntry, dataset_name: DatasetName, output_folder: Path, ext: MediaOutput):
+    """
+    Stampa affiancate le matrici di confusione per ciascun classificatore.
+    Usa solo Matplotlib.
+    """
+    classifiers = list(dataset.classifiers.keys())
+    n = len(classifiers)
+    fig, axes = plt.subplots(1, n, figsize=(5 * n, 5))
+
+    if n == 1:
+        axes = [axes]
+
+    for i, classifier in enumerate(classifiers):
+        ax = axes[i]
+        clf_data = dataset.classifiers[classifier]
+
+        # Estraggo la matrice e le classi (dal tuo oggetto personalizzato)
+        matrix = np.array(clf_data.confusion_matrix.matrix)
+        classes = [c.value for c in clf_data.confusion_matrix.classes]
+
+        im = ax.imshow(matrix, cmap="Blues")
+        ax.set_title(f"{dataset_name.value} - {classifier.name}")
+        ax.set_xticks(np.arange(len(classes)))
+        ax.set_yticks(np.arange(len(classes)))
+        ax.set_xticklabels(classes, rotation=45, ha="right")
+        ax.set_yticklabels(classes)
+        ax.set_xlabel("Predetto")
+        ax.set_ylabel("Reale")
+
+        # Valori numerici al centro di ogni cella
+        for x in range(len(classes)):
+            for y in range(len(classes)):
+                ax.text(y, x, matrix[x, y], ha="center", va="center", color="black", fontsize=8)
+
+    fig.suptitle("Matrici di confusione per classificatore", fontsize=14)
+    fig.tight_layout()
+
+    # Percorso di output
+    output = output_folder / f"{dataset_name.value}-confusion-matrix.{ext.value}"
+    plt.savefig(output, format=ext.value, bbox_inches="tight", transparent=True)
+    plt.close(fig)
+
 def main():
     with open(Path(__file__).resolve().parent / 'data.json') as f:
         raw = json.load(f)
@@ -206,7 +248,10 @@ def main():
     for dataset in DatasetName:
         #print_graph_on_size(datasets[dataset.name], dataset, output_dir, MediaOutput.svg)
         #print_cake(datasets[dataset.name], dataset, output_dir, MediaOutput.svg)
+        #print_graph_metrics(datasets[dataset.name], dataset, output_dir, MediaOutput.svg)
+        print("dataset ", dataset, "wi")
         print_graph_metrics(datasets[dataset.name], dataset, output_dir, MediaOutput.svg)
+        print("dataset ", dataset, "ok")
     return
 
 
