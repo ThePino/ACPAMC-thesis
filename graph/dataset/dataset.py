@@ -217,7 +217,7 @@ def print_graph_metrics(dataset: DatasetEntry, dataset_name: DatasetName, output
         classes = [c.value for c in clf_data.confusion_matrix.classes]
 
         im = ax.imshow(matrix, cmap="Blues")
-        ax.set_title(f"{dataset_name.value} - {classifier.name}")
+        ax.set_title(f"{classifier.name}")
         ax.set_xticks(np.arange(len(classes)))
         ax.set_yticks(np.arange(len(classes)))
         ax.set_xticklabels(classes, rotation=45, ha="right")
@@ -230,7 +230,6 @@ def print_graph_metrics(dataset: DatasetEntry, dataset_name: DatasetName, output
             for y in range(len(classes)):
                 ax.text(y, x, matrix[x, y], ha="center", va="center", color="black", fontsize=8)
 
-    fig.suptitle("Matrici di confusione per classificatore", fontsize=14)
     fig.tight_layout()
 
     # Percorso di output
