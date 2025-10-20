@@ -43,8 +43,14 @@ class Aggregates(BaseModel):
     macro: ClassMetrics
     model_config = ConfigDict(extra="forbid")
 
+class ConfusionMatrix(BaseModel):
+    classes: list[ClassName]
+    matrix: list[list[int]]  # entrambe obbligatorie
+
+
 class Classifier(BaseModel):
     classes: Dict[ClassName, ClassMetrics]
+    confusion_matrix: ConfusionMatrix
     aggregates: Aggregates
     global_accuracy: float
     model_config = ConfigDict(extra="forbid")
