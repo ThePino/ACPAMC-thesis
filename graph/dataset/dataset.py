@@ -314,6 +314,62 @@ def print_class_metrics(dataset: DatasetEntry, dataset_name: DatasetName, output
     plt.savefig(output, format=ext.value, bbox_inches="tight", transparent=True)
     plt.close(fig)
     
+
+def print_global_metrics(dataset: DatasetEntry, dataset_name: DatasetName, output_folder: Path, ext: MediaOutput):
+    classifiers = list(dataset.classifiers.keys())
+    n = len(classifiers)
+
+    # Imposto la figura: una barra per ogni metrica, per ogni classificatore
+    fig, ax = plt.subplots(figsize=(7, 6))
+
+    metrics_names = [
+        "Global Accuracy",
+        "Micro Precision", "Micro Recall", "Micro F1-score",
+        "Macro Precision", "Macro Recall", "Macro F1-score"
+    ]
+
+    # Raccolgo i valori per ogni classificatore
+    all_values = []
+    for classifier in classifiers:
+        metrics = dataset.classifiers[classifier]
+        all_values.append([
+            metrics.global_accuracy,
+            metrics.aggregates.micro.precision, metrics.aggregates.micro.recall, metrics.aggregates.micro.f1_score,
+            metrics.aggregates.macro.precision, metrics.aggregates.macro.recall, metrics.aggregates.macro.f1_score
+        ])
+
+    all_values = np.array(all_values)
+    x = np.arange(len(metrics_names))
+    width = 0.35
+
+    # Disegno le barre affiancate per i classificatori
+    for i, classifier in enumerate(classifiers):
+        ax.bar(
+            x + i * width,
+            all_values[i],
+            width=width,
+            label=classifier.name
+        )
+
+    # Etichette e legenda
+    ax.set_title("")
+    ax.set_xticks(x + width / 2)
+    ax.set_xticklabels(metrics_names, rotation=30, ha='right')
+    ax.set_ylabel("Valore")
+    ax.legend()
+
+    # Mostro i valori sopra le barre
+    for i, classifier in enumerate(classifiers):
+        for j, v in enumerate(all_values[i]):
+            ax.text(x[j] + i * width, v + 0.005, f"{v:.2f}", ha='center', va='bottom', fontsize=8)
+
+    fig.tight_layout()
+
+    # Percorso di output
+    output = output_folder / f"{dataset_name.value}-global-metrics.{ext.value}"
+    plt.savefig(output, format=ext.value, bbox_inches="tight", transparent=True)
+    plt.close(fig)
+
 def main():
     with open(Path(__file__).resolve().parent / 'data.json') as f:
         raw = json.load(f)
@@ -326,8 +382,8 @@ def main():
         #print_graph_on_size(datasets[dataset.name], dataset, output_dir, MediaOutput.svg)
         #print_cake(datasets[dataset.name], dataset, output_dir, MediaOutput.svg)
         #print_graph_metrics(datasets[dataset.name], dataset, output_dir, MediaOutput.svg)
-        #print_graph_metrics(datasets[dataset.name], dataset, output_dir, MediaOutput.svg)
-        print_class_metrics(datasets[dataset.name], dataset, output_dir, MediaOutput.svg)
+        #print_class_metrics(datasets[dataset.name], dataset, output_dir, MediaOutput.svg)
+        print_global_metrics(datasets[dataset.name], dataset, output_dir, MediaOutput.svg)
         print("dataset ", dataset, "ok")
     return
 
