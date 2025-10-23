@@ -1,4 +1,234 @@
+\newcommand{\mtrdescription}[1]{Matrici di confusione sul dataset \textbf{#1}}
+\newcommand{\clsdescription}[1]{F1-score, Recall, Precision sul dataset \textbf{#1}}
+\newcommand{\grpdescription}[1]{Global accuracy, micro e macro metriche sul dataset \textbf{#1}}
+
 \section{Risultati}
 
 Per analizzare in dettaglio il comportamento dei modelli sulle diverse classi, sono state calcolate le matrici di confusione.\
-Esse permettono di visualizzare le corrette classificazioni (diagonale principale) e gli errori di classificazione tra le varie categorie di malware.
+Esse permettono di visualizzare le corrette classificazioni (diagonale principale) e gli errori di classificazione.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%% apimds %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+Le matrici di confusione ottenute per il dataset \textbf{apimds} sono le seguenti:
+
+\begin{figure}[ht]
+    \centering
+    \adjustbox{max width=1.4\linewidth, max height=1\textheight}{%
+        \includesvg[width=\textwidth]{validazione-empirica/imgs/apimds-confusion-matrix.svg}
+    }
+    \caption{\mtrdescription{apimds}}
+    \label{fig:apimds-mtrx-rf}
+\end{figure}
+
+Le classi meglio identificate risultano \textit{Trojan}, \textit{Malware} e \textit{Virus} in entrambi i modelli.\
+Queste classi coincidono con quelle più rappresentate nel dataset, suggerendo che la distribuzione dei dati influisce in modo significativo\
+sulla capacità di apprendimento del modello.\
+La riga con i valori più elevati per entrambi i modelli corrisponde alla classe \textit{Malware}, indicando che,\
+in caso di incertezza tra una classe specifica e una più generica, i modelli tendono a preferire quest'ultima.\
+La classe \textit{Trojan} risulta invece la più difficile da predire correttamente (colonna con i valori più alti fuori diagonale),\
+probabilmente a causa della sua natura eterogenea — i \textit{Trojan} non condividono un unico tipo di attacco — e della sua numerosità nel dataset.\
+Si osservano buone prestazioni anche sulle classi minoritarie,\
+il che lascia supporre che tali campioni presentino pattern di chiamate API più distintivi rispetto alle altre categorie.\
+Nel complesso, i due classificatori mostrano un comportamento simile, ma \textit{RandomForest} ottiene risultati leggermente migliori.\
+Non emergono pattern di errore anomali: gli errori si distribuiscono in modo coerente con la rappresentatività delle classi.
+
+\begin{figure}[]
+    \centering
+    \adjustbox{max width=1.4\linewidth, max height=2\textheight}{%
+        \includesvg[width=\textwidth]{validazione-empirica/imgs/apimds-classes-metrics.svg}
+    }
+    \caption{\clsdescription{apimds}}
+    \label{fig:apimds-clx-met}
+\end{figure}
+
+L'analisi delle metriche per classe mostra come entrambi i modelli ottengano prestazioni migliori sulle classi\
+più rappresentante nel dataset, in particolare \textit{Trojan}, \textit{Malware} \textit{Virus} ottenendo valori\
+\textit{precision}, \textit{recall} \textit{f1-score} superiori al $0.8$.\
+Le classi minoritarie \textit{Backdoor}, \textit{Worm} \textit{Downloader}, presentano invece valori più bassi,\
+con una riduzione evidente della \textit{recall}, indicando maggiori difficoltà nel riconoscere queste categorie.\
+In generale, si osserva una tendenza comune in cui la \textit{precision} è superiore alla \textit{recall} evidenziando\
+che i modelli sono più conservativi: tendono a classificare una istanza in una classe solo quando ne sono fortemente convinti\
+prediligendo quella più generale (\textit{Malware}) riducendo i falsi positivi al costo di non predire tutte le istanze di quella classe.\
+Nel complesso, \textit{RandomForest} effettua delle predizioni migliori.\
+Non emergono pattern di errore particolari: le differenze tra classi risultano coerenti con la loro rappresentatività nel dataset.
+
+\begin{figure}[]
+    \centering
+    \adjustbox{max width=1.4\linewidth, max height=0.8\textheight}{%
+        \includesvg[width=\textwidth]{validazione-empirica/imgs/apimds-global-metrics.svg}
+    }
+    \caption{\grpdescription{apimds}}
+    \label{fig:apimds-clx-global}
+\end{figure}
+
+L'analisi globale delle metriche sul dataset rileva una chiara superiorità del classificatore \textit{RandomForest} rispetto\
+a \textit{XGBoost}.
+\textit{RandomForest} ottiene una accuratezza complessiva di $0.83$ contro il $0.81$ di \textit{XGBoost}.\
+Tuttavia, la performance distintiva emerge dal confronto della metrica \textit{Macro F1-score}, che assegna lo stesso peso a tutte le classi,\
+comprese quelle minoritarie; \textit{RandomForest} ottiene uno score di $0.74$ rispetto al $0.71$ di \textit{XGBoost}.\
+Si evince un forte divario tra le metriche di micro e di macro: sulle metriche di micro si hanno ottimi risultati\
+evidenziando una particolare capacità nel predire le classi maggioritarie mentre in quelle macro si notano difficoltà\
+su quelle minoritarie. Se ne evince che il dataset è sbilanciato.
+
+%%%%%%%%%%%%%%%%% octack %%%%%%%%%%%%%%%%%%%
+Le matrici di confusione ottenute per il dataset \textbf{octack} sono le seguenti:
+
+\begin{figure}[t]
+    \centering
+    \adjustbox{max width=1.4\linewidth, max height=1\textheight}{%
+        \includesvg[width=\textwidth]{validazione-empirica/imgs/octak-confusion-matrix.svg}
+    }
+    \caption{\mtrdescription{octack}}
+    \label{fig:octack-mtrx-rf}
+\end{figure}
+
+\FloatBarrier
+%%% random forest , spyware, , 
+%%% xgboost  , ,  
+Le matrici di confusione mostrano che le classi più facilmente riconosciute sono \textit{Adware},\
+\textit{Downloader} e \textit{Virus}.\
+Il classificatore \textit{RandomForest} ottiene ottimi risultati anche per le classe \textit{Spyware}.
+Tuttavia, anche in questo caso, come nel dataset precedente, si osserva una tendenza comune a classificare erroneamente diversi esempi come \textit{Trojan},\
+evidenziando ancora una nuova la difficoltà individuare un comportamento comune tra i vari casi di \textit{Trojan}.\
+La classe \textit{Adware} risulta invece ben distinta dalla altre, con pochissimi falsi positivi e\
+falsi negativi, indice di chiamate API non presenti in altre classi.\
+Entrambi i modelli mostrano un comportamento simile, ma \textit{RandomForest} ottiene un numero maggiore di veri positivi complessivi,
+segno di una migliore capacità di generalizzazione.
+
+\begin{figure}[t]
+    \centering
+    \adjustbox{max width=1.4\linewidth, max height=1\textheight}{%
+        \includesvg[width=\textwidth]{validazione-empirica/imgs/octak-classes-metrics.svg}
+    }
+    \caption{\clsdescription{octack}}
+    \label{fig:octack-clx-met}
+\end{figure}
+
+\FloatBarrier
+
+Il modello \textit{RandomForest} ottiene prestazioni migliori in ogni metrica tranne che per la \textit{precision} sulla classe \textit{Downloader}.
+Per entrambi i modelli le classi \textit{Trojan} e \textit{Spyware} risultano le più difficoltose da predire.
+Al contrario la classe \textit{Adware} è quella meglio riconosciuta da entrambi i modelli, con metriche elevate e bilanciate.
+Nel complesso \textit{RandomForest} tende a generalizzar meglio rispetto a \textit{XGBoost}.
+
+\begin{figure}[t]
+    \centering
+    \adjustbox{max width=1.4\linewidth, max height=1\textheight}{%
+        \includesvg[width=\textwidth]{validazione-empirica/imgs/octak-global-metrics.svg}
+    }
+    \caption{\grpdescription{octack}}
+    \label{fig:octack-clx-met}
+\end{figure}
+
+\FloatBarrier
+
+Le metriche globali confermano \textit{RandomForest} come il classificatore più ottimale.
+
+%%%%%%%%%%%%%%%%% MPASCO %%%%%%%%%%%%%%%%%%%
+
+Le matrici di confusione ottenute per il dataset \textbf{mpasco} sono le seguenti:
+
+\begin{figure}[t]
+    \centering
+    \adjustbox{max width=1.4\linewidth, max height=1\textheight}{%
+        \includesvg[width=\textwidth]{validazione-empirica/imgs/mpasco-confusion-matrix.svg}
+    }
+    \caption{\mtrdescription{mpasco}}
+    \label{fig:octack-mtrx-rf}
+\end{figure}
+
+\FloatBarrier
+
+Il dataset \textbf{mpasco} presenta solo due classi, \textit{Goodware} e \textit{Malware}, ricadendo nel compito di classificazione binaria.\
+I falsi negativi (\textit{Malware} classificati come \textit{Goodware}) risultano più numerosi rispetto ai falsi positivi (\textit{Goodware} classificati come \textit{Malware}).\
+In un contesto di sicurezza informatica, tuttavia, sarebbe preferibile un comportamento che penalizzi maggiormente i falsi negativi:\
+un \textit{Malware} non rilevato ha conseguenze più gravi rispetto ad un \textit{Goodware} non rilevato.\
+Entrambi i modelli hanno ottime capacità di distinzione tra le due classi.
+
+\begin{figure}[t]
+    \centering
+    \adjustbox{max width=1.4\linewidth, max height=1.2\textheight}{%
+        \includesvg[width=\textwidth]{validazione-empirica/imgs/mpasco-classes-metrics.svg}
+    }
+    \caption{\clsdescription{mpasco}}
+    \label{fig:octack-mtrx-rf}
+\end{figure}
+
+\FloatBarrier
+
+Le metriche per classe confermano l'ottima capacità dei modelli nel distinguere \textit{Goodware} e \textit{Malware} ottenendo valori
+di metriche pari o uguali a $0.94$.
+
+\begin{figure}[t]
+    \centering
+    \adjustbox{max width=1.4\linewidth, max height=1.2\textheight}{%
+        \includesvg[width=\textwidth]{validazione-empirica/imgs/mpasco-global-metrics.svg}
+    }
+    \caption{\clsdescription{mpasco}}
+    \label{fig:octack-mtrx-rf}
+\end{figure}
+
+\FloatBarrier
+
+Le metriche globali rispecchiano le prestazioni ottimali di quelle di classe.
+
+
+%%%%%%%%%%%%%%%%% QUOVADIS %%%%%%%%%%%%%%%%%%%
+Le matrici di confusione ottenute per il dataset \textbf{quovadis} sono le seguenti:
+
+\begin{figure}[t]
+    \centering
+    \adjustbox{max width=1.4\linewidth, max height=1\textheight}{%
+        \includesvg[width=\textwidth]{validazione-empirica/imgs/quovadis-confusion-matrix.svg}
+    }
+    \caption{\mtrdescription{mpasco}}
+    \label{fig:octack-mtrx-rf}
+\end{figure}
+
+\FloatBarrier
+
+Il dataset \textbf{quovadis} presenta tre classi \textit{Goodware}, \textit{Malware} e \textit{Backdoor}.\
+Entrambi i modelli prestano ottime prestazioni nella classificazione dei \textit{Backdoor}, tuttavia\
+si osserva una differenza significativa nel comportamento: \textit{XGBoost} tende a classificare più esempi\
+di \textit{Backdoor} come \textit{Malware}.\
+Sulla distinzione tra \textit{Malware} e \textit{Goodware}, \textit{XGBoost} è più conservativo classificando\
+più \textit{Goodware} come \textit{Malware} ($1047$ contro i $251$) mentre \textit{RandomForest} mantiene un equilibrio migliore.
+
+\begin{figure}[t]
+    \centering
+    \adjustbox{max width=1.4\linewidth, max height=1.2\textheight}{%
+        \includesvg[width=\textwidth]{validazione-empirica/imgs/quovadis-classes-metrics.svg}
+    }
+    \caption{\clsdescription{quovadis}}
+    \label{fig:octack-mtrx-rf}
+\end{figure}
+
+\FloatBarrier
+
+Il classificatore \textit{RandomForest} ottiene ottimi risultati su tutte le classi.\
+Il classificatore \textit{XGBoost} mostra buone prestazioni complessive, ma presenta un valore di \textit{recall}\
+più basso per la classe \textit{Goodware}, evidenziando una difficoltà nel riconoscere correttamente un numero significativo di istanze appartenenti a tale classe.
+
+\begin{figure}[t]
+    \centering
+    \adjustbox{max width=1.4\linewidth, max height=1.2\textheight}{%
+        \includesvg[width=\textwidth]{validazione-empirica/imgs/quovadis-global-metrics.svg}
+    }
+    \caption{\clsdescription{quovadis}}
+    \label{fig:octack-mtrx-rf}
+\end{figure}
+
+\FloatBarrier
+
+Le metriche globali rispecchiano le prestazioni sulle classi ribadedno che il classificatore \textit{RandomForest}\
+sia nettamente superiore su \textit{XGBoost}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Conclusioni %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+In conclusione, il classificatore \textit{RandomForest} si è dimostrato complessivamente più efficace rispetto a \textit{XGBoost},\
+in particolare nella classificazione multiclasse dei campioni di malware, dove ha mostrato una maggiore stabilità tra le diverse categorie.\
+Entrambi i modelli hanno tuttavia raggiunto prestazioni elevate su tutti i dataset considerati.\
+I risultati ottenuti sono stati tali da non rendere necessario un ulteriore processo di ottimizzazione degli iperparametri,\
+indicando un buon bilanciamento tra complessità del modello e qualità della classificazione.
