@@ -1,0 +1,5 @@
+"Worm.Win32.Zwr.c","172b85e684b8426b4fe55c0245e4675ce1e3687b73a8c9fee2d1cc5cd84a1787","GetSystemDirectoryA","IsDBCSLeadByte","LocalAlloc","CreateSemaphoreW","CreateSemaphoreA","GlobalAddAtomW"
+"Trojan.Win32.FakeAV.rbzp","0000e27a0471230eecf42e629d36b617c2726e26181b3a7e7e4c03097ae225e5","GetProcessVersion","LocalAlloc","CreateSemaphoreW","CreateSemaphoreA","GlobalAddAtomW","lstrcpynW","LoadLibraryExW"
+"Worm.Win32.Vobfus.dvpo","00038a453a4eda579348af45b1827393227c1e19be732a75859402ce8ffb4a32","lstrcpyW","GetThreadLocale","lstrcmpiW","GlobalAlloc","GlobalLock","GlobalUnlock","GlobalReAlloc","RegisterClipboardFormatW"
+"Packed.Win32.PolyCrypt.d","00121cae10b7647a75205dd6ea59a50124612139e5e01a1b43be16d0710428c8","GetCommandLineA","GetStartupInfoA","LockResource","GetModuleFileNameA","IsBadWritePtr","RegisterClipboardFormatW"
+"Backdoor.Win32.Bredolab.nfz","0021cc116edb62aecd3ed772571c2606dcda9bac1931cd573295fd997827e0b4","GetDeviceCaps","ReleaseDC","SearchPathW","CreateFileW","CreateFileMappingW"

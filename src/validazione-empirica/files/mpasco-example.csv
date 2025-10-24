@@ -1,0 +1,3 @@
+sha256,labels,0,1,2,
+5c18291c481a192ed5003084dab2d8a117fd3736359218fee2aea1a164544c9e,0,LdrUnloadDll,CoUninitialize,NtQueryKey
+fbc42993285c97038894aa945b871caa9fc1030190b2c03c54b9d7ad2d799347,1,NtQueryValueKey,LdrUnloadDll,RegCloseKey

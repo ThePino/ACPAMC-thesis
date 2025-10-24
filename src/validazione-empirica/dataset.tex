@@ -5,33 +5,33 @@
 \newcommand{\clsper}[3]{\textit{#1} (\percc{#2} - $#3$)}
 \section{Dataset}
 
-La validazione empirica è stata condotta impiegando quattro dataset pubblici reperiti dalla letteratura scientifica.\
+La validazione empirica è stata condotta impiegando quattro dataset pubblici di chiamate API reperiti dalla letteratura scientifica.\
 Nel seguito, essi verranno indicati mediante i seguenti alias: il dataset proposto da \datasetapimds\mycite{Ki_2015} sarà denominato \textbf{apimds};\
 quello descritto in \datasetoctak\mycite{10.7717/peerj-cs.346} sarà indicato come \textbf{octak};\
 il dataset introdotto da \datasetmpasco\mycite{maniriho2023api} come \textbf{mpasco}; infine, il dataset derivante da\
 \datasetquovaids\mycite{10.1145/3560830.3563726} sarà indicato come \textbf{quovadis}.
 
-%% Per ogni dataser riportare se è bilanciato o meno, 
-%%Aggiungi dati che diano un'idea della scala:
-%%
-%%Numero totale di campioni
-%%
-%%Numero totale di classi
-%%
-%%Numero medio di chiamate API per campione
-%%
-%%Numero minimo/massimo di chiamate API
-%%
-%% Dimensione del training e del test set (in numero di istanze e in percentuale)
-Il dataset \textbf{apimds} è distribuito come file CSV denominato \texttt{malware\_API\_dataset.csv}.\
-Le colonne del CSV rappresentano in ordine, l'hash del PE, la classe di riferimento e le chiamate API effettuate.\
-Per la standardizzazione solo i dati dalla seconda colonna in poi sono stati utilizzati.\
+%%%%%%%%%%%%%%%%%% APIMDS %%%%%%%%%%%%%%%%%%%%
+Il dataset \textbf{apimds} è rappresentato in formato tabulare dove ogni riga (esempio)\
+contiene nel seguente ordine le feature: la classe dell'esempio, l'hash del PE,\
+e le restanti colonne le chiamate API effettuate.\
+In particolare per l'addestramento è stata utilizzata la prima colonna (la classe) come etichetta e\
+le colonne successive alla seconda per recuperare la sequenza di chiamate API.
+In \autoref{fig:apimds-example} un esempio del dataset.\
 Il numero totale di esempi è pari a $23146$, di cui \percc{80} dedicati al training ($18519$) e il restante \percc{20}($4627$) al testing.\
-La media di chiamate API per esempio è pari a $284.39199$ e il numero di chiamate distinte (quindi le feature) è pari a $1165$.
+La media di chiamate API per esempio è pari a $284.391$ e il numero di chiamate distinte (quindi le feature) è pari a $1165$.\
 Le classi presenti sono \clsper{Malware}{27.4}{6111}, \clsper{Backdoor}{2.6}{582}, \clsper{Downloader}{4,1}{917},\
-\clsper{Trojan}{46.9}{10450}, \clsper{Virus}{14.6}{3216} e \clsper{Packed}{4.3}{964}.
-La classe \textit{Goodware} non è presente ed la classe \textit{Malware} raggruppa tutti i malware non specificati nel dataset.\
-In \autoref{fig:apimds-classes-sets} e \autoref{fig:apimds-classes} vengono riportati le distribuzioni delle classi del dataset.
+\clsper{Trojan}{46.9}{10450}, \clsper{Virus}{14.6}{3216} e \clsper{Packed}{4.3}{964}.\
+La classe \textit{Goodware} non è presente ed la classe \textit{Malware} è stata utilizzata per rappresentare tutti quegli esempi per\
+i quali non è stato fornita un ulteriore specializzazione dal dataset.\
+In \autoref{fig:apimds-classes-sets} e \autoref{fig:apimds-classes} vengono riportati le distribuzioni delle classi del dataset.\
+
+\begin{figure}[h!]
+    \centering
+    \inputminted[fontsize=\small]{text}{validazione-empirica/files/apimds-example.csv}
+    \caption{Una porzione del dataset \textbf{apimds} troncato per una maggiore leggibilità.}
+    \label{fig:apimds-example}
+\end{figure}
 
 \begin{figure}[h!]
     \centering
@@ -54,16 +54,39 @@ In \autoref{fig:apimds-classes-sets} e \autoref{fig:apimds-classes} vengono ripo
 
 \FloatBarrier
 
-Il dataset \textbf{octak} è disponibile su GitHub\mycite{ocatak_malware_api_class} ed è distribuito usando un file CSV e uno di testo.\
-Il file \texttt{label.csv} è composto da una sola colonna contenente la classe dell'esempio; Il file \texttt{all\_analysis\_data.txt},\
-contiene le rispettive sequenze di API calls separate da spazi per riga.\
-Per la conversione nel formato standardizzato, sono state unite le informazioni dei due file associando l'$i$-esima riga del file \texttt{label.csv}\
-con l'$i$-esima riga del file \texttt{all\_analysis\_data.txt}.\
+%%%%%%%%%%%%%%%%%% octak %%%%%%%%%%%%%%%%%%%%
+
+Il dataset \textbf{octak} è disponibile su GitHub\mycite{ocatak_malware_api_class} ed è distribuito in formato tabulare su due tabelle.\
+La prima tabella, dove ogni riga corrisponde un esempio, ha una sola feature che corrisponde alla classe dell'esempio.\
+La seconda tabella, dove ogni riga corrisponde un esempio, ha una sola colonna in cui è presenta la sequenza di chiamate API\
+separate da spazio.\
+In particolare, per l'addestramento, si è utilizzata l'$i$-esima riga della prima tabella per ricavare la classe\
+e l'$i$-esima riga della seconda tabella per ricavare la sequenza di chiamate API per l'$i$-esimo esempio.\
+In \autoref{fig:octck-example} un esempio del dataset.\
 Il numero di esempi è pari a $7107$, di cui \percc{80} dedicato al training ($56880$) e il restante \percc{20} al testing set ($1419$).\
+La media di chiamate API per esempio è pari a $19647.267$ e il numero di chiamate distinte è pari a $278$.\
 Le classi presenti sono \clsper{Backdoor}{14.2}{1001}, \clsper{Adware}{5.4}{379}, \clsper{Downloader}{14.2}{1001}, \clsper{Dropper}{12.6}{891},\
 \clsper{Spyware}{11.8}{832}, \clsper{Trojan}{14.2}{1001}, \clsper{Virus}{14.2}{1001}, \clsper{Worm}{13.6}{972}.\
-Non sono presenti instanze di \textit{Goodware}.
+Non sono presenti istanze di \textit{Goodware}.
 In \autoref{fig:octak-classes-sets} e \autoref{fig:octak-classes} vengono riportati le distribuzioni delle classi del dataset.
+
+\begin{figure}[htbp]
+    \centering
+    % Minipage sinistra (20%)
+    \begin{minipage}[t]{0.2\textwidth}
+        \centering
+        \inputminted[fontsize=\small]{text}{validazione-empirica/files/octak-labels.txt}
+    \end{minipage}%
+    \hfill
+    % Minipage destra (80%)
+    \begin{minipage}[t]{0.75\textwidth} % lascia un piccolo gap con hfill
+        \centering
+        \inputminted[fontsize=\small]{text}{validazione-empirica/files/octak-calls.csv}
+        % caption separata
+    \end{minipage}
+    \caption{Una porzione del dataset \textbf{octack} troncato per maggior leggibilità.}
+    \label{fig:octck-example}
+\end{figure}
 
 \begin{figure}[h!]
     \centering
@@ -85,12 +108,26 @@ In \autoref{fig:octak-classes-sets} e \autoref{fig:octak-classes} vengono riport
 
 \FloatBarrier
 
-Il dataset \textbf{mpasco} è disponibile su GitHub\mycite{maniriho2023malbehavd}, distribuito come file CSV \\
-\texttt{MalBehavD-V1-dataset.csv}. Le colonne del CSV rappresentano in ordine l'hash del PE, la classe dell'esempio ($0$ per \textit{Goodware} altrimenti \textit{Malware}) e\
-le successive colonne la sequenza di chiamate API. Per la standardizzazione del dataset, solo la prima colonna è stata esclusa.
+%%%%%%%%%%%%%%%%%% mpasco %%%%%%%%%%%%%%%%%%%%
+
+Il dataset \textbf{mpasco} è disponibile su GitHub\mycite{maniriho2023malbehavd}, distribuito in formato tabulare,\
+dove ogni riga è un esempio e in ordine troviamo le seguenti feature: sha265, labels, e una sequenza incrementale\
+che indica la posizione della chiamata API nella sequenza.\
+Per l'addestramento le feature selezionate sono state la label (con valore $0$ per \textit{Goodware} altrimenti \textit{Malware}),\
+e le colonne della sequenza della chiamate API.\
+In \autoref{fig:mpasco-example} un esempio del dataset.\
 Il numero di esempi è pari a $4112$, di cui \percc{80} dedicato al training ($3598$) e il restante \percc{20} al testing set ($514$).\
+La media di chiamate API per esempio è pari a $43.187$ e il numero di chiamate distinte è pari a $291$.\
 Sono presenti solo due classi, \clsper{Malware}{50}{2056} e \clsper{Goodware}{50}{20560}.
 In \autoref{fig:mpasco-classes-sets} e \autoref{fig:mpasco-classes} vengono riportati le distribuzioni delle classi del dataset.
+
+\begin{figure}[h!]
+    \centering
+    \inputminted[fontsize=\small]{text}{validazione-empirica/files/mpasco-example.csv}
+    \caption{Una porzione del dataset \textbf{mpasco} troncato per una maggiore leggibilità.}
+    \label{fig:mpasco-example}
+\end{figure}
+
 
 \begin{figure}[h!]
     \centering
@@ -112,6 +149,8 @@ In \autoref{fig:mpasco-classes-sets} e \autoref{fig:mpasco-classes} vengono ripo
 
 \FloatBarrier
 
+%%%%%%%%%%%%%%%%%% quovadis %%%%%%%%%%%%%%%%%%%%
+
 Il dataset \textbf{quovadis} è disponibile su GitHub\mycite{trizna_quovadis} ed è distribuito come un archivio compresso.\
 Nell'archivio sono presenti diverse cartelle che rispettano la denominazione \texttt{report\_\textless classe\textgreater},\
 dove \texttt{classe} è la classe delle istanze degli esempi presenti.\
@@ -132,11 +171,20 @@ I campi di interesse del JSON per la standardizzazione del dataset sono riportat
 
 
 \FloatBarrier
-
+In \autoref{fig:quovadis-example} un esempio del dataset.\
 Il numero di esempi è pari a $64023$, di cui \percc{80} dedicato al training ($51219$) e il restante \percc{20} al testing set ($12804$).\
+La media di chiamate API per esempio è pari a $196.144$ e il numero di chiamate distinte è pari a $3024$.\
 Sono presenti tre classi, \clsper{Malware}{43.2}{27670}, \clsper{Goodware}{39.5}{25291} e \clsper{Backdoor}{17.3}{11062}.\
 Nella classe malware sono racchiusi tutti i malware non specializzati.
 In \autoref{fig:quovadis-classes-sets} e \autoref{fig:quovadis-classes} vengono riportati le distribuzioni delle classi del dataset.
+
+\begin{figure}[h!]
+    \centering
+    \inputminted[fontsize=\small]{json}{validazione-empirica/files/quovadis-example.json}
+    \caption{Una porzione del dataset \textbf{quovadis} troncato per una maggiore leggibilità.}
+    \label{fig:quovadis-example}
+\end{figure}
+
 
 \begin{figure}[h!]
     \centering
@@ -155,5 +203,25 @@ In \autoref{fig:quovadis-classes-sets} e \autoref{fig:quovadis-classes} vengono 
     \caption{Distribuzione delle classi sul dataset \textbf{quovadis}}
     \label{fig:quovadis-classes}
 \end{figure}
+
+\FloatBarrier
+
+In \autoref{tab:dataset-summary} la tabella riassuntiva dei $4$ dataset.
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|l|l|r|r|r|}
+        \hline
+        \textbf{Dataset} & \textbf{Classificazione} & \textbf{Numero feature} & \textbf{Esempi train} & \textbf{Esempi test} \\
+        \hline
+        apimds           & Multiclasse              & 1165                    & 18519                 & 4627                 \\
+        octak            & Multiclasse              & 278                     & 56880                 & 1419                 \\
+        mpasco           & Binaria                  & 291                     & 3598                  & 514                  \\
+        mpasco           & Multiclasse              & 3024                    & 51219                 & 12804                \\
+        \hline
+    \end{tabular}
+    \caption{Caratteristiche dei dataset utilizzati.}
+    \label{tab:dataset-summary}
+\end{table}
 
 \FloatBarrier

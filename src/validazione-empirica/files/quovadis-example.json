@@ -1,0 +1,18 @@
+[
+    {
+        "apis": [
+            {
+                "api_name": "KERNEL32.GetSystemTimeAsFileTime"
+            },
+            {
+                "api_name": "KERNEL32.GetCurrentThreadId"
+            },
+            {
+                "api_name": "KERNEL32.GetCurrentProcessId"
+            },
+            {
+                "api_name": "KERNEL32.QueryPerformanceCounter"
+            }
+        ]
+    }
+]
