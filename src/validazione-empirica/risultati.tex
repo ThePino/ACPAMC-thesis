@@ -1,5 +1,4 @@
 \newcommand{\mtrdescription}[1]{Matrici di confusione sul dataset \textbf{#1}}
-\newcommand{\clsdescription}[1]{Precision sul dataset \textbf{#1}}
 \newcommand{\prcdescription}[3]{#3 sul dataset \textbf{#1} con \textit{#2}}
 \newcommand{\grpdescription}[1]{Overall accuracy, micro e macro metriche sul dataset \textbf{#1}}
 
@@ -289,7 +288,7 @@ Entrambi i modelli hanno ottime capacità di distinzione tra le due classi.
         \includesvg[width=\textwidth]{validazione-empirica/imgs/mpasco-XGBoost-f1_score.svg}
     }
     \caption{\prcdescription{octack}{XGBoost}{Precision}}
-    \label{fig:apimds-rf-prc}
+    \label{fig:mpasco-rf-prc}
 \end{figure}
 
 \begin{figure}[]
@@ -298,7 +297,7 @@ Entrambi i modelli hanno ottime capacità di distinzione tra le due classi.
         \includesvg[width=\textwidth]{validazione-empirica/imgs/mpasco-XGBoost-recall.svg}
     }
     \caption{\prcdescription{octack}{XGBoost}{Recall}}
-    \label{fig:apimds-rf-rc}
+    \label{fig:mpasco-rf-rc}
 \end{figure}
 
 \begin{figure}[]
@@ -307,7 +306,7 @@ Entrambi i modelli hanno ottime capacità di distinzione tra le due classi.
         \includesvg[width=\textwidth]{validazione-empirica/imgs/mpasco-XGBoost-f1_score.svg}
     }
     \caption{\prcdescription{octack}{XGBoost}{F1-score}}
-    \label{fig:apimds-rf-f1}
+    \label{fig:mpasco-rf-f1}
 \end{figure}
 
 \FloatBarrier
@@ -322,7 +321,7 @@ di metriche pari o uguali a $0.94$.
     \adjustbox{max width=1.4\linewidth, max height=1.2\textheight}{%
         \includesvg[width=\textwidth]{validazione-empirica/imgs/mpasco-global-metrics.svg}
     }
-    \caption{\clsdescription{mpasco}}
+    \caption{\grpdescription{mpasco}}
     \label{fig:octack-mtrx-rf}
 \end{figure}
 
@@ -425,7 +424,7 @@ più basso per la classe \textit{Goodware}, evidenziando una difficoltà nel ric
     \adjustbox{max width=1.4\linewidth, max height=1.2\textheight}{%
         \includesvg[width=\textwidth]{validazione-empirica/imgs/quovadis-global-metrics.svg}
     }
-    \caption{\clsdescription{quovadis}}
+    \caption{\grpdescription{quovadis}}
     \label{fig:octack-mtrx-rf}
 \end{figure}
 
