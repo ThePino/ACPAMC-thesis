@@ -22,7 +22,7 @@ Il numero totale di esempi è pari a $23146$, di cui \percc{80} dedicati al trai
 La media di chiamate API per esempio è pari a $284.391$ e il numero di chiamate distinte (quindi le feature) è pari a $1165$.\
 Le classi presenti sono \clsper{Malware}{27.4}{6111}, \clsper{Backdoor}{2.6}{582}, \clsper{Downloader}{4,1}{917},\
 \clsper{Trojan}{46.9}{10450}, \clsper{Virus}{14.6}{3216} e \clsper{Packed}{4.3}{964}.\
-La classe \textit{Goodware} non è presente ed la classe \textit{Malware} è stata utilizzata per rappresentare tutti quegli esempi per\
+La classe \textit{Goodware} non è presente e la classe \textit{Malware} è stata utilizzata per rappresentare tutti quegli esempi per\
 i quali non è stato fornita un ulteriore specializzazione dal dataset.\
 In \autoref{fig:apimds-classes-sets} e \autoref{fig:apimds-classes} vengono riportati le distribuzioni delle classi del dataset.\
 
@@ -58,7 +58,7 @@ In \autoref{fig:apimds-classes-sets} e \autoref{fig:apimds-classes} vengono ripo
 
 Il dataset \textbf{octak} è disponibile su GitHub\mycite{ocatak_malware_api_class} ed è distribuito in formato tabulare su due tabelle.\
 La prima tabella, dove ogni riga corrisponde un esempio, ha una sola feature che corrisponde alla classe dell'esempio.\
-La seconda tabella, dove ogni riga corrisponde un esempio, ha una sola colonna in cui è presenta la sequenza di chiamate API\
+La seconda tabella, dove ogni riga corrisponde un esempio, ha una sola colonna in cui è presente la sequenza di chiamate API\
 separate da spazio.\
 In particolare, per l'addestramento, si è utilizzata l'$i$-esima riga della prima tabella per ricavare la classe\
 e l'$i$-esima riga della seconda tabella per ricavare la sequenza di chiamate API per l'$i$-esimo esempio.\
@@ -111,8 +111,8 @@ In \autoref{fig:octak-classes-sets} e \autoref{fig:octak-classes} vengono riport
 %%%%%%%%%%%%%%%%%% mpasco %%%%%%%%%%%%%%%%%%%%
 
 Il dataset \textbf{mpasco} è disponibile su GitHub\mycite{maniriho2023malbehavd}, distribuito in formato tabulare,\
-dove ogni riga è un esempio e in ordine troviamo le seguenti feature: sha265, labels, e una sequenza incrementale\
-che indica la posizione della chiamata API nella sequenza.\
+la prima riga è l'intestazione della tabella (sha265, labels, e una sequenza incrementale\
+che indica la posizione della chiamata API nella sequenza) e le successive righe gli esempi.\
 Per l'addestramento le feature selezionate sono state la label (con valore $0$ per \textit{Goodware} altrimenti \textit{Malware}),\
 e le colonne della sequenza della chiamate API.\
 In \autoref{fig:mpasco-example} un esempio del dataset.\

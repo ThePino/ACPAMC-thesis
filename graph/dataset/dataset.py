@@ -239,45 +239,27 @@ def print_graph_metrics(dataset: DatasetEntry, dataset_name: DatasetName, output
 
 def print_class_metrics(dataset: DatasetEntry, dataset_name: DatasetName, output_folder: Path, ext: MediaOutput):
     """
-    Stampa affiancati i grafici a barre per F1-score, Precision e Recall
-    per ciascun classificatore del dataset, con una sola leggenda condivisa.
+    Genera un grafico per ciascuna metrica (F1-score, Precision, Recall)
+    per ogni classificatore del dataset, con legenda sotto.
     """
-    import matplotlib.pyplot as plt
-    import numpy as np
-    from pathlib import Path
 
-    classifiers = list(dataset.classifiers.keys())
-    n = len(classifiers)
-    fig, axes = plt.subplots(1, n, figsize=(6 * n, 7))
+    metrics = {
+        "f1_score": "F1-score",
+        "precision": "Precision",
+        "recall": "Recall"
+    }
 
-    if n == 1:
-        axes = [axes]
+    for metric_key, metric_name in metrics.items():
+        for classifier, classifier_data in dataset.classifiers.items():
+            data = classifier_data.classes
+            classes_keys = list(data.keys())
+            values = [getattr(data[clx], metric_key) for clx in classes_keys]
 
-    # memorizzo le barre del primo grafico per la leggenda
-    legend_handles = None
+            fig, ax = plt.subplots(figsize=(8, 6))
+            x = np.arange(len(classes_keys))
+            bars = ax.bar(x, values, color="steelblue", label=metric_name)
 
-    for i, classifier in enumerate(classifiers):
-        ax = axes[i]
-        data = dataset.classifiers[classifier].classes
-        classes_keys = list(data.keys())
-
-        f1_score = [data[clx].f1_score for clx in classes_keys]
-        precision = [data[clx].precision for clx in classes_keys]
-        recall = [data[clx].recall for clx in classes_keys]
-
-        x = np.arange(len(classes_keys))
-        width = 0.25
-
-        bars1 = ax.bar(x - width, f1_score, width=width, label="F1-score", color="steelblue")
-        bars2 = ax.bar(x, precision, width=width, label="Precision", color="seagreen")
-        bars3 = ax.bar(x + width, recall, width=width, label="Recall", color="darkorange")
-
-        # salvo le barre solo una volta per la leggenda
-        if legend_handles is None:
-            legend_handles = [bars1, bars2, bars3]
-
-        # valori sopra le barre
-        for bars in [bars1, bars2, bars3]:
+            # valori sopra le barre
             for bar in bars:
                 y = bar.get_height()
                 ax.text(
@@ -289,31 +271,20 @@ def print_class_metrics(dataset: DatasetEntry, dataset_name: DatasetName, output
                     fontsize=8
                 )
 
-        ax.set_title(f"{classifier.name}")
-        ax.set_xlabel("Classi")
-        ax.set_ylabel("Valore")
-        ax.set_xticks(x)
-        ax.set_xticklabels([clx.value for clx in classes_keys], rotation=45, ha="right")
-        ax.set_ylim(0, 1.1)
+            ax.set_title(f"{classifier.name}")
+            ax.set_xlabel("Classi")
+            ax.set_ylabel(metric_name)
+            ax.set_xticks(x)
+            ax.set_xticklabels([clx.value for clx in classes_keys], rotation=45, ha="right")
+            ax.set_ylim(0, 1.1)   
+           
+            fig.tight_layout(rect=[0, 0.08, 1, 0.95])  # spazio per la legenda
 
-    # leggenda unica al centro sotto i grafici
-    labels = ["F1-score", "Precision", "Recall"]
-    fig.legend(
-        [h[0] for h in legend_handles],
-        labels,
-        loc="lower center",
-        ncol=3,
-        frameon=False,
-        fontsize=10
-    )
+            # nome file di output
+            output = output_folder / f"{dataset_name.value}-{classifier.name}-{metric_key}.{ext.value}"
+            plt.savefig(output, format=ext.value, bbox_inches="tight", transparent=True)
+            plt.close(fig)
 
-    fig.tight_layout(rect=[0, 0.08, 1, 0.95])  # spazio per la legenda in basso
-
-    # salvataggio output
-    output = output_folder / f"{dataset_name.value}-classes-metrics.{ext.value}"
-    plt.savefig(output, format=ext.value, bbox_inches="tight", transparent=True)
-    plt.close(fig)
-    
 
 def print_global_metrics(dataset: DatasetEntry, dataset_name: DatasetName, output_folder: Path, ext: MediaOutput):
     classifiers = list(dataset.classifiers.keys())
@@ -323,7 +294,7 @@ def print_global_metrics(dataset: DatasetEntry, dataset_name: DatasetName, outpu
     fig, ax = plt.subplots(figsize=(7, 6))
 
     metrics_names = [
-        "Global Accuracy",
+        "Overall Accuracy",
         "Micro Precision", "Micro Recall", "Micro F1-score",
         "Macro Precision", "Macro Recall", "Macro F1-score"
     ]
@@ -356,12 +327,19 @@ def print_global_metrics(dataset: DatasetEntry, dataset_name: DatasetName, outpu
     ax.set_xticks(x + width / 2)
     ax.set_xticklabels(metrics_names, rotation=30, ha='right')
     ax.set_ylabel("Valore")
-    ax.legend()
+    
+    ax.legend(
+        loc='upper center',
+        bbox_to_anchor=(0.5, -0.15),
+        ncol=n,  # una colonna per ogni classificatore
+        frameon=False
+    )
 
     # Mostro i valori sopra le barre
     for i, classifier in enumerate(classifiers):
         for j, v in enumerate(all_values[i]):
             ax.text(x[j] + i * width, v + 0.005, f"{v:.2f}", ha='center', va='bottom', fontsize=8)
+
 
     fig.tight_layout()
 
