@@ -13,6 +13,7 @@
 rev
 # Ignoring venv
 venv
+.venv
 __pycache__
 _minted*
 *svg-inkscape*
