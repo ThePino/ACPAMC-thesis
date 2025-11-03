@@ -18,7 +18,7 @@ class ClassName(str, Enum):
     
 class DatasetName(str, Enum):
     apimds = "apimds"
-    octak = "octak"
+    octack = "octack"
     mpasco = "mpasco"
     quovadis = "quovadis"
 
@@ -63,3 +63,7 @@ class DatasetEntry(BaseModel):
 # ----- Root model -----
 class Datasets(RootModel[Dict[DatasetName, DatasetEntry]]):
     pass
+
+if __name__ == "__main__":
+    print("This file it's not intended to be run")
+    exit(1)

@@ -1,17 +1,15 @@
 \newcommand{\mtrdescription}[1]{Matrici di confusione sul dataset \textbf{#1}}
-\newcommand{\prcdescription}[3]{#3 sul dataset \textbf{#1} con \textit{#2}}
+\newcommand{\clscaption}[2]{\textit{Precision}, \textit{Recall} e \textit{F1-score} sul dataset {\textbf{#1}} con modello {\textit{#2}}}
 \newcommand{\grpdescription}[1]{Overall accuracy, micro e macro metriche sul dataset \textbf{#1}}
+\newcommand{\classmetrics}[3]{In \autoref{#1} e in \autoref{#2} le metriche \textit{Precision}, \textit{Recall} e \textit{F1-score} per \textit{XGBoost} e \textit{RandomForest} per il dataset \textbf{#3}.}
+\newcommand{\globalmetrics}[2]{In \autoref{#1} le metriche \textit{Overall accuracy},  \textit{Micro precision}, \textit{Micro recall}, \textit{Micro F1-score}, \textit{Macro precision}, \textit{Macro recall} e \textit{Macro F1-score} per il dataset \textbf{#2}.}
 
 \section{Risultati}
 
 Per analizzare in dettaglio il comportamento dei modelli sulle diverse classi, sono state calcolate le matrici di confusione.\
 Esse permettono di visualizzare le corrette classificazioni (diagonale principale) e gli errori di classificazione.
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%% apimds %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-Le matrici di confusione ottenute per il dataset \textbf{apimds} sono le seguenti:
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% APIMDS $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+Le matrici di confusione ottenute per il dataset \textbf{apimds} sono illustrate in \autoref{fig:apimds-mtrx}.
 
 \begin{figure}[ht]
     \centering
@@ -19,7 +17,7 @@ Le matrici di confusione ottenute per il dataset \textbf{apimds} sono le seguent
         \includesvg[width=\textwidth]{validazione-empirica/imgs/apimds-confusion-matrix.svg}
     }
     \caption{\mtrdescription{apimds}}
-    \label{fig:apimds-mtrx-rf}
+    \label{fig:apimds-mtrx}
 \end{figure}
 
 Le classi meglio identificate risultano \textit{Trojan}, \textit{Malware} e \textit{Virus} in entrambi i modelli.\
@@ -31,79 +29,42 @@ Per quanto riguarda le classi diverse da \textit{Trojan}, il modello quando pred
 Nel complesso, i due classificatori mostrano un comportamento simile, ma \textit{RandomForest} ottiene risultati leggermente migliori.\
 Non emergono pattern di errore anomali: gli errori si distribuiscono in modo coerente con la rappresentatività delle classi.
 
-%%%%%%%%%%%%% Inizio metriche APIMDS %%%%%%%%%%%%%%%
-%%%%%%%%%%%%% Random Forest %%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{figure}[]
+\begin{figure}[ht]
     \centering
-    \adjustbox{max width=1.4\linewidth, max height=2\textheight}{%
-        \includesvg[width=\textwidth]{validazione-empirica/imgs/apimds-RandomForest-precision.svg}
+    \adjustbox{max width=\linewidth, max height=0.8\textheight, keepaspectratio}{%
+        \includesvg{validazione-empirica/imgs/apimds_XGBoost_metrics.svg}
     }
-    \caption{\prcdescription{apimds}{RandomForest}{Precision}}
-    \label{fig:apimds-rf-prc}
+    \caption{\clscaption{apimds}{XGBoost}}
+    \label{fig:apimds-cls-xgb}
 \end{figure}
 
-\begin{figure}[]
-    \centering
-    \adjustbox{max width=1.4\linewidth, max height=2\textheight}{%
-        \includesvg[width=\textwidth]{validazione-empirica/imgs/apimds-RandomForest-recall.svg}
-    }
-    \caption{\prcdescription{apimds}{RandomForest}{Recall}}
-    \label{fig:apimds-rf-rc}
-\end{figure}
 
-\begin{figure}[]
+\begin{figure}[ht]
     \centering
-    \adjustbox{max width=1.4\linewidth, max height=2\textheight}{%
-        \includesvg[width=\textwidth]{validazione-empirica/imgs/apimds-RandomForest-f1_score.svg}
-    }
-    \caption{\prcdescription{apimds}{RandomForest}{F1-score}}
-    \label{fig:apimds-rf-f1}
-\end{figure}
-
-%%%%%%%%%%%%% XGBoost %%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{figure}[]
-    \centering
-    \adjustbox{max width=1.4\linewidth, max height=2\textheight}{%
-        \includesvg[width=\textwidth]{validazione-empirica/imgs/apimds-XGBoost-f1_score.svg}
-    }
-    \caption{\prcdescription{apimds}{XGBoost}{Precision}}
-    \label{fig:apimds-xgb-prc}
-\end{figure}
-
-\begin{figure}[]
-    \centering
-    \adjustbox{max width=1.4\linewidth, max height=2\textheight}{%
-        \includesvg[width=\textwidth]{validazione-empirica/imgs/apimds-XGBoost-recall.svg}
-    }
-    \caption{\prcdescription{apimds}{XGBoost}{Recall}}
-    \label{fig:apimds-xgb-rc}
-\end{figure}
-
-\begin{figure}[]
-    \centering
-    \adjustbox{max width=1.4\linewidth, max height=2\textheight}{%
-        \includesvg[width=\textwidth]{validazione-empirica/imgs/apimds-XGBoost-f1_score.svg}
-    }
-    \caption{\prcdescription{apimds}{XGBoost}{F1-score}}
-    \label{fig:apimds-xgb-f1}
+    \includesvg[width=\linewidth, keepaspectratio]{validazione-empirica/imgs/apimds_RandomForest_metrics.svg}
+    \caption{\clscaption{apimds}{RandomForest}}
+    \label{fig:apimds-cls-rf}
 \end{figure}
 
 \FloatBarrier
 
-%%%%%%%%%%%%%%% FINE METRICHE CLASSE APIMDS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+In \autoref{fig:apimds-cls-xgb} vengono illsturate le metriche \textit{precision}, \textit{recall} e \textit{f1-score} per il modello \textit{XGBoost}.\
+Per quanto riguarda la \textit{precision}, il modello presenta valori generalmente buoni, con la maggior parte delle classi che supera il punteggio di $0.73$.\
+Relativamente alla \textit{recall}, si notano valori più variabili: il modello eccelle nella classificazione di \textit{Trojan}, ottenendo un punteggio di $0.94$.\
+Si evidenziano, tuttavia, valori di recall bassi per le classi \textit{Backdoor}, \textit{Downloader} e \textit{Worm}, che registrano valori pari a $0.35$, $0.56$ e $0.56$.\
+Questi risultati si rifletto sull'\textit{F1-score}, che risulta penalizzato per queste classi (ad esempio, $0.48$ per \textit{Backdoor}).\
+Parallelamente, in \autoref{fig:apimds-cls-rf} sono mostrati i risultati per il modello \textit{RandomForest}.\
+Questo modello presenta una \textit{precision} molto robusta, spesso superiore a \textit{XGBoost}, con la maggior parte delle classi che supera il punteggio di $0.80$ (ad esempio, \textit{Malware} $0.89$ e \textit{Trojan} $0.87$).\
+Per quanto concerne la \textit{recall}, si osserva un comportamento analogo a \textit{XGBoost}, con prestazioni eccellenti su \textit{Trojan} ($0.93$) e \textit{Virus} ($0.85$).\
+Il modello \textit{RandomForest} cosi come \textit{XGBoost} è penalizzato sulla classe \textit{Backdoor} ($0.40$) ma si nota un leggero miglioramento.\
+Le classi \textit{Downloader} e \textit{Worm} ottengono entrambe $0.62$, un risultato superiore al modello precedente.\
+Dal confronto diretto dei due modelli emerge che \textit{RandomForest} offre prestazioni complessivamente superiori e più bilanciate su questo dataset.\
+Analizzando l'\textit{F1-score}, \textit{RandomForest} ottiene un punteggio uguale o superiore a \textit{XGBoost} in ogni singola classe.\
+I vantaggi più evidenti si registrano nelle classi \textit{Virus} (\textit{f1-score} di $0.86$ contro $0.81$) e \textit{Packed} ($0.80$ contro $0.75$).\
+Entrambi i modelli eccellono nell'identificazione dei \textit{Trojan} (\textit{F1-score} $0.88$ per entrambi),\
+ma condividono una marcata difficoltà nel classificare la classe \textit{Backdoor}.
 
-L'analisi delle metriche per classe mostra come entrambi i modelli ottengano prestazioni migliori sulle classi\
-più rappresentante nel dataset, in particolare \textit{Trojan}, \textit{Malware} \textit{Virus} ottenendo valori\
-\textit{precision}, \textit{recall} \textit{f1-score} superiori al $0.8$.\
-Le classi minoritarie \textit{Backdoor}, \textit{Worm} \textit{Downloader}, presentano invece valori più bassi,\
-con una riduzione evidente della \textit{recall}, indicando maggiori difficoltà nel riconoscere queste categorie.\
-In generale, si osserva una tendenza comune in cui la \textit{precision} è superiore alla \textit{recall} evidenziando\
-che i modelli sono più conservativi: tendono a classificare una istanza in una classe solo quando ne sono fortemente convinti\
-prediligendo quella più generale (\textit{Malware}) riducendo i falsi positivi al costo di non predire tutte le istanze di quella classe.\
-Nel complesso, \textit{RandomForest} effettua delle predizioni migliori.\
-Non emergono pattern di errore particolari: le differenze tra classi risultano coerenti con la loro rappresentatività nel dataset.
 
 \begin{figure}[]
     \centering
@@ -111,13 +72,16 @@ Non emergono pattern di errore particolari: le differenze tra classi risultano c
         \includesvg[width=\textwidth]{validazione-empirica/imgs/apimds-global-metrics.svg}
     }
     \caption{\grpdescription{apimds}}
-    \label{fig:apimds-clx-global}
+    \label{fig:apimds-global}
 \end{figure}
 
+\FloatBarrier
 
-L'analisi globale delle metriche sul dataset rileva una chiara superiorità del classificatore \textit{RandomForest} rispetto\
+In \autoref{fig:apimds-global} sono riportate le metriche \textit{overall accurancy}, \textit{micro precision}, \textit{micro recall}, \textit{micro f1-score},\
+\textit{micro precision}, \textit{micro recall}, \textit{micro f1-score} di entrambi i classificatori.\
+L'analisi  di queste metriche sul dataset rileva una chiara superiorità del classificatore \textit{RandomForest} rispetto\
 a \textit{XGBoost}.
-\textit{RandomForest} ottiene una accuratezza complessiva di $0.83$ contro il $0.81$ di \textit{XGBoost}.\
+\textit{RandomForest} ottiene una \textit{over accuraccy} di $0.83$ contro il $0.81$ di \textit{XGBoost}.\
 Tuttavia, la performance distintiva emerge dal confronto della metrica \textit{Macro F1-score}, che assegna lo stesso peso a tutte le classi,\
 comprese quelle minoritarie; \textit{RandomForest} ottiene uno score di $0.74$ rispetto al $0.71$ di \textit{XGBoost}.\
 Si evince un forte divario tra le metriche di micro e di macro: sulle metriche di micro si hanno ottimi risultati\
@@ -125,7 +89,7 @@ evidenziando una particolare capacità nel predire le classi maggioritarie mentr
 su quelle minoritarie. Se ne evince che il dataset è sbilanciato.
 
 %%%%%%%%%%%%%%%%% octack %%%%%%%%%%%%%%%%%%%
-Le matrici di confusione ottenute per il dataset \textbf{octack} sono le seguenti:
+Le matrici di confusione ottenute per il dataset \textbf{octack} sono illustrate in \autoref{fig:octack-mtrx}.
 
 \begin{figure}[t]
     \centering
@@ -133,13 +97,13 @@ Le matrici di confusione ottenute per il dataset \textbf{octack} sono le seguent
         \includesvg[width=\textwidth]{validazione-empirica/imgs/octak-confusion-matrix.svg}
     }
     \caption{\mtrdescription{octack}}
-    \label{fig:octack-mtrx-rf}
+    \label{fig:octack-mtrx}
 \end{figure}
 
 \FloatBarrier
 
-Le matrici di confusione mostrano che le classi più facilmente riconosciute sono \textit{Adware},\
-\textit{Downloader} e \textit{Virus}.\
+Le matrici di confusione mostrano che le classi più riconsociute per il modello \texit{XGBoost} sono \textit{Virus},\
+\textit{Downloader} e \textit{}
 Il classificatore \textit{RandomForest} ottiene ottimi risultati anche per le classe \textit{Spyware}.
 Tuttavia, anche in questo caso, come nel dataset precedente, si osserva una tendenza comune a classificare erroneamente diversi esempi come \textit{Trojan},\
 evidenziando ancora una nuova la difficoltà individuare un comportamento comune tra i vari casi di \textit{Trojan}.\
@@ -147,64 +111,25 @@ La classe \textit{Adware} risulta invece ben distinta dalla altre, con pochissim
 falsi negativi, indice di chiamate API non presenti in altre classi.\
 Entrambi i modelli mostrano un comportamento simile, ma \textit{RandomForest} ottiene un numero maggiore di veri positivi complessivi,
 segno di una migliore capacità di generalizzazione.
-
+\classmetrics{fig:octack-cls-xgb}{fig:octack-cls-rf}{octack}
 %%%%%%%%%%%%% Inizio metriche octack %%%%%%%%%%%%%%%
 %%%%%%%%%%%%% Random Forest %%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{figure}[]
+\begin{figure}[ht]
     \centering
-    \adjustbox{max width=1.4\linewidth, max height=2\textheight}{%
-        \includesvg[width=\textwidth]{validazione-empirica/imgs/octak-RandomForest-precision.svg}
+    \adjustbox{max width=\linewidth, max height=0.8\textheight, keepaspectratio}{%
+        \includesvg{validazione-empirica/imgs/octak_XGBoost_metrics.svg}
     }
-    \caption{\prcdescription{octack}{RandomForest}{Precision}}
-    \label{fig:octack-rf-prc}
+    \caption{\clscaption{octack}{XGBoost}}
+    \label{fig:octack-cls-xgb}
 \end{figure}
 
-\begin{figure}[]
-    \centering
-    \adjustbox{max width=1.4\linewidth, max height=2\textheight}{%
-        \includesvg[width=\textwidth]{validazione-empirica/imgs/octak-RandomForest-recall.svg}
-    }
-    \caption{\prcdescription{octack}{RandomForest}{Recall}}
-    \label{fig:octack-rf-rc}
-\end{figure}
 
-\begin{figure}[]
+\begin{figure}[ht]
     \centering
-    \adjustbox{max width=1.4\linewidth, max height=2\textheight}{%
-        \includesvg[width=\textwidth]{validazione-empirica/imgs/octak-RandomForest-f1_score.svg}
-    }
-    \caption{\prcdescription{octack}{RandomForest}{F1-score}}
-    \label{fig:octack-rf-f1}
-\end{figure}
-
-%%%%%%%%%%%%% XGBoost %%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{figure}[]
-    \centering
-    \adjustbox{max width=1.4\linewidth, max height=2\textheight}{%
-        \includesvg[width=\textwidth]{validazione-empirica/imgs/octak-XGBoost-f1_score.svg}
-    }
-    \caption{\prcdescription{octack}{XGBoost}{Precision}}
-    \label{fig:octack-xgb-prc}
-\end{figure}
-
-\begin{figure}[]
-    \centering
-    \adjustbox{max width=1.4\linewidth, max height=2\textheight}{%
-        \includesvg[width=\textwidth]{validazione-empirica/imgs/octak-XGBoost-recall.svg}
-    }
-    \caption{\prcdescription{octack}{XGBoost}{Recall}}
-    \label{fig:octack-xgb-rc}
-\end{figure}
-
-\begin{figure}[]
-    \centering
-    \adjustbox{max width=1.4\linewidth, max height=2\textheight}{%
-        \includesvg[width=\textwidth]{validazione-empirica/imgs/octak-XGBoost-f1_score.svg}
-    }
-    \caption{\prcdescription{octack}{XGBoost}{F1-score}}
-    \label{fig:octack-xgb-f1}
+    \includesvg[width=\linewidth, keepaspectratio]{validazione-empirica/imgs/octak_RandomForest_metrics.svg}
+    \caption{\clscaption{octack}{RandomForest}}
+    \label{fig:octack-cls-rf}
 \end{figure}
 
 \FloatBarrier
@@ -215,6 +140,7 @@ Il modello \textit{RandomForest} ottiene prestazioni migliori in ogni metrica tr
 Per entrambi i modelli le classi \textit{Trojan} e \textit{Spyware} risultano le più difficoltose da predire.
 Al contrario la classe \textit{Adware} è quella meglio riconosciuta da entrambi i modelli, con metriche elevate e bilanciate.
 Nel complesso \textit{RandomForest} tende a generalizzar meglio rispetto a \textit{XGBoost}.
+\globalmetrics{fig:octack-global}{octack}
 
 \begin{figure}[t]
     \centering
@@ -222,7 +148,7 @@ Nel complesso \textit{RandomForest} tende a generalizzar meglio rispetto a \text
         \includesvg[width=\textwidth]{validazione-empirica/imgs/octak-global-metrics.svg}
     }
     \caption{\grpdescription{octack}}
-    \label{fig:octack-clx-met}
+    \label{fig:octack-global}
 \end{figure}
 
 \FloatBarrier
@@ -231,7 +157,7 @@ Le metriche globali confermano \textit{RandomForest} come il classificatore più
 
 %%%%%%%%%%%%%%%%% MPASCO %%%%%%%%%%%%%%%%%%%
 
-Le matrici di confusione ottenute per il dataset \textbf{mpasco} sono le seguenti:
+Le matrici di confusione ottenute per il dataset \textbf{mpasco} sono illustrate in \autoref{fig:mpasco-mtrx}.
 
 \begin{figure}[t]
     \centering
@@ -239,7 +165,7 @@ Le matrici di confusione ottenute per il dataset \textbf{mpasco} sono le seguent
         \includesvg[width=\textwidth]{validazione-empirica/imgs/mpasco-confusion-matrix.svg}
     }
     \caption{\mtrdescription{mpasco}}
-    \label{fig:octack-mtrx-rf}
+    \label{fig:mpasco-mtrx}
 \end{figure}
 
 \FloatBarrier
@@ -251,62 +177,21 @@ un \textit{Malware} non rilevato ha conseguenze più gravi rispetto ad un \texti
 Entrambi i modelli hanno ottime capacità di distinzione tra le due classi.
 
 %%%%%%%%%%%%% Inizio metriche mpasco %%%%%%%%%%%%%%%
-%%%%%%%%%%%%% Random Forest %%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{figure}[]
+\begin{figure}[ht]
     \centering
-    \adjustbox{max width=1.4\linewidth, max height=2\textheight}{%
-        \includesvg[width=\textwidth]{validazione-empirica/imgs/mpasco-RandomForest-precision.svg}
+    \adjustbox{max width=\linewidth, max height=0.8\textheight, keepaspectratio}{%
+        \includesvg{validazione-empirica/imgs/mpasco_XGBoost_metrics.svg}
     }
-    \caption{\prcdescription{mpasco}{RandomForest}{Precision}}
-    \label{fig:mpasco-rf-prc}
+    \caption{\clscaption{mpasco}{XGBoost}}
+    \label{fig:mpasco-cls-xgb}
 \end{figure}
 
-\begin{figure}[]
-    \centering
-    \adjustbox{max width=1.4\linewidth, max height=2\textheight}{%
-        \includesvg[width=\textwidth]{validazione-empirica/imgs/mpasco-RandomForest-recall.svg}
-    }
-    \caption{\prcdescription{mpasco}{RandomForest}{Recall}}
-    \label{fig:mpasco-rf-rc}
-\end{figure}
 
-\begin{figure}[]
+\begin{figure}[ht]
     \centering
-    \adjustbox{max width=1.4\linewidth, max height=2\textheight}{%
-        \includesvg[width=\textwidth]{validazione-empirica/imgs/mpasco-RandomForest-f1_score.svg}
-    }
-    \caption{\prcdescription{mpasco}{RandomForest}{F1-score}}
-    \label{fig:mpasco-rf-f1}
-\end{figure}
-
-%%%%%%%%%%%%% XGBoost %%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{figure}[]
-    \centering
-    \adjustbox{max width=1.4\linewidth, max height=2\textheight}{%
-        \includesvg[width=\textwidth]{validazione-empirica/imgs/mpasco-XGBoost-f1_score.svg}
-    }
-    \caption{\prcdescription{octack}{XGBoost}{Precision}}
-    \label{fig:mpasco-rf-prc}
-\end{figure}
-
-\begin{figure}[]
-    \centering
-    \adjustbox{max width=1.4\linewidth, max height=2\textheight}{%
-        \includesvg[width=\textwidth]{validazione-empirica/imgs/mpasco-XGBoost-recall.svg}
-    }
-    \caption{\prcdescription{octack}{XGBoost}{Recall}}
-    \label{fig:mpasco-rf-rc}
-\end{figure}
-
-\begin{figure}[]
-    \centering
-    \adjustbox{max width=1.4\linewidth, max height=2\textheight}{%
-        \includesvg[width=\textwidth]{validazione-empirica/imgs/mpasco-XGBoost-f1_score.svg}
-    }
-    \caption{\prcdescription{octack}{XGBoost}{F1-score}}
-    \label{fig:mpasco-rf-f1}
+    \includesvg[width=\linewidth, keepaspectratio]{validazione-empirica/imgs/mpasco_RandomForest_metrics.svg}
+    \caption{\clscaption{mpasco}{RandomForest}}
+    \label{fig:mpasco-cls-rf}
 \end{figure}
 
 \FloatBarrier
@@ -355,63 +240,22 @@ aumentando i falsi negativi e riducendo quindi l'efficacia complessiva nella ril
 %%%%%%%%%%%%% Inizio metriche quovadis %%%%%%%%%%%%%%%
 %%%%%%%%%%%%% Random Forest %%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{figure}[]
+\begin{figure}[ht]
     \centering
-    \adjustbox{max width=1.4\linewidth, max height=2\textheight}{%
-        \includesvg[width=\textwidth]{validazione-empirica/imgs/quovadis-RandomForest-precision.svg}
+    \adjustbox{max width=\linewidth, max height=0.8\textheight, keepaspectratio}{%
+        \includesvg{validazione-empirica/imgs/mpasco_XGBoost_metrics.svg}
     }
-    \caption{\prcdescription{quovadis}{RandomForest}{Precision}}
-    \label{fig:apimds-rf-prc}
+    \caption{\clscaption{quovadis}{XGBoost}}
+    \label{fig:mpasco-cls-xgb}
 \end{figure}
 
-\begin{figure}[]
+
+\begin{figure}[ht]
     \centering
-    \adjustbox{max width=1.4\linewidth, max height=2\textheight}{%
-        \includesvg[width=\textwidth]{validazione-empirica/imgs/quovadis-RandomForest-recall.svg}
-    }
-    \caption{\prcdescription{quovadis}{RandomForest}{Recall}}
-    \label{fig:apimds-rf-rc}
+    \includesvg[width=\linewidth, keepaspectratio]{validazione-empirica/imgs/mpasco_RandomForest_metrics.svg}
+    \caption{\clscaption{mpasco}{RandomForest}}
+    \label{fig:mpasco-cls-rf}
 \end{figure}
-
-\begin{figure}[]
-    \centering
-    \adjustbox{max width=1.4\linewidth, max height=2\textheight}{%
-        \includesvg[width=\textwidth]{validazione-empirica/imgs/quovadis-RandomForest-f1_score.svg}
-    }
-    \caption{\prcdescription{quovadis}{RandomForest}{F1-score}}
-    \label{fig:apimds-rf-f1}
-\end{figure}
-
-%%%%%%%%%%%%% XGBoost %%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{figure}[]
-    \centering
-    \adjustbox{max width=1.4\linewidth, max height=2\textheight}{%
-        \includesvg[width=\textwidth]{validazione-empirica/imgs/quovadis-XGBoost-f1_score.svg}
-    }
-    \caption{\prcdescription{quovadis}{XGBoost}{Precision}}
-    \label{fig:apimds-rf-prc}
-\end{figure}
-
-\begin{figure}[]
-    \centering
-    \adjustbox{max width=1.4\linewidth, max height=2\textheight}{%
-        \includesvg[width=\textwidth]{validazione-empirica/imgs/quovadis-XGBoost-recall.svg}
-    }
-    \caption{\prcdescription{quovadis}{XGBoost}{Recall}}
-    \label{fig:apimds-rf-rc}
-\end{figure}
-
-\begin{figure}[]
-    \centering
-    \adjustbox{max width=1.4\linewidth, max height=2\textheight}{%
-        \includesvg[width=\textwidth]{validazione-empirica/imgs/quovadis-XGBoost-f1_score.svg}
-    }
-    \caption{\prcdescription{quovadis}{XGBoost}{F1-score}}
-    \label{fig:apimds-rf-f1}
-\end{figure}
-
-\FloatBarrier
 
 %%%%%%%%%%%%%%% FINE METRICHE CLASSE quovadis %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
