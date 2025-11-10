@@ -102,10 +102,12 @@ Le matrici di confusione ottenute per il dataset \textbf{octack} sono illustrate
 
 \FloatBarrier
 
-Le matrici di confusione mostrano che le classi più riconsociute per il modello \texit{XGBoost} sono \textit{Virus},\
-\textit{Downloader} e \textit{}
+Le matrici di confusione mostrano che le classi più riconsociute per il modello \textit{XGBoost}, in ordine sono \textit{Virus},\
+\textit{Downloader} e \textit{Backdoor}; per il modello \textit{RandomForest} risultano \textit{Downloader}, \textit{Virus} e \textit{Backdoor}.
 Il classificatore \textit{RandomForest} ottiene ottimi risultati anche per le classe \textit{Spyware}.
-Tuttavia, anche in questo caso, come nel dataset precedente, si osserva una tendenza comune a classificare erroneamente diversi esempi come \textit{Trojan},\
+Tuttavia, anche in questo caso, come nel dataset precedente, si osserva una tendenza comune dei classificatori ad ettichettare erronemanete come \textit{Trojan} \
+diversi esempi apparteneti in realtà ad altre classi.\
+Questo evidenzia, ancora una volta, la difficoltà nell'individuare un comportamento comune e distintivo per la classe \textit{Troajn}.\
 evidenziando ancora una nuova la difficoltà individuare un comportamento comune tra i vari casi di \textit{Trojan}.\
 La classe \textit{Adware} risulta invece ben distinta dalla altre, con pochissimi falsi positivi e\
 falsi negativi, indice di chiamate API non presenti in altre classi.\
@@ -136,10 +138,11 @@ segno di una migliore capacità di generalizzazione.
 
 %%%%%%%%%%%%%%% FINE METRICHE CLASSE octack %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\classmetrics{fig:octack-cls-xgb}{fig:octack-cls-rf}{octack}.
 Il modello \textit{RandomForest} ottiene prestazioni migliori in ogni metrica tranne che per la \textit{precision} sulla classe \textit{Downloader}.
 Per entrambi i modelli le classi \textit{Trojan} e \textit{Spyware} risultano le più difficoltose da predire.
 Al contrario la classe \textit{Adware} è quella meglio riconosciuta da entrambi i modelli, con metriche elevate e bilanciate.
-Nel complesso \textit{RandomForest} tende a generalizzar meglio rispetto a \textit{XGBoost}.
+Nel complesso \textit{RandomForest} tende a generalizzare meglio rispetto a \textit{XGBoost}.
 \globalmetrics{fig:octack-global}{octack}
 
 \begin{figure}[t]
