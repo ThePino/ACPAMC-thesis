@@ -20,7 +20,9 @@ Le matrici di confusione ottenute per il dataset \textbf{apimds} sono illustrate
     \label{fig:apimds-mtrx}
 \end{figure}
 
-Le classi meglio identificate risultano \textit{Trojan}, \textit{Malware} e \textit{Virus} in entrambi i modelli.\
+Le classi meglio identificate per il modello \textit{XGBoost} in ordine sono \textit{Trojan}, \textit{Malware} e \textit{Virus};
+lo stesso vale anche per il modello \textit{RandomForest}.\
+Il modello \textit{RandomForest} ottiene valori elevati per le classi m
 Queste classi coincidono con quelle più rappresentate nel dataset, suggerendo che la distribuzione dei dati influisce in modo significativo\
 sulla capacità di apprendimento del modello.\
 Si osservano buone prestazioni anche sulle classi minoritarie,\
@@ -49,20 +51,20 @@ Non emergono pattern di errore anomali: gli errori si distribuiscono in modo coe
 
 \FloatBarrier
 
-In \autoref{fig:apimds-cls-xgb} vengono illsturate le metriche \textit{precision}, \textit{recall} e \textit{f1-score} per il modello \textit{XGBoost}.\
+In \autoref{fig:apimds-cls-xgb} vengono illustrate le metriche \textit{precision}, \textit{recall} e \textit{f1-score} per il modello \textit{XGBoost}.\
 Per quanto riguarda la \textit{precision}, il modello presenta valori generalmente buoni, con la maggior parte delle classi che supera il punteggio di $0.73$.\
 Relativamente alla \textit{recall}, si notano valori più variabili: il modello eccelle nella classificazione di \textit{Trojan}, ottenendo un punteggio di $0.94$.\
 Si evidenziano, tuttavia, valori di recall bassi per le classi \textit{Backdoor}, \textit{Downloader} e \textit{Worm}, che registrano valori pari a $0.35$, $0.56$ e $0.56$.\
-Questi risultati si rifletto sull'\textit{F1-score}, che risulta penalizzato per queste classi (ad esempio, $0.48$ per \textit{Backdoor}).\
+Questi risultati si rilfettono sull'\textit{f1-score}, che risulta penalizzato per queste classi (ad esempio, $0.48$ per \textit{Backdoor}).\
 Parallelamente, in \autoref{fig:apimds-cls-rf} sono mostrati i risultati per il modello \textit{RandomForest}.\
 Questo modello presenta una \textit{precision} molto robusta, spesso superiore a \textit{XGBoost}, con la maggior parte delle classi che supera il punteggio di $0.80$ (ad esempio, \textit{Malware} $0.89$ e \textit{Trojan} $0.87$).\
 Per quanto concerne la \textit{recall}, si osserva un comportamento analogo a \textit{XGBoost}, con prestazioni eccellenti su \textit{Trojan} ($0.93$) e \textit{Virus} ($0.85$).\
 Il modello \textit{RandomForest} cosi come \textit{XGBoost} è penalizzato sulla classe \textit{Backdoor} ($0.40$) ma si nota un leggero miglioramento.\
 Le classi \textit{Downloader} e \textit{Worm} ottengono entrambe $0.62$, un risultato superiore al modello precedente.\
 Dal confronto diretto dei due modelli emerge che \textit{RandomForest} offre prestazioni complessivamente superiori e più bilanciate su questo dataset.\
-Analizzando l'\textit{F1-score}, \textit{RandomForest} ottiene un punteggio uguale o superiore a \textit{XGBoost} in ogni singola classe.\
+Analizzando l'\textit{f1-score}, \textit{RandomForest} ottiene un punteggio uguale o superiore a \textit{XGBoost} in ogni singola classe.\
 I vantaggi più evidenti si registrano nelle classi \textit{Virus} (\textit{f1-score} di $0.86$ contro $0.81$) e \textit{Packed} ($0.80$ contro $0.75$).\
-Entrambi i modelli eccellono nell'identificazione dei \textit{Trojan} (\textit{F1-score} $0.88$ per entrambi),\
+Entrambi i modelli eccellono nell'identificazione dei \textit{Trojan} (\textit{f1-score} $0.88$ per entrambi),\
 ma condividono una marcata difficoltà nel classificare la classe \textit{Backdoor}.
 
 
@@ -77,18 +79,20 @@ ma condividono una marcata difficoltà nel classificare la classe \textit{Backdo
 
 \FloatBarrier
 
-In \autoref{fig:apimds-global} sono riportate le metriche \textit{overall accurancy}, \textit{micro precision}, \textit{micro recall}, \textit{micro f1-score},\
+In \autoref{fig:apimds-global} sono riportate le metriche \textit{overall accuracy}, \textit{micro precision}, \textit{micro recall}, \textit{micro f1-score},\
 \textit{micro precision}, \textit{micro recall}, \textit{micro f1-score} di entrambi i classificatori.\
 L'analisi  di queste metriche sul dataset rileva una chiara superiorità del classificatore \textit{RandomForest} rispetto\
 a \textit{XGBoost}.
-\textit{RandomForest} ottiene una \textit{over accuraccy} di $0.83$ contro il $0.81$ di \textit{XGBoost}.\
-Tuttavia, la performance distintiva emerge dal confronto della metrica \textit{Macro F1-score}, che assegna lo stesso peso a tutte le classi,\
+\textit{RandomForest} ottiene una \textit{overall accuraccy} di $0.83$ contro il $0.81$ di \textit{XGBoost}.\
+Tuttavia, la performance distintiva emerge dal confronto della metrica \textit{Macro f1-score}, che assegna lo stesso peso a tutte le classi,\
 comprese quelle minoritarie; \textit{RandomForest} ottiene uno score di $0.74$ rispetto al $0.71$ di \textit{XGBoost}.\
-Si evince un forte divario tra le metriche di micro e di macro: sulle metriche di micro si hanno ottimi risultati\
+Si nota un forte divario tra le metriche di micro e di macro: sulle metriche di micro si hanno ottimi risultati\
 evidenziando una particolare capacità nel predire le classi maggioritarie mentre in quelle macro si notano difficoltà\
-su quelle minoritarie. Se ne evince che il dataset è sbilanciato.
+su quelle minoritarie, implicando che il dataset è sbilanciato.
 
-%%%%%%%%%%%%%%%%% octack %%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%% octack %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%% octack - Matrici di confusione %%%%%%%%%%%%%%%%
 Le matrici di confusione ottenute per il dataset \textbf{octack} sono illustrate in \autoref{fig:octack-mtrx}.
 
 \begin{figure}[t]
@@ -102,19 +106,18 @@ Le matrici di confusione ottenute per il dataset \textbf{octack} sono illustrate
 
 \FloatBarrier
 
-Le matrici di confusione mostrano che le classi più riconsociute per il modello \textit{XGBoost}, in ordine sono \textit{Virus},\
+Le matrici di confusione mostrano che le classi più riconosciute per il modello \textit{XGBoost}, in ordine sono \textit{Virus},\
 \textit{Downloader} e \textit{Backdoor}; per il modello \textit{RandomForest} risultano \textit{Downloader}, \textit{Virus} e \textit{Backdoor}.
 Il classificatore \textit{RandomForest} ottiene ottimi risultati anche per le classe \textit{Spyware}.
-Tuttavia, anche in questo caso, come nel dataset precedente, si osserva una tendenza comune dei classificatori ad ettichettare erronemanete come \textit{Trojan} \
-diversi esempi apparteneti in realtà ad altre classi.\
-Questo evidenzia, ancora una volta, la difficoltà nell'individuare un comportamento comune e distintivo per la classe \textit{Troajn}.\
-evidenziando ancora una nuova la difficoltà individuare un comportamento comune tra i vari casi di \textit{Trojan}.\
+Tuttavia, anche in questo caso, come nel dataset precedente, si osserva una tendenza comune dei classificatori ad etichettare erroneamente come \textit{Trojan} \
+diversi esempi appartenenti in realtà ad altre classi.\
 La classe \textit{Adware} risulta invece ben distinta dalla altre, con pochissimi falsi positivi e\
 falsi negativi, indice di chiamate API non presenti in altre classi.\
 Entrambi i modelli mostrano un comportamento simile, ma \textit{RandomForest} ottiene un numero maggiore di veri positivi complessivi,
 segno di una migliore capacità di generalizzazione.
-\classmetrics{fig:octack-cls-xgb}{fig:octack-cls-rf}{octack}
-%%%%%%%%%%%%% Inizio metriche octack %%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%% octack - Metriche di classe %%%%%%%%%%
+
 %%%%%%%%%%%%% Random Forest %%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{figure}[ht]
@@ -136,13 +139,23 @@ segno di una migliore capacità di generalizzazione.
 
 \FloatBarrier
 
-%%%%%%%%%%%%%%% FINE METRICHE CLASSE octack %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Il modello \textit{XGBoost} in \autoref{fig:octack-cls-xgb} mostra prestazioni molto disomogenee.\
+Ottiene ottimi risultati sulla classe \textit{Adware}, con un \textit{f1-score} di $0.83$, e buone prestazioni su \textit{Backdoor} ($0.75$) e \textit{Virus} ($0.73$).\
+Tuttavia, dimostra significative difficoltà su più classi: la classe \textit{Spyware} è il punto critico maggiore, con una \textit{recall} bassa ($0.38$) che porta l'\textit{f1-score} a $0.44$.\
+Anche le classi \textit{Trojan} ($0.50$) e \textit{Worm} ($0.54$) registrano \textit{f1-score} mediocri, indicando una scarsa capacità di generalizzazione su queste categorie.\
+Il modello \textit{RandomForest} in \autoref{fig:octack-cls-rf}, al contrario, offre prestazioni notevolmente più stabili e superiori.
+Eccelle nell'identificazione di \textit{Adware} (F1-score $0.86$), \textit{Trojan} ($0.86$) e \textit{Virus} ($0.80$).
+In particolare, si nota la sua capacità di gestire la classe \textit{Trojan}, che era invece un punto debole per \textit{XGBoost} (\textit{f1-score} $0.50$).
+Sebbene anche per \textit{RandomForest} la classe \textit{Spyware} risulti la più difficile (f1-score $0.51$),\
+ottiene comunque un risultato migliore rispetto al modello precedente ($0.44$).\
+Dal confronto diretto sul dataset \texttt{octak} emerge un chiaro vantaggio del modello \textit{RandomForest}.\
+Questo ottiene un \textit{f1-score} superiore a \textit{XGBoost} in ogni singola classe, dimostrando una robustezza e una capacità di generalizzazione nettamente migliori.\
+La differenza più marcata si osserva sulla classe \textit{Trojan}, che viene trasformata da un punto debole per XGBoost a un punto di forza per RandomForest.\
+Entrambi i modelli identificano la classe \textit{Spyware} come la più ostica, sebbene anche in questo caso \textit{RandomForest} riesca a mitigarne l'impatto negativo in modo più efficace.
 
-\classmetrics{fig:octack-cls-xgb}{fig:octack-cls-rf}{octack}.
-Il modello \textit{RandomForest} ottiene prestazioni migliori in ogni metrica tranne che per la \textit{precision} sulla classe \textit{Downloader}.
-Per entrambi i modelli le classi \textit{Trojan} e \textit{Spyware} risultano le più difficoltose da predire.
-Al contrario la classe \textit{Adware} è quella meglio riconosciuta da entrambi i modelli, con metriche elevate e bilanciate.
 Nel complesso \textit{RandomForest} tende a generalizzare meglio rispetto a \textit{XGBoost}.
+
+%%%%%%%%%%%%%%% FINE METRICHE CLASSE octack %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \globalmetrics{fig:octack-global}{octack}
 
 \begin{figure}[t]
@@ -156,7 +169,9 @@ Nel complesso \textit{RandomForest} tende a generalizzare meglio rispetto a \tex
 
 \FloatBarrier
 
-Le metriche globali confermano \textit{RandomForest} come il classificatore più ottimale.
+Le metriche globali presenti in \autoref{fig:octack-global} dimostrano come il classificatore\
+\textit{RandomForest} sia quello più ottimale ottendo prestazioni migliori in tutte le metriche.
+
 
 %%%%%%%%%%%%%%%%% MPASCO %%%%%%%%%%%%%%%%%%%
 
@@ -201,8 +216,8 @@ Entrambi i modelli hanno ottime capacità di distinzione tra le due classi.
 
 %%%%%%%%%%%%%%% FINE METRICHE CLASSE mpasco %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Le metriche per classe confermano l'ottima capacità dei modelli nel distinguere \textit{Goodware} e \textit{Malware} ottenendo valori
-di metriche pari o uguali a $0.94$.
+In figura \autoref{fig:mpasco-cls-xgb} e in \autoref{fig:mpasco-cls-rf} si evidenzia l'ottima capacità dei modelli nel distinguere
+\textit{Goodware} e \textit{Malware} ottenendo valori di metriche pari o uguali a $0.94$.
 
 \begin{figure}[t]
     \centering
@@ -210,16 +225,15 @@ di metriche pari o uguali a $0.94$.
         \includesvg[width=\textwidth]{validazione-empirica/imgs/mpasco-global-metrics.svg}
     }
     \caption{\grpdescription{mpasco}}
-    \label{fig:octack-mtrx-rf}
+    \label{fig:mpasco-global-metrics}
 \end{figure}
 
 \FloatBarrier
 
-Le metriche globali rispecchiano le prestazioni ottimali di quelle di classe.
-
+I valori delle metriche globali illustrati in \autoref{fig:mpasco-global-metrics} sintetizzano i risultati positivi ottenuti per le singole classi.
 
 %%%%%%%%%%%%%%%%% QUOVADIS %%%%%%%%%%%%%%%%%%%
-Le matrici di confusione ottenute per il dataset \textbf{quovadis} sono le seguenti:
+Le matrici di confusione ottenute per il dataset \textbf{quovadis} sono illustrate in \autoref{fig:quovadis-confusion-matrix}.
 
 \begin{figure}[t]
     \centering
@@ -227,13 +241,13 @@ Le matrici di confusione ottenute per il dataset \textbf{quovadis} sono le segue
         \includesvg[width=\textwidth]{validazione-empirica/imgs/quovadis-confusion-matrix.svg}
     }
     \caption{\mtrdescription{quovadis}}
-    \label{fig:octack-mtrx-rf}
+    \label{fig:quovadis-confusion-matrix}
 \end{figure}
 
 \FloatBarrier
 
 Il modello \textit{XGBoost} mostra una leggera tendenza ad assegnare con maggiore facilità la classe \textit{Malware},\
-indicando un piccolo bias verso questa etichetta.\
+indicando un piccolo bias verso questa etichetta dovuto allo sbilanciamento del dataset.\
 In linea generale, tale comportamento non sarebbe necessariamente negativo, poiché in un contesto di sicurezza è preferibile classificare erroneamente\
 un file legittimo come sospetto piuttosto che il contrario.\
 Tuttavia, in questo caso, tale bias non porta benefici: \textit{XGBoost} tende infatti a confondere un numero maggiore di \textit{Malware} e \textit{Backdoor} come \textit{Goodware} rispetto a \textit{RandomForest}.\
@@ -246,25 +260,31 @@ aumentando i falsi negativi e riducendo quindi l'efficacia complessiva nella ril
 \begin{figure}[ht]
     \centering
     \adjustbox{max width=\linewidth, max height=0.8\textheight, keepaspectratio}{%
-        \includesvg{validazione-empirica/imgs/mpasco_XGBoost_metrics.svg}
+        \includesvg{validazione-empirica/imgs/quovadis_XGBoost_metrics.svg}
     }
     \caption{\clscaption{quovadis}{XGBoost}}
-    \label{fig:mpasco-cls-xgb}
+    \label{fig:quovadis-cls-xgb}
 \end{figure}
 
 
 \begin{figure}[ht]
     \centering
-    \includesvg[width=\linewidth, keepaspectratio]{validazione-empirica/imgs/mpasco_RandomForest_metrics.svg}
-    \caption{\clscaption{mpasco}{RandomForest}}
-    \label{fig:mpasco-cls-rf}
+    \includesvg[width=\linewidth, keepaspectratio]{validazione-empirica/imgs/quovadis_RandomForest_metrics.svg}
+    \caption{\clscaption{quovadis}{RandomForest}}
+    \label{fig:quovadis-cls-rf}
 \end{figure}
 
 %%%%%%%%%%%%%%% FINE METRICHE CLASSE quovadis %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Il classificatore \textit{RandomForest} ottiene ottimi risultati su tutte le classi.\
-Il classificatore \textit{XGBoost} mostra buone prestazioni complessive, ma presenta un valore di \textit{recall}\
-più basso per la classe \textit{Goodware}, evidenziando una difficoltà nel riconoscere correttamente un numero significativo di istanze appartenenti a tale classe.
+In \autoref{fig:quovadis-cls-xgb} sono riportate le metriche di valutazione per il modello \textit{XGBoost} sul dataset \texttt{quovadis}.\
+Il modello dimostra prestazioni eccellenti sulla classe \textit{Backdoor},\
+raggiungendo nelle metriche \textit{precision}, \textit{recall} e \textit{f1-score} valori superiori o uguali a $0.95$.\
+Sulla classe \textit{Goodware} nonostante si abbia una \textit{precision} elevata ($0.95$), la \textit{recall} è pari a $0.79$ indicando che il modello\
+fallisce nell'identificare oltre il \percc{20} dei campioni legitimi.\
+Per la classe \textit{Malware}, il valore di \textit{precision} è inferiore alla media ($0.82$), suggerendo un tasso più elevato di falsi positivi.
+Il modello \textit{RandomForest}, illustrato in \autoref{fig:quovadis-cls-rf}, mostra invece prestazioni eccezionali e uniformi su tutte le classi.
+A differenza di \textit{XGBoost}, non si osservano cali significativi in nessuna metrica e si hanno valori sopra la soglia di $0.95$ per tutte le classi.
+
 
 \begin{figure}[t]
     \centering
@@ -272,18 +292,19 @@ più basso per la classe \textit{Goodware}, evidenziando una difficoltà nel ric
         \includesvg[width=\textwidth]{validazione-empirica/imgs/quovadis-global-metrics.svg}
     }
     \caption{\grpdescription{quovadis}}
-    \label{fig:octack-mtrx-rf}
+    \label{fig:quovadis-global-metrics}
 \end{figure}
 
 \FloatBarrier
 
-Le metriche globali rispecchiano le prestazioni sulle classi ribadedno che il classificatore \textit{RandomForest}\
+Le metriche globali illustrate in \autoref{fig:quovadis-global-metrics} rispecchiano le prestazioni sulle classi ribadendo che il classificatore \textit{RandomForest}\
 sia nettamente superiore su \textit{XGBoost}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Conclusioni %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-In conclusione, il classificatore \textit{RandomForest} si è dimostrato complessivamente più efficace rispetto a \textit{XGBoost},\
-in particolare nella classificazione multiclasse dei campioni di malware, dove ha mostrato una maggiore accuratezza tra le diverse categorie.\
-Entrambi i modelli hanno tuttavia raggiunto prestazioni elevate su tutti i dataset considerati.\
-I risultati ottenuti sono stati tali da non rendere necessario un ulteriore processo di ottimizzazione degli iperparametri,\
-indicando un buon bilanciamento tra complessità del modello e qualità della classificazione.
+In sintesi, l'analisi comparativa condotta sui quattro dataset evidenzia una maggiore efficacia del classificatore \textit{RandomForest} rispetto a \textit{XGBoost}.\
+Sebbene entrambi i modelli abbiano raggiunto prestazioni elevate, \textit{RandomForest} ha dimostrato una superiore capacità di generalizzazione,\
+garantendo una maggiore accuratezza e stabilità anche nelle classificazioni multiclasse più complesse e sbilanciate.\
+Al contrario, \textit{XGBoost} ha mostrato, in alcuni frangenti, una sensibilità maggiore alla distribuzione delle classi, introducendo bias verso le categorie maggioritarie.\
+È rilevante notare che i risultati ottenuti con le configurazioni di base sono risultati eccellenti su tutti i dataset considerati.\
+Tale evidenza ha reso superfluo un ulteriore processo di ottimizzazione degli iperparametri (\textit{fine-tuning}), confermando che i modelli sono stati in grado di apprendere efficacemente i pattern distintivi del malware senza necessitare di aggiustamenti onerosi, realizzando così un ottimo compromesso tra complessità computazionale e qualità della classificazione.
