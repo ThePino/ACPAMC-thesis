@@ -22,7 +22,6 @@ Le matrici di confusione ottenute per il dataset \textbf{apimds} sono illustrate
 
 Le classi meglio identificate per il modello \textit{XGBoost} in ordine sono \textit{Trojan}, \textit{Malware} e \textit{Virus};
 lo stesso vale anche per il modello \textit{RandomForest}.\
-Il modello \textit{RandomForest} ottiene valori elevati per le classi m
 Queste classi coincidono con quelle più rappresentate nel dataset, suggerendo che la distribuzione dei dati influisce in modo significativo\
 sulla capacità di apprendimento del modello.\
 Si osservano buone prestazioni anche sulle classi minoritarie,\
@@ -151,12 +150,10 @@ ottiene comunque un risultato migliore rispetto al modello precedente ($0.44$).\
 Dal confronto diretto sul dataset \texttt{octak} emerge un chiaro vantaggio del modello \textit{RandomForest}.\
 Questo ottiene un \textit{f1-score} superiore a \textit{XGBoost} in ogni singola classe, dimostrando una robustezza e una capacità di generalizzazione nettamente migliori.\
 La differenza più marcata si osserva sulla classe \textit{Trojan}, che viene trasformata da un punto debole per XGBoost a un punto di forza per RandomForest.\
-Entrambi i modelli identificano la classe \textit{Spyware} come la più ostica, sebbene anche in questo caso \textit{RandomForest} riesca a mitigarne l'impatto negativo in modo più efficace.
-
-Nel complesso \textit{RandomForest} tende a generalizzare meglio rispetto a \textit{XGBoost}.
+Entrambi i modelli identificano la classe \textit{Spyware} come la più ostica, sebbene anche in questo caso \textit{RandomForest} riesca a mitigarne l'impatto negativo in modo più efficace.\
+Nel complesso \textit{RandomForest} tende a generalizzare meglio rispetto a \textit{XGBoost}.\
 
 %%%%%%%%%%%%%%% FINE METRICHE CLASSE octack %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\globalmetrics{fig:octack-global}{octack}
 
 \begin{figure}[t]
     \centering
