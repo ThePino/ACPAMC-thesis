@@ -1,1 +1,27 @@
 \chapter{Conclusioni e Sviluppi Futuri}
+
+In questo capitolo conclusivo vengono riassunti i risultati ottenuti dal lavoro di ricerca e sviluppo svolto,\
+evidenziando il raggiungimento degli obbiettivi preposti.\
+Successivamente, vengono delineate le possibili direzioni future per estendere e migliorare l'approccio proposto,\
+con particolare attenzione all'integrazione dei dati e all'adozione di architetture di apprendimento più complesse.
+
+\section{Conclusioni}
+
+Il presente lavoro di tesi ha affrontato il problema della classificazione di malware in ambiente Windows attraverso l'analisi dinamica e l'utilizzo di tecniche di Machine Learning.
+L'obbiettivo principale era sviluppare un sistema in grado di distinguere non solo tra software benino e malevolo, ma anche di categorizzare le diverse famiglie di \textit{Malware},
+basandosi esclusivamente sui pattern comportamentali espressi dalle sequenze di chiamate API.\
+L'approccio proposto ha previsto la standardizzazione di dataset eterogenei (\textit{apimds}, \textit{octack}, \textit{mpasco}, \textit{quovadis}) e l'implementazione di un modello\
+attraverso la rappresentazione \textit{Bag-of-Words} per la trasformazione delle sequenze in vettori delle caratteristiche.\
+La validazione empirica è stata condotta confrontando gli algoritmi \textit{Random Forest} e \textit{XGBoost}.
+
+Dall'analisi dei risultati sperimentali, emerge che l'efficacia dell'analisi dinamica: l'utilizzo delle sole frequenze di chiamate API si è dimostrato sufficiente per ottenere\
+elevate accuratezze di classificazione, confermando l'ipotesi che i malware tendano a utilizzare sottoinsiemi specifici e ricorrenti di funzionalità del sistema operativo per raggiungere i propri scopi.\
+Nel confronto tra i due classificatori, \textit{RandomForest} si è dimostrato complessivamente più robusto e stabile rispetto a \textit{XGBoost}.\
+Tale superiorità è risultata più particolarmente evidente negli scenari multi-classe e in presenza di dataset sbilanciati (\textit{octack} e \textit{apimds}),\
+dove \textit{RandomForest} ha garantito una migliore generalizzazione, mantenendo valori alti di \textit{f1-score} anche sulle classi minoritarie a differenza di \textit{XGBoost}.
+
+È importante sottolineare che questi ottimi risultati sono stati raggiunti utilizzando gli algoritmi nella loro configurazione standard.\
+Questa evidenza ha reso superfluo un oneroso processo di ottimizzazione degli iperparametri, indicando che la qualità delle feature estratte è il fattore determinante per il successo della classificazione.\
+In sintesi, il sistema sviluppato ha dimostrato la capacità di identificare le minacce con elevata precisione osservando il comportamento del software piuttosto che la sua struttura statica, superando così i limiti delle tecniche di offuscamento che affliggono l'analisi statica tradizionale.
+
+\section{Sviluppi Futuri}
