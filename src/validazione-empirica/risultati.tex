@@ -3,7 +3,7 @@
 \newcommand{\grpdescription}[1]{Overall accuracy, micro e macro metriche sul dataset \textbf{#1}}
 \newcommand{\classmetrics}[3]{In \autoref{#1} e in \autoref{#2} le metriche \textit{Precision}, \textit{Recall} e \textit{F1-score} per \textit{XGBoost} e \textit{RandomForest} per il dataset \textbf{#3}.}
 \newcommand{\globalmetrics}[2]{In \autoref{#1} le metriche \textit{Overall accuracy},  \textit{Micro precision}, \textit{Micro recall}, \textit{Micro F1-score}, \textit{Macro precision}, \textit{Macro recall} e \textit{Macro F1-score} per il dataset \textbf{#2}.}
-\newcommand{\fiscore}[0]{\textit{f1-score}}
+\newcommand{\fiscore}[0]{\textit{f1-score} }
 
 
 \section{Risultati}
@@ -69,7 +69,7 @@ Per quanto concerne la \textit{recall}, si osserva un trend analogo al modello p
 Anche per \textit{RandomForest} la classe \textit{Backdoor} rappresenta il punto debole ($0.40$): la matrice di confusione conferma che $46$ campioni vengono persi e classificati come \textit{Trojan}.\
 Ciononostante, si nota un lieve miglioramento nella capacità di recupero rispetto a \textit{XGBoost}: la recall sale a $0.40$ contro il $0.35$ del modello precedente.\
 Anche le classi \textit{Downloader} e \textit{Worm} beneficiano di questo incremento, ottenendo entrambe $0.62$ (rispetto al $0.56$ di \textit{XGBoost}).
-/
+\
 Dal confronto diretto dei due modelli emerge che \textit{RandomForest} offre prestazioni complessivamente superiori su questo dataset.\
 Analizzando l'\fiscore, \textit{RandomForest} ottiene un punteggio uguale o superiore a \textit{XGBoost} in ogni singola classe.\
 I vantaggi più evidenti si registrano nelle classi \textit{Virus} (\fiscore di $0.86$ contro $0.81$) e \textit{Packed} ($0.80$ contro $0.75$).\
