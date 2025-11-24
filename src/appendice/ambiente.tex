@@ -1,0 +1,26 @@
+\section{Ambiente di Sviluppo}
+
+L'intero progetto è stato sviluppato con l'ausilio dell'editor di codice \textbf{Visual Studio Code} (VS Code)\mycite{vscode}, usufruendo dell'integrazione offerta dall'estensione \textbf{Dev Containers}\mycite{devcontainers}.
+Tale estensione consente di utilizzare un container \textbf{Docker}\mycite{docker} come ambiente di sviluppo completo, garantendo che il codice venga eseguito in un contesto isolato, coerente e perfettamente riproducibile indipendentemente dal sistema operativo della macchina ospitante.
+
+La tecnologia Docker, su cui si basa questa architettura, introduce due concetti fondamentali:
+\begin{itemize}
+    \item \textbf{Immagine Docker (Docker Image)}: È un modello (template) di sola lettura che contiene un set di istruzioni per creare un container. Essa include tutto il necessario per eseguire un'applicazione: il codice, il runtime, le librerie, le variabili d'ambiente e i file di configurazione. Nel contesto di questo progetto, l'immagine definisce il sistema operativo di base e le dipendenze Python necessarie.
+    \item \textbf{Container Docker}: È l'istanza eseguibile di un'immagine. Rappresenta un ambiente isolato e leggero che condivide il kernel del sistema operativo host ma opera in uno spazio utente separato. Mentre l'immagine è statica, il container è dinamico e costituisce l'effettivo ambiente in cui avviene lo sviluppo e l'esecuzione del codice.
+\end{itemize}
+
+La configurazione dell'ambiente è centralizzata all'interno della directory \texttt{.devcontainer}, la quale ospita i file necessari all'orchestrazione del container.
+Il file \texttt{Dockerfile} definisce la costruzione dell'immagine personalizzata. Per questo progetto, si è partiti dall'immagine base ufficiale \texttt{python:3.13.5}. Oltre all'interprete Python e a strumenti essenziali come \texttt{git}, sono state installate a livello di sistema le dipendenze necessarie per il browser \texttt{chromium} e le relative librerie grafiche (come \texttt{libgbm1}, \texttt{libxrandr2}, ecc.). L'installazione di queste ultime si è resa necessaria per supportare le librerie di visualizzazione dati utilizzate nel progetto per il salvataggio e l'esportazione dei grafici generati.
+
+Il file \texttt{devcontainer.json}, invece, orchestra l'integrazione con l'editor VS Code. Esso è stato configurato per:
+\begin{itemize}
+    \item Automatizzare la costruzione dell'immagine basata sul \texttt{Dockerfile} citato.
+    \item Eseguire comandi post-avvio (\textit{postStartCommand}), automatizzando l'installazione delle dipendenze Python tramite il comando \texttt{make install}.
+    \item Configurare l'editor, impostando il percorso dell'interprete Python e attivando strumenti di qualità del codice come il \textit{linting} (\texttt{flake8}) e la formattazione automatica (\texttt{black}).
+    \item Installare automaticamente le estensioni necessarie all'interno del container, tra cui \texttt{ms-python.python} per il supporto al linguaggio e \texttt{streetsidesoftware.code-spell-checker} per il controllo ortografico.
+\end{itemize}
+
+Ad ulteriore affinamento dell'ambiente, la directory \texttt{.vscode} contiene configurazioni specifiche per il workspace, come l'abilitazione del framework di testing \texttt{pytest} e l'aggiunta di termini specifici del dominio (es. "GOODWARE") al dizionario del correttore ortografico, evitando falsi positivi durante la stesura del codice e della documentazione.
+
+L'adozione di questa architettura disaccoppia l'ambiente di sviluppo dall'hardware locale. Ciò rende il progetto immediatamente utilizzabile su qualsiasi macchina dotata di Docker in pochi semplici passaggi, eliminando le problematiche tipiche legate alle discordanze tra versioni di librerie o sistemi operativi differenti.
+Inoltre, grazie alla compatibilità nativa con lo standard Dev Container, il repository può essere aperto direttamente via browser tramite \textbf{GitHub Codespaces}, permettendo di sviluppare ed eseguire il codice in un ambiente cloud pre-configurato senza alcuna installazione locale.
