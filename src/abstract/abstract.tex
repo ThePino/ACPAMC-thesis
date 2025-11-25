@@ -4,11 +4,11 @@
 
 La crescente diffusione delle minacce informatiche e la continua evoluzione delle tecniche di offuscamento adoperate dagli attaccanti hanno reso progressivamente meno efficaci i metodi tradizionali di analisi statica per la rilevazione del software malevolo.
 Il presente lavoro di tesi affronta tale problematica proponendo un approccio di analisi dinamica basato sul monitoraggio delle sequenze di chiamate API (Application Programming Interface) in ambiente Windows,\
-con l'obiettivo di classificare automaticamente le diverse famiglie di malware sfruttando tecniche di Machine Learning supervisionato.
+con l'obiettivo di classificare le diverse famiglie di malware sfruttando tecniche di Machine Learning supervisionato.
 
 La metodologia sviluppata ha previsto la raccolta e la standardizzazione di quattro dataset eterogenei reperiti in letteratura, seguita da una fase di ingegneria delle caratteristiche basata sul modello Bag-of-Words (BoW).
 Tale approccio ha permesso di trasformare le tracce di esecuzione in vettori numerici basati sulla frequenza delle invocazioni API, ignorando l'ordine temporale.
 
 La validazione empirica è stata condotta confrontando le prestazioni di due algoritmi di classificazione allo stato dell'arte: \textit{RandomForest} e \textit{XGBoost}.
-I risultati sperimentali evidenziano una maggiore efficacia del classificatore \textit{RandomForest}, che ha dimostrato una superiore capacità di generalizzazione e stabilità rispetto a \textit{XGBoost}, in particolare nella gestione di dataset sbilanciati e nell'identificazione delle classi minoritarie.
+I risultati sperimentali evidenziano una maggiore efficacia del classificatore \textit{RandomForest}, che ha dimostrato una superiore capacità di generalizzazione rispetto a \textit{XGBoost}, in particolare nella gestione di dataset sbilanciati e nell'identificazione delle classi minoritarie.
 Lo studio conferma che l'analisi delle frequenze delle chiamate API costituisce una firma comportamentale valida per distinguere efficacemente tra software legittimo e diverse categorie di malware, ottenendo buone prestazioni di classificazione.
