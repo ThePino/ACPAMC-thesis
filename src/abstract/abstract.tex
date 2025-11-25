@@ -7,7 +7,7 @@ Il presente lavoro di tesi affronta tale problematica proponendo un approccio di
 con l'obiettivo di classificare le diverse famiglie di malware sfruttando tecniche di Machine Learning supervisionato.
 
 La metodologia sviluppata ha previsto la raccolta e la standardizzazione di quattro dataset eterogenei reperiti in letteratura, seguita da una fase di ingegneria delle caratteristiche basata sul modello Bag-of-Words (BoW).
-Tale approccio ha permesso di trasformare le tracce di esecuzione in vettori numerici basati sulla frequenza delle invocazioni API, ignorando l'ordine temporale.
+Tale approccio ha permesso di trasformare le sequenze di chiamate API in vettori numerici - chiamati \textit{Feature Vector} - basati sulla frequenza delle invocazioni API, ignorando l'ordine temporale.
 
 La validazione empirica è stata condotta confrontando le prestazioni di due algoritmi di classificazione allo stato dell'arte: \textit{RandomForest} e \textit{XGBoost}.
 I risultati sperimentali evidenziano una maggiore efficacia del classificatore \textit{RandomForest}, che ha dimostrato una superiore capacità di generalizzazione rispetto a \textit{XGBoost}, in particolare nella gestione di dataset sbilanciati e nell'identificazione delle classi minoritarie.
