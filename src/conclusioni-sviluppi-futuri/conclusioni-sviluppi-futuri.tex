@@ -23,14 +23,25 @@ superando così i limiti delle tecniche di offuscamento che affliggono l'analisi
 
 \section{Sviluppi Futuri}
 
-Sebbene le metriche di accuratezza e F1-score ottenute confermino la validità dell'approccio proposto, la gestione del \textit{Concept Drift} nelle moderne minacce informatiche impone un'evoluzione architetturale.
-Nel presente lavoro, la separazione tra i set di training e testing ha garantito la robustezza statistica; tuttavia, il prossimo step logico prevede la costruzione di un \textbf{macro-dataset unificato} per mitigare il bias di selezione e migliorare la capacità di generalizzazione del modello su distribuzioni di dati "out-of-distribution".
+Un primo sviluppo naturale del lavoro svolto consiste nell'integrazione dei dataset analizzati in un unico corpus.
+Nel presente studio, sebbene i dati siano stati uniformati in un formato standard comune, le fasi di addestramento e validazione sono state condotte sui singoli dataset in modo indipendente.
+Una futura estensione prevede quindi la fusione effettiva di queste fonti con l'obiettivo di ottenere un \textbf{dataset monolitico}.
+Disporre di una base di dati così ampia e variegata permetterebbe di addestrare un modello ``generalista'', capace di riconoscere minacce provenienti da contesti molto diversi tra loro,
+simulando più fedelmente uno scenario reale in cui i malware presentano una grande variabilità.
+Tuttavia, l'unione di dataset eterogenei comporterebbe inevitabilmente un aumento esponenziale del numero di API distinte (il vocabolario), generando vettori delle caratteristiche di dimensioni enormi e contenenti per lo più valori nulli (sparsità).
+Gestire uno spazio così vasto può confondere algoritmi come \textit{RandomForest} e \textit{XGBoost}, riducendone l'efficienza e aumentando i tempi di calcolo.
+Per mitigare questo problema, sarà fondamentale implementare tecniche di \textbf{selezione delle caratteristiche} (\textit{Feature Selection}) più avanzate.
+L'idea è quella di utilizzare metodi statistici (come l'\textit{Information Gain} o la \textit{PCA}) per identificare e mantenere solo quel sottoinsieme di API che è realmente discriminante per la classificazione, scartando tutto ciò che è rumore o ridondanza.
+Questo permetterebbe di mantenere il modello leggero e performante anche su scala molto più grande.
 
-L'integrazione di sorgenti eterogenee, pur necessaria, espone il sistema alla cosiddetta \textit{Curse of Dimensionality}: l'esplosione del vocabolario delle API genera matrici estremamente sparse.
-Per ottimizzare il costo computazionale e prevenire l'overfitting, si rende imperativa l'applicazione di pipeline di riduzione della dimensionalità. L'uso della \textit{Principal Component Analysis} (PCA) per massimizzare la varianza spiegata, o di filtri basati sull'\textit{Information Gain} per valutare l'entropia, permetterà di proiettare i dati in uno spazio latente più compatto senza perdita significativa di contenuto informativo.
-
-Sul fronte modellistico, il limite principale dell'approccio attuale risiede nell'assunzione di indipendenza delle feature tipica del \textit{Bag-of-Words}. Tale codifica, pur efficiente, appiattisce la dimensione temporale, rendendo il classificatore cieco alla causalità delle chiamate di sistema.
-Per ovviare a ciò, si propone la transizione verso architetture di \textbf{Deep Learning} sequenziali.
-
-Nello specifico, l'adozione di reti \textit{Long Short-Term Memory} (LSTM) o \textit{Gated Recurrent Units} (GRU) permetterebbe di gestire le dipendenze a lungo termine, risolvendo il problema del \textit{vanishing gradient} tipico delle RNN standard. Ancor più promettente risulta l'impiego di architetture basate su \textbf{Transformer} e meccanismi di \textit{Self-Attention}, in grado di pesare le relazioni contestuali tra le API indipendentemente dalla loro distanza posizionale.
-Questo paradigma permetterebbe di rilevare attacchi di \textit{adversarial evasion} che, pur mantenendo statistiche di frequenza lecite, presentano pattern di esecuzione anomali.
+Infine, una linea di ricerca fondamentale riguarda il superamento dei limiti strutturali del modello \textit{Bag-of-Words}.
+Come evidenziato dai risultati sperimentali, l'approccio basato sulle sole frequenze si è rivelato efficace per una classificazione ad alto livello, ma soffre di un limite intrinseco: la perdita dell'informazione sequenziale.
+Tale semplificazione impedisce di distinguere comportamenti che, pur utilizzando le stesse API, differiscono per l'ordine di esecuzione o per il contesto logico.
+A tal proposito, un naturale sviluppo del lavoro consiste nella validazione empirica sui dataset qui proposti delle metodologie avanzate già discusse nello Stato dell'Arte.
+In particolare, si suggerisce di confrontare l'attuale \textit{baseline} con approcci che preservano la struttura temporale e semantica delle tracce.
+Una prima direzione prevede l'estensione al dominio multiclasse delle tecniche di analisi semantica e probabilistica introdotte da Amer e Zelinka\cite{Amer_Zelinka_2020}.
+Sebbene originariamente applicato alla classificazione binaria, questo approccio — che combina proiezioni vettoriali (\textit{Word2Vec}) con catene di Markov — offrirebbe un meccanismo robusto per modellare le transizioni di stato tra le chiamate API anche nel riconoscimento delle specifiche famiglie di malware.
+L'adattamento richiederebbe la costruzione di una matrice di transizione dedicata per ogni singola classe, e la classificazione finale verrebbe quindi determinata calcolando la verosimiglianza della sequenza osservata rispetto a ciascun modello e assegnando l'etichetta della classe che massimizza tale probabilità (\textit{Maximum Likelihood Estimation}).
+Parallelamente, l'indagine dovrebbe estendersi verso il \textit{Deep Learning} sequenziale, sperimentando reti neurali ricorrenti e convoluzionali (RNN/CNN) adattive, come nel modello di Gond e Mohapatra\cite{Gond_Mohapatra_2025}, capaci di gestire l'evoluzione temporale delle tracce e il fenomeno del \textit{concept drift}.
+Infine, un'alternativa promettente risiede nella rappresentazione a grafo, modellando le sequenze come grafi direzionali elaborati tramite \textit{Graph Convolutional Networks} (GCN) secondo la metodologia di Ma et al.\cite{10.1371/journal.pone.0299706}.
+L'obiettivo di tale estensione sarebbe verificare quantitativamente se la maggiore complessità computazionale richiesta da questi modelli si traduca in un incremento significativo delle prestazioni rispetto ai risultati già solidi ottenuti con \textit{RandomForest}, specialmente nella rilevazione di varianti di malware complesse che eludono l'analisi frequenziale.
