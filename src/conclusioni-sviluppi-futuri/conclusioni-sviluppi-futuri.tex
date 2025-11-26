@@ -6,26 +6,26 @@ con particolare attenzione all'integrazione dei dati e all'adozione di architett
 
 \section{Conclusioni}
 
-Il presente lavoro di tesi ha affrontato il problema della classificazione di \textit{Malware} in ambiente \textit{Windows} attraverso l'analisi dinamica e l'utilizzo di tecniche di Machine Learning.
-L'obiettivo principale era sviluppare un sistema in grado di distinguere non solo tra software benigno e malevolo, ma anche di categorizzare le diverse famiglie di \textit{Malware}, basandosi sulle frequenze di chiamate API.
-L'approccio proposto ha previsto la standardizzazione di dataset eterogenei (\textit{apimds}, \textit{octack}, \textit{mpasco}, \textit{quovadis}) e l'implementazione dei classificatori \textit{RandomForest} e \textit{XGBoost},\
-sfruttando la rappresentazione \textit{Bag-of-Words} per la trasformazione delle sequenze in vettori delle caratteristiche.
-La validazione empirica è stata condotta applicando i modelli ai diversi dataset e analizzando le matrici di confusione risultanti, dalle quali sono state calcolate le metriche per verificarne l'efficacia.
-
-Dall'analisi dei risultati sperimentali, emerge l'efficacia dell'analisi dinamica: l'utilizzo delle sole frequenze delle chiamate API si è dimostrato sufficiente per ottenere buone accuratezze di classificazione,\
+Il presente lavoro di tesi ha affrontato il problema della classificazione di \textit{Malware} in ambiente \textit{Windows} attraverso lo studio delle sequenze di chiamate API e l'utilizzo di tecniche di Machine Learning.
+L'obiettivo principale del lavoro di tesi è quello di sviluppare un sistema che attraverso l'utilizzo di approcci basati su Machine Learning è in grado classificare applicazioni sviluppate per ambienti Windows in software benigno o malevolo.
+In particolare, il sistema sviluppato nel progetto di tesi è stato valutato sia per compiti di classificazione binaria (software benigno o malevolo) sia per compiti di classificazione multiclasse (classificazione in diverse famiglie di software malevolo).
+La prima fase della tesi ha visto lo sviluppo di una parte di preprocessing dei dati per standardizzare dataset eterogenei (\textit{apimds}, \textit{octack}, \textit{mpasco} e \textit{quovadis}) contenti sequenze di chiamate API.
+Successivamente sono stati implementati e addestrati i due classificatori \textit{RandomForest} e \textit{XGBoost} sfruttando la rappresentazione \textit{Bag-of-Words} per la trasformazione delle sequenze in vettori delle caratteristiche.
+Infine è stata effettuata una validazione empirica applicando i classificatori ai diversi dataset e analizzando le matrici di confusione risultanti, dalle quali sono state calcolate le metriche per verificarne l'efficacia.
+Dall'analisi dei risultati sperimentali, emerge che l'utilizzo delle sole frequenze delle chiamate API si è dimostrato sufficiente per ottenere buone accuratezze di classificazione,\
 confermando l'ipotesi che i malware tendano a utilizzare sottoinsiemi specifici e ricorrenti di funzionalità del sistema operativo per raggiungere i propri scopi.
-Nel confronto diretto, \textit{RandomForest} si è dimostrato complessivamente più accurato rispetto a \textit{XGBoost}.
+In particolare, i risultati della valutazione empirica hanno mostrato che il modello \textit{RandomForest}  è complessivamente più accurato rispetto a \textit{XGBoost}.
 Tale superiorità è risultata particolarmente evidente negli scenari multi-classe e in presenza di dataset sbilanciati (come \textit{octack} e \textit{apimds}), dove \textit{RandomForest} ha garantito una migliore generalizzazione,\
 mantenendo valori alti di \fiscore{} anche sulle classi minoritarie, a differenza di \textit{XGBoost}.
 
-In sintesi, il sistema sviluppato ha dimostrato la capacità di identificare le minacce con precisione osservando il comportamento del software piuttosto che la sua struttura statica,\
+In sintesi, il sistema sviluppato ha dimostrato buona capacità di identificare le minacce con precisione osservando il comportamento del software piuttosto che la sua struttura statica,\
 superando così i limiti delle tecniche di offuscamento che affliggono l'analisi statica tradizionale.
 
 \section{Sviluppi Futuri}
 
 Un primo sviluppo naturale del lavoro svolto consiste nell'integrazione dei dataset analizzati in un unico corpus.
 Nel presente studio, sebbene i dati siano stati uniformati in un formato standard comune, le fasi di addestramento e validazione sono state condotte sui singoli dataset in modo indipendente.
-Una futura estensione prevede quindi la fusione effettiva di queste fonti con l'obiettivo di ottenere un \textbf{dataset monolitico}.
+Una futura estensione prevede quindi la fusione effettiva di queste fonti con l'obiettivo di ottenere un unico dataset contente una maggiore quantità di dati.
 Disporre di una base di dati così ampia e variegata permetterebbe di addestrare un modello ``generalista'', capace di riconoscere minacce provenienti da contesti molto diversi tra loro,
 simulando più fedelmente uno scenario reale in cui i malware presentano una grande variabilità.
 Tuttavia, l'unione di dataset eterogenei comporterebbe inevitabilmente un aumento esponenziale del numero di API distinte (il vocabolario), generando vettori delle caratteristiche di dimensioni enormi e contenenti per lo più valori nulli (sparsità).
