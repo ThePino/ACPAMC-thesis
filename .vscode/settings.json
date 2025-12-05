@@ -67,5 +67,6 @@
         ".devcontainer/**",
         "*.tek",
         "*.bib"
-    ]
+    ],
+    "python-envs.pythonProjects": []
 }
