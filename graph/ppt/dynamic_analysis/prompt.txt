@@ -1,0 +1,12 @@
+Generami una immagine per una slide sull'analisi dinamica dei malware.
+
+Fai tener presente il concetto di sand box e di registrare chiamate api
+
+
+<foto slide 2 3> mantieni questo stile
+
+
+
+allora tagliami il titolo Analisi Dinamica, e usa la trasparenza al posto del bianco
+
+rimettimi lo sfondo bianco
