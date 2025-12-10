@@ -1,0 +1,48 @@
+// XGBoost Structure
+digraph {
+	nodesep=0.6 rankdir=LR ranksep=0.5 splines=ortho
+	bgcolor=transparent
+	node [color="#333333" fillcolor=white fontname=Helvetica shape=box style=filled]
+	edge [arrowsize=0.8 color="#555555"]
+	input [label="Input Data
+(x)" fillcolor="#E0E0E0" height=0.8 shape=cylinder]
+	subgraph cluster_tree1 {
+		bgcolor=none color=lightgrey label="Tree 1 (Base)" style=dashed
+		t1_root [label="Age < 30?"]
+		t1_yes [label="Weight +0.5" color="#44aa44" fontcolor=white shape=ellipse]
+		t1_no [label="Weight -0.5" color="#aa4444" fontcolor=white shape=ellipse]
+		t1_root -> t1_yes [label=" Yes" fontsize=10]
+		t1_root -> t1_no [label=" No" fontsize=10]
+	}
+	subgraph cluster_tree2 {
+		bgcolor=none color=lightgrey label="Tree 2 (Fix Error)" style=dashed
+		t2_root [label="Income > 50k?"]
+		t2_yes [label="Weight +0.3" color="#44aa44" fontcolor=white shape=ellipse]
+		t2_no [label="Weight -0.1" color="#aa4444" fontcolor=white shape=ellipse]
+		t2_root -> t2_yes [label=" Yes" fontsize=10]
+		t2_root -> t2_no [label=" No" fontsize=10]
+	}
+	subgraph cluster_tree3 {
+		bgcolor=none color=lightgrey label="Tree 3 (Refine)" style=dashed
+		t3_root [label="Has Debt?"]
+		t3_yes [label="Weight -0.2" color="#aa4444" fontcolor=white shape=ellipse]
+		t3_no [label="Weight +0.1" color="#44aa44" fontcolor=white shape=ellipse]
+		t3_root -> t3_yes [label=" Yes" fontsize=10]
+		t3_root -> t3_no [label=" No" fontsize=10]
+	}
+	sum [label="Σ
+(Sum)" color="#FFC107" fillcolor="#FFF8E1" fixedsize=true fontsize=20 penwidth=2 shape=circle width=0.8]
+	output [label="Final Prediction
+ŷ = σ(Σ)" color="#673AB7" fillcolor="#D1C4E9" fontcolor=black shape=doubleoctagon]
+	input -> t1_root [style=dashed]
+	input -> t2_root [style=dashed]
+	input -> t3_root [style=dashed]
+	t1_yes -> sum [color="#44aa44"]
+	t1_no -> sum [color="#aa4444"]
+	t2_yes -> sum [color="#44aa44"]
+	t2_no -> sum [color="#aa4444"]
+	t3_yes -> sum [color="#aa4444"]
+	t3_no -> sum [color="#44aa44"]
+	sum -> output [penwidth=2.0]
+	fontname="Helvetica-Bold" fontsize=14 label="\nVisualizzazione XGBoost (Ensemble Additivo)\nŷ_i = Σ fk(x_i)"
+}

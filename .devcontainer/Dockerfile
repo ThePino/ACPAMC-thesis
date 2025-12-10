@@ -38,3 +38,6 @@ RUN apt-get install -y inkscape
 
 # Graphviz 
 RUN apt-get install -y graphviz
+
+# Dot
+RUN apt-get update && apt-get install -y graphviz
